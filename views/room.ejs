@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        fetch('/test').then(
+         res => res.json()
+        ).then(data => {
+         data.medias.map((elm) => {
+             const card = document.createElement('div')
+             card.classList = 'title_vids'
+             let textNode = document.createTextNode(elm.title)
+             document.body.appendChild(card)
+             card.innerHTML = `<button><p><b><u>${elm.title}</u></b></p></button>`
+     
+     
+             elm.questions.map(i => {
+                //  i.choices.map((j) => {
+                //      console.log(j)
+                //  })
+                const p = document.createElement('p')
+                p.innerHTML = `${i.body[0].html}`
+                
+                document.body.appendChild(p)
+                // const p = document.createElement('p')
+                // const node = document.createTextNode(i.body[0].html)
+                // p.appendChild(node)
+                 const ok = i.choices.filter(j => j.isCorrect == true)
+                ok.map((j) => {
+                    //console.log(j.body[0].html)
+
+                    const l = document.createElement('p')
+                    l.innerHTML = `<b>${j.body[0].html}</b>`
+                    
+                    document.body.appendChild(l)
+                })
+                
+                
+             })
+         })
+        })
+     
+        
+         
+     </script>
+</head>
+<style>
+    .title_vids{
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+        
+        justify-content: center;
+    }
+    button {
+        cursor: pointer;
+    }
+    body{
+        margin: 0px;
+        padding: 0px;
+    }
+
+    p{
+        margin-left: 15px;
+    }
+</style>
+<body>
+</body>
+
+
+</html>

@@ -22,13 +22,14 @@
             <div class="classes">
             <button onclick="answers('<%= elm._id %>')"><p><%= elm.name %></p></button>
         </div>
+        <!-- <p><%= elm.students[i].id %></p> -->
         <% }) %>
    
    
 </body>
 <script>
     function answers(id){
-        console.log(id)
+        window.location.href = `/edpuzzle/classroom/${id}`
     }
 </script>
 </html>

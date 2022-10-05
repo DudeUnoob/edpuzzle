@@ -52,8 +52,32 @@ app.post('/edpuzzle/token', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
     
-    //console.log(edpuzzleData)
+   // console.log(edpuzzleData)
     res.render('dashboard', { edpuzzleData: req.session.edpuzzleData, token: req.session.token,  })
+})
+
+app.get('/edpuzzle/classroom/:id', (req, res) => {
+    fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${req.params.id}/students?needle=`,{
+        headers:{
+            "Authorization":`Bearer ${req.session.token}`
+        }
+    })
+    .then(res => res.json()).then(data => {
+        console.log(data)
+        return res.render('room', { id: req.params.id, token: req.session.token, data: data})
+
+    })
+
+})
+
+app.get('/test',(req, res) => {
+    fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/61201fec13837941596648da/students?needle=`,{
+        headers:{
+            "Authorization":`Bearer ${req.session.token}`
+        }
+    }).then(
+        res => res.json()
+       ).then(data => res.send(data))
 })
 
 app.listen(3000, () => {
