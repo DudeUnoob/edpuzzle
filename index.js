@@ -112,6 +112,6 @@ app.get('/edpuzzlehax1.mp4',(req, res) => {
     res.sendFile('edpuzzlehax1.mp4',{ root: path.join(__dirname,'./public')})
 })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log('http://localhost:3000')
 })
