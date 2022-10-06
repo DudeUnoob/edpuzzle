@@ -4,6 +4,7 @@ const app = express()
 const axios = require('axios')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const path = require('path')
 
 app.use(session({
     secret: "helloworld",
@@ -105,6 +106,10 @@ app.get('/test2', (req, res) => {
 
 app.get('/lesson_id',(req, res) => {
     res.send({ lesson_id: req.session.lesson_id})
+})
+
+app.get('/edpuzzlehax1.mp4',(req, res) => {
+    res.sendFile('edpuzzlehax1.mp4',{ root: path.join(__dirname,'./public')})
 })
 
 app.listen(3000, () => {
