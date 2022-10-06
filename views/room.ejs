@@ -6,44 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
-        fetch('/test').then(
+        fetch('/test',{
+            
+        }).then(
          res => res.json()
         ).then(data => {
+            console.log(data)
          data.medias.map((elm) => {
              const card = document.createElement('div')
              card.classList = 'title_vids'
              let textNode = document.createTextNode(elm.title)
              document.body.appendChild(card)
-             card.innerHTML = `<button><p><b><u>${elm.title}</u></b></p></button>`
+             card.innerHTML = `<button onclick=redirectLesson('${elm._id}')><h1 id='classTitles'><b><u>${elm.title}</u></b></h1></button>`
      
      
              elm.questions.map(i => {
                 //  i.choices.map((j) => {
                 //      console.log(j)
                 //  })
-                const p = document.createElement('p')
-                p.innerHTML = `${i.body[0].html}`
-                
-                document.body.appendChild(p)
-                // const p = document.createElement('p')
-                // const node = document.createTextNode(i.body[0].html)
-                // p.appendChild(node)
-                 const ok = i.choices.filter(j => j.isCorrect == true)
-                ok.map((j) => {
-                    //console.log(j.body[0].html)
+                // const p = document.createElement('h3')
+                // p.id='type_of_question'
 
-                    const l = document.createElement('p')
-                    l.innerHTML = `<b>${j.body[0].html}</b>`
-                    
-                    document.body.appendChild(l)
-                })
+                // const question = i.body[0].html + " " + i.type
+                // p.innerHTML = `${i.body[0].html}<p id='hello'>${i.type}</p>`
+                
+                // document.body.appendChild(p)
+                // // const p = document.createElement('p')
+                // // const node = document.createTextNode(i.body[0].html)
+                // // p.appendChild(node)
+                // //console.log(i)
+                //  const ok = i.choices.filter(j => j.isCorrect == true )
+                // ok.map((j) => {
+                //     //console.log(j.body[0].html)
+                //     //console.log(j)
+                //     const l = document.createElement('p')
+                //     l.innerHTML = `<b>${j.body[0].html}</b>`
+
+                //     document.body.appendChild(l)
+                // })
                 
                 
              })
          })
         })
-     
         
+        const currentId = window.location.href.slice(41)
+        function redirectLesson(id){
+           console.log(id)
+
+           window.location.href = `/edpuzzle/room/${currentId}` +  `/${id}`
+        }
          
      </script>
 </head>
@@ -63,8 +75,23 @@
         padding: 0px;
     }
 
+    h3{
+        color: blue;
+        margin-left: 15px;
+    }
+
+    #type_of_question {
+        margin-left: 15px;
+    }
+    
     p{
         margin-left: 15px;
+    }
+
+    #hello {
+        font-style: italic;
+        color: rgb(63, 61, 62);
+        text-decoration: underline;
     }
 </style>
 <body>

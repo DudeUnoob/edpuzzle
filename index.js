@@ -56,7 +56,9 @@ app.get('/dashboard', (req, res) => {
     res.render('dashboard', { edpuzzleData: req.session.edpuzzleData, token: req.session.token,  })
 })
 
+let id;
 app.get('/edpuzzle/classroom/:id', (req, res) => {
+    id=req.params.id
     fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${req.params.id}/students?needle=`,{
         headers:{
             "Authorization":`Bearer ${req.session.token}`
@@ -71,13 +73,38 @@ app.get('/edpuzzle/classroom/:id', (req, res) => {
 })
 
 app.get('/test',(req, res) => {
-    fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/61201fec13837941596648da/students?needle=`,{
+    fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${id}/students?needle=`,{
         headers:{
             "Authorization":`Bearer ${req.session.token}`
         }
     }).then(
         res => res.json()
        ).then(data => res.send(data))
+})
+
+app.get('/edpuzzle/room/:classroom_id/:lesson_id', (req, res) => {
+    req.session.lesson_id = req.params.lesson_id;
+    fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${req.params.classroom_id}/students?needle=`, {
+        headers:{
+            "Authorization":`Bearer ${req.session.token}`
+        }
+    }).then(
+        res => res.json()
+    ).then(data => res.render('lesson', { classroom_id: req.params.classroom_id, token: req.session.token, data: data, lesson_id: req.params.lesson_id}))
+})
+
+app.get('/test2', (req, res) => {
+    fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${id}/students?needle=`,{
+        headers:{
+            "Authorization":`Bearer ${req.session.token}`
+        }
+    }).then(
+        res => res.json()
+       ).then(data => res.send(data))
+})
+
+app.get('/lesson_id',(req, res) => {
+    res.send({ lesson_id: req.session.lesson_id})
 })
 
 app.listen(3000, () => {
