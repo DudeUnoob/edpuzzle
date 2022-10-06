@@ -11,11 +11,9 @@
             color: blue;
             text-decoration: underline;
         }
-
        #helloworld {
         color: red;
        }
-
        .card {
         border-style: none;
             cursor: pointer;
@@ -27,7 +25,6 @@
             transition: 0.3s;
             padding: 5px;
        }
-
        .card:hover {
             box-shadow: 0 12px 16px 0 rgba(255, 255, 255, 0.24), 0 17px 50px 0 rgba(255, 254, 254, 0.19);
             
@@ -43,52 +40,65 @@
         lesson_id = data.lesson_id})
     fetch('/test2').then(res => res.json()).then(data => {
         
-
        //const filter = data.medias.filter(i => i._id = lesson_id)
-
        //console.log(filter)
-
        data.medias.map((elm) => {
-
         const div = document.createElement('div')
         div.className = 'card'
-
-
-
+        
         if(elm._id == lesson_id){
-           // console.log(elm._id)
+            
 
             elm.questions.map((i) => {
+                
                 const div = document.createElement('div')
                 div.classList = 'card'
-                //console.log(i.body[0].html)
+
+                //console.log(elm)
+
                 const p = document.createElement('h3')
                 p.id='type_of_question'
-
                 //const question = i.body[0].html + " " + i.type
                 p.innerHTML = `${i.body[0].html}<p id='hello'>${i.type}</p>`
                 
                 div.appendChild(p)
-               // document.body.appendChild(p)
                 
-                 const ok = i.choices.filter(j => j.isCorrect == true )
-                ok.map((j) => {
-                    //console.log(j.body[0].html)
-                    //console.log(j)
+                
+                if(i.type == 'open-ended'){
+                    i.body.map((o) => {
+                        console.log(o)
+                        p.id = 'type_of_question'
+
+                        p.innerHTML = `${o.html}<p id='hello'>${i.type}</p>`
+
+                        div.appendChild(p)
+
+                        document.body.appendChild(div)
+                    })
+                } else {
+                    const ok = i.choices.filter(j => j.isCorrect == true)
+                 //console.log(ok)
+                 if(ok.length > 0){
+                    ok.map((j) => {
+                    
                     const l = document.createElement('p')
                     l.innerHTML = `<b id='helloworld'>${j.body[0].html}</b>`
-
                     //document.body.appendChild(l)
                     div.appendChild(l)
-
                     document.body.appendChild(div)
                 })
+                 } 
+                }
+                    
+                
+                 
+                    
+                
             })
         } else {
             return
         }
        })
-
     })
 </script>
 </html>
