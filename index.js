@@ -122,6 +122,26 @@ app.get('/edpuzzlehax1.mp4',(req, res) => {
     res.sendFile('edpuzzlehax1.mp4',{ root: path.join(__dirname,'./public')})
 })
 
+app.get('/apple-touch-icon.png', (req, res) => {
+    res.sendFile('apple-touch-icon.png', { root: path.join(__dirname, './public/favicons')})
+})
+
+app.get('/favicon-32x32.png', (req, res) => {
+    res.sendFile('favicon-32x32.png', { root: path.join(__dirname, './public/favicons')})
+})
+
+app.get('/favicon-16x16.png', (req, res) => {
+    res.sendFile('favicon-16x16.png', { root: path.join(__dirname, './public/favicons')})
+})
+
+app.get('/site.webmanifest', (req, res) => {
+    res.sendFile('site.webmanifest', { root: path.join(__dirname, './public/favicons')})
+})
+
+app.get('/safari-pinned-tab.svg')
+
+app.get()
+
 app.listen(process.env.PORT || 3000, () => {
     console.log('http://localhost:3000')
 })
