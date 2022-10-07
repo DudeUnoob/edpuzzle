@@ -6,18 +6,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
         video{
             padding: 10px;
-            height: 1000px;
-            width: 1000px;
+            height: 1200px;
+            width: 1100px;
+            justify-content: center;
+            align-items: center;
+            float: left;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@900&display=swap');
+* {
+  font-family: 'Fredoka One', cursive;
+  font-weight: 100;
+  overflow: auto;
+  padding: 0px;
+  margin:0px;
+}
 
+ul{
+  z-index: 1;
+}
+
+
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  color: black;
+}
+
+li {
+ background: transparent; 
+ color: black;
+}
+
+li:hover {
+  font-style: italic;
+}
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  text-decoration: underline;
+}
+
+li a:hover:not(.active) {
+  background-color: transparent;
+  color: black;
+}
+
+.active {
+  background-color: transparent;
+  color: black;
+}
 header {
   height: 200vh;
 }
 
+#howto{
+  justify-content: center;
+  text-align: center;
+  margin-top: 30px;
+}
 form{
     display: flex;
     justify-content: center;
@@ -32,13 +91,20 @@ input {
   background: #f2f2f2;
   padding: 12px;
   border-radius: 3px;
-  width: 250px;
+  width: 300px;
   font-size: 14px;
+  height: 25px;
+  
 }
 button {
    
-    border-radius: 15px;
+    background-color: rgb(204, 201, 201);
     cursor: pointer;
+    border: none;
+ }
+
+ button:hover{
+  background-color: darkgrey;
  }
 
 .container {
@@ -151,7 +217,11 @@ section p {
     <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video> -->
     
 
-
+    <ul>
+      <li><a class="active" href="/dashboard">Dashboard</a></li>
+      
+      
+    </ul>
     
 <header>
 
@@ -173,10 +243,12 @@ section p {
   
   <section>
     <form action="/edpuzzle/token" method="post">
-        <input type="text" name="token" placeholder="edpuzzle token"/>
+        <input type="text" name="token" placeholder="edpuzzle token" required/>
         <button type="submit">Get Answers!</button>
     </form>
     
+    <h1 id="howto">How to get Your Token</h1>
+    <p id="howto">(Do NOT leak your token or people can hack your account!!)</p>
     <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video>
   </section>
 

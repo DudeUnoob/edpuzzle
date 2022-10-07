@@ -19,7 +19,11 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
+
+   
     res.render('index')
+
+    
 })
 
 let edpuzzleData
@@ -53,8 +57,14 @@ app.post('/edpuzzle/token', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
     
+    if(!req.session.token){
+        res.status(400).send("Please <a href=/>login</a> with your edpuzzle token")
+    }
+    else {
+        res.render('dashboard', { edpuzzleData: req.session.edpuzzleData, token: req.session.token,  })
+    }
    // console.log(edpuzzleData)
-    res.render('dashboard', { edpuzzleData: req.session.edpuzzleData, token: req.session.token,  })
+    
 })
 
 let id;
