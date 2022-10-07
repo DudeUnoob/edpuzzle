@@ -138,9 +138,9 @@ app.get('/site.webmanifest', (req, res) => {
     res.sendFile('site.webmanifest', { root: path.join(__dirname, './public/favicons')})
 })
 
-app.get('/safari-pinned-tab.svg')
 
-app.get()
+
+
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('http://localhost:3000')
