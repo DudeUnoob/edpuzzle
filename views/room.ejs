@@ -78,9 +78,13 @@
         if(window.location.href.startsWith('http://localhost')){
             currentId = window.location.href.slice(41)
         }
-        else if(window.location.href.startsWith('https://')){
+        else if(window.location.href.startsWith('https://puzzlehax.ml')){
+          currentId = window.location.href.slice(40)
+        }
+        else if(window.location.href.startsWith('https://edpuzzlehax.up.railway.app')){
             currentId = window.location.href.slice(59)
         }
+        
         function redirectLesson(id){
            console.log(id)
 
