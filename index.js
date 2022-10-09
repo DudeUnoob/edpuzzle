@@ -67,6 +67,12 @@ app.get('/dashboard', (req, res) => {
     
 })
 
+app.get('/logout', (req, res) => {
+    req.session.destroy()
+
+    res.redirect('/')
+})
+
 let id;
 app.get('/edpuzzle/classroom/:id', (req, res) => {
     id=req.params.id
@@ -139,7 +145,27 @@ app.get('/site.webmanifest', (req, res) => {
 })
 
 
+app.post('/edpuzzle/login', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
+    console.log(username, password)
+
+    axios.post('https://edpuzzle.com/api/v3/users/login', {
+        username: username,
+        password: password,
+        role:"student"
+    }).then(function (response) {
+        req.session.token = response.headers.authorization.slice(7);
+
+        return res.redirect('/dashboard')
+    })
+    .catch(function (error){
+        return res.status(400).send(error)
+    })
+
+   
+})
 
 
 app.listen(process.env.PORT || 3000, () => {
