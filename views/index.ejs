@@ -29,7 +29,6 @@
             align-items: center;
             float: left;
         }
-
 * {
   font-family: 'Fredoka One', cursive;
   font-weight: 100;
@@ -37,13 +36,9 @@
   padding: 0px;
   margin:0px;
 }
-
 ul{
   z-index: 1;
 }
-
-
-
 ul {
   list-style-type: none;
   margin: 0;
@@ -55,12 +50,10 @@ ul {
   width: 100%;
   color: black;
 }
-
 li {
  background: transparent; 
  color: black;
 }
-
 li:hover {
   font-style: italic;
 }
@@ -72,12 +65,10 @@ li a {
   text-decoration: none;
   text-decoration: underline;
 }
-
 li a:hover:not(.active) {
   background-color: transparent;
   color: black;
 }
-
 .active {
   background-color: transparent;
   color: black;
@@ -85,17 +76,20 @@ li a:hover:not(.active) {
 header {
   height: 200vh;
 }
-
 #howto{
   justify-content: center;
   text-align: center;
   margin-top: 30px;
 }
 form{
-    display: flex;
-    justify-content: center;
+  display: flex;
+    justify-content: space-evenly;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    align-items: stretch;
+    align-content: center;
+    padding: 25px;
 }
-
 input {
     border: none;
   -webkit-appearance: none;
@@ -115,22 +109,19 @@ button {
     background-color: rgb(204, 201, 201);
     cursor: pointer;
     border: none;
+    height: 35px;
+    
  }
-
  button:hover{
   background-color: darkgrey;
  }
-
 .container {
   /* hide fixed overflow contents */
   clip: rect(0, auto, auto, 0);
-
   /* does not work if overflow = visible */
   overflow: hidden;
-
   /* only works with absolute positioning */
   position: absolute;
-
   /* Make sure containers are full-width and height */
   height: 100vh;
   left: 0;
@@ -140,14 +131,12 @@ button {
   /* safari hack */
   -webkit-mask-image: -webkit-linear-gradient(top, #ffffff 0%,#ffffff 100%);
 }
-
 .container_solid {
   background: white;
   
   /* position this container at the top of its parent element */
   top: 0;
 }
-
 .title_wrapper {
   position: fixed;
   display: block;  
@@ -159,7 +148,6 @@ button {
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
 }
-
 .title_wrapper h1 {
   text-align: center;
   font-size: 64px;
@@ -168,7 +156,6 @@ button {
   font-family: 'Fraunces', serif;
   font-weight: 900;
 }
-
 .container_solid .title_wrapper h1 {
   /* the text background */
   background: url(https://images.unsplash.com/photo-1575058752200-a9d6c0f41945?&q=85);
@@ -184,7 +171,6 @@ button {
   /* fallback text color */
   color: black;
 }
-
 .container_image {
   /* Grab a free image from unsplash */
   background-image: url(https://i.redd.it/cjkz6lpzmprx.jpg);
@@ -195,26 +181,25 @@ button {
   /* position the second container below the first container */
   top: 100vh;
 }
-
 .container_image .title_wrapper h1 {
   color: white;
 }
-
 section {
   min-height: 100vh;
   padding: 2em;
   margin: auto;
   max-width: 800px;
 }
-
 section h2 {
   font-family: 'Fraunces', serif;
 }
-
 section p {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
+.form1, .form2{
+  text-align: center;
+}
     </style>
 </head>
 <body>
@@ -249,17 +234,31 @@ section p {
     <!-- Second container -->
     <div class="container container_image" aria-hidden="true">
       <div class="title_wrapper">
-        <h1>Get them Free Now</h1>
+        <h1>Free</h1>
       </div>
     </div>
   
   </header>
   
   <section>
+    <div class="form1">
+      <h1>Sign in with Token</h1>
     <form action="/edpuzzle/token" method="post">
+      <button type="submit">Get Answers!</button>
         <input type="text" name="token" placeholder="edpuzzle token" required/>
-        <button type="submit">Get Answers!</button>
+        
     </form>
+  </div>
+
+  <div class="form2">
+    <h1>Username and Password</h1>
+    <form action="/edpuzzle/login" method="post">
+      <button type="submit">Get Answers!</button>
+      <input type="password" name="password" placeholder="password" required/>
+      <input type="text" name="username" placeholder="username" required/>
+      
+  </form>
+</div>
     
     <h1 id="howto">How to get Your Token</h1>
     <p id="howto">(Do <b>NOT</b> leak your token or people can <b>hack your account!!</b>)</p>

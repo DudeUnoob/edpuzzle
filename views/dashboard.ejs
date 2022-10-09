@@ -158,21 +158,43 @@ body {
   }
 }
 
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+#logout {
+  margin-right: 15px;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  
+}
+
+#logout:hover {
+  font-style: italic;
+  text-decoration: underline;
+}
 </style>
 <body>
     
+    <a style="float: right;" id="logout" href="/logout">Logout</a>
     <!-- <p><%= edpuzzleData[0].name %></p> -->
     <div class="cards" >
+     
+      
         <% edpuzzleData.map((elm,i) => { %>
             
-                <div class="card card-1" onclick="answers('<%= elm._id %>')">
-                  <div class="card__icon"><i class="fas fa-bolt"></i></div>
-                  <p class="card__exit"><i class="fas fa-times"></i></p>
-                  <h2 class="card__title"><%= elm.name %></h2>
-                  <p class="card__apply">
-                    <a class="card__link" href="#">Get Answers Now<i class="fas fa-arrow-right"></i></a>
-                  </p>
-                </div>
+          <div class="card card-1" onclick="answers('<%= elm._id %>')">
+            <div class="card__icon"><i class="fas fa-bolt"></i></div>
+            <p class="card__exit"><i class="fas fa-times"></i></p>
+            <h2 class="card__title"><%= elm.name %></h2>
+            <p class="card__apply">
+              <a class="card__link" href="#">Get Answers Now<i class="fas fa-arrow-right"></i></a>
+            </p>
+          </div>
+      
+        
            
             <!-- <div class="classes">
             <button onclick="answers('<%= elm._id %>')"><p><%= elm.name %></p></button>
@@ -186,5 +208,7 @@ body {
     function answers(id){
         window.location.href = `/edpuzzle/classroom/${id}`
     }
+
+    fetch()
 </script>
 </html>
