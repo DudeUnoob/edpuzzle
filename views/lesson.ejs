@@ -32,7 +32,7 @@
             margin: 0px;
         }
        #helloworld {
-        color: red;
+        color: rgb(145, 0, 0);
         font-weight: 100;
        }
 
@@ -120,15 +120,20 @@
                         div.appendChild(p)
 
                         document.body.appendChild(div)
+                        
+                        
                     })
                 } else {
                     const ok = i.choices.filter(j => j.isCorrect == true)
                  //console.log(ok)
                  if(ok.length > 0){
                     ok.map((j) => {
-                    
+                    const string = j.body[0].html
+                    const br = document.createElement('br')
+                    div.appendChild(br)
                     const l = document.createElement('p')
-                    l.innerHTML = `<b id='helloworld'>${j.body[0].html}</b>`
+                    
+                    l.innerHTML = `<b id='helloworld'>${string }</b>`
                     //document.body.appendChild(l)
                     div.appendChild(l)
                     document.body.appendChild(div)
