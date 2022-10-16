@@ -22,17 +22,15 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
         video{
-            padding: 10px;
-            height: 1000px;
-            width: 840px;
-            justify-content: center;
-            align-items: center;
-            float: left;
+         height: 100%;
+         width: 100%;
+         padding: 10px;
         }
 * {
   font-family: 'Fredoka One', cursive;
   font-weight: 100;
-  overflow: auto;
+  overflow-x: hidden;
+  
   padding: 0px;
   margin:0px;
 }
@@ -76,6 +74,8 @@ li a:hover:not(.active) {
 header {
   height: 200vh;
 }
+
+
 #howto{
   justify-content: center;
   text-align: center;
@@ -153,7 +153,7 @@ button {
   font-size: 64px;
   text-transform: uppercase;
   text-align: center;
-  font-family: 'Fraunces', serif;
+  font-family: 'Fredoka One', cursive;
   font-weight: 900;
 }
 .container_solid .title_wrapper h1 {
@@ -177,7 +177,7 @@ button {
   background-size:100vw auto;
   background-position: center;
   background-attachment: fixed;
-  
+  background-size: cover;
   /* position the second container below the first container */
   top: 100vh;
 }
@@ -198,6 +198,31 @@ section p {
 }
 .form1, .form2{
   text-align: center;
+}
+
+.bg {
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+
+margin-top: 20px;
+margin-bottom: 20px;
+transition: 0.5s;
+
+}
+
+body {
+  background-image: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
+}
+
+.bg:hover {
+  cursor: pointer;
+  box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
+  
 }
     </style>
 </head>
@@ -239,7 +264,7 @@ section p {
   
   </header>
   
-  <section>
+  <section class="bg">
     <div class="form1">
       <h1>Sign in with Token</h1>
     <form action="/edpuzzle/token" method="post">
