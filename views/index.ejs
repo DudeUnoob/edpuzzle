@@ -198,6 +198,10 @@ section p {
 }
 .form1, .form2{
   text-align: center;
+  align-items: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
 .bg {
@@ -208,11 +212,19 @@ box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 backdrop-filter: blur(5px);
 -webkit-backdrop-filter: blur(5px);
-
+text-align: center;
 margin-top: 20px;
 margin-bottom: 20px;
 transition: 0.5s;
 
+}
+
+.bg h1 {
+  font-size: xx-large;
+}
+
+.card h1 {
+  font-size: x-large;
 }
 
 body {
@@ -221,9 +233,29 @@ body {
 
 .bg:hover {
   cursor: pointer;
-  box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
+  /* box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52); */
   
 }
+
+.card {
+    
+    margin: 20px;
+    padding: 20px;
+    width: 500px;
+    min-height: 200px;
+    /* display: grid; */
+    /* grid-template-rows: 20px 50px 1fr 50px; */
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.5s;
+   
+  }
+
+  .card:hover {
+    box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
+  }
+
+  
     </style>
 </head>
 <body>
@@ -252,6 +284,7 @@ body {
     <div class="container container_solid">
       <div class="title_wrapper">
         <h1>Edupuzzle hacks</h1>
+        
       </div>
     </div>
   
@@ -265,14 +298,29 @@ body {
   </header>
   
   <section class="bg">
+    <h1>Get Answers</h1>
     <div class="form1">
-      <h1>Sign in with Token</h1>
+      
+      <!-- <h1>Sign in with Token</h1>
     <form action="/edpuzzle/token" method="post">
       <button type="submit">Get Answers!</button>
         <input type="text" name="token" placeholder="edpuzzle token" required/>
         
-    </form>
+    </form> -->
     <!-- <h1 style="font-style: italic; text-decoration: underline;">or</h1> -->
+  
+    <div class="card" onclick="edpuzzleInfo()">
+      <h1>Edpuzzle</h1>
+      <img src="https://media.discordapp.net/attachments/961105604829659196/1035936188462288906/unknown.png" style=/>
+    </div>
+ 
+    
+    <div class="card">
+      <h1>Kahoot</h1>
+      <img src="https://media.discordapp.net/attachments/961105604829659196/1035936248025596045/unknown.png" />
+      <p>Still in development!</p>
+    </div>
+
   </div>
   <br />
   <!-- <div class="form2">
@@ -285,11 +333,18 @@ body {
   </form>
 </div> -->
     
-    <h1 id="howto">How to get Your Token</h1>
+    <!-- <h1 id="howto">How to get Your Token</h1>
     <p id="howto">(Do <b>NOT</b> leak your token or people can <b>hack your account!!</b>)</p>
     <p id="howto">(Made by <b>dom#3755</b> on discord. Check out my <a href="https://github.com/DudeUnoob">github!</a> )</p>
-    <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video>
+    <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video> -->
   </section>
 
 </body>
+
+<script>
+  function edpuzzleInfo(){
+
+    return window.location.href = '/edpuzzle/info'
+  }
+</script>
 </html>
