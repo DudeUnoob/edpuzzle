@@ -177,6 +177,42 @@ app.get('/edpuzzle/info', (req, res) => {
     res.render('edpuzzleInfo')
 })
 
+app.get('/kahoot/info', (req, res) => {
+    res.render('kahootInfo')
+})
+
+
+app.post('/kahoot/uuid', (req, res) => {
+    const uuid = req.body.uuid;
+
+    fetch(`https://play.kahoot.it/rest/kahoots/${uuid}`).then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        
+        return res.status(400).send("Invalid Kahoot quizid")
+      })
+      .then((responseJson) => {
+        // Do something with the response
+        
+        req.session.kahootData = responseJson
+        //console.log(req.session.kahootData)
+        return res.render('kahootRoom')
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+   
+        
+})
+
+app.get('/kahoot/data', (req, res) => {
+    res.send(req.session.kahootData)
+})
+
+
+
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('http://localhost:3000')

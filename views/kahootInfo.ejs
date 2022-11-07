@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edpuzzle Info</title>
+    <meta name="referrer" content="strict-origin" />
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+        video{
+         height: 100%;
+         width: 100%;
+         padding: 10px;
+        }
+        * {
+            font-family: 'Fredoka One', cursive;
+  font-weight: 100;
+        }
+        .card {
+            padding: 20px;
+            min-height: 200px;
+
+            width: 100%;
+             grid-template-rows: 20px 50px 1fr 50px; 
+            border-radius: 10px;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s;
+            
+          
+            transition: all 0.5s;
+            
+          
+        }
+
+        .card:hover {
+            transition: 0.5s;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+            transform: scale(1.01);
+            cursor: pointer;
+
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+                Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-image: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        input {
+            border: none;
+            -webkit-appearance: none;
+            -ms-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: #f2f2f2;
+            padding: 12px;
+            border-radius: 3px;
+            width: 300px;
+            font-size: 14px;
+            height: 25px;
+
+        }
+
+        button {
+
+            background-color: rgb(204, 201, 201);
+            cursor: pointer;
+            border: none;
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: darkgrey;
+        }
+
+        .bg {
+            /* From https://css.glass */
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+text-align: center;
+margin-top: 20px;
+margin-bottom: 20px;
+transition: 0.5s;
+        }
+
+video {
+    position: fixed;
+    right: 0;
+  top: 550px;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+        }
+
+        h1 {
+            font-size: 75px;
+        }
+
+        #dad {
+            background: none;
+        }
+    </style>
+</head>
+
+<body>
+<section class="bg">
+    <br/>
+    <h1>Kahoot Answers</h1>
+   
+    <div class="card">
+        
+        <form method="post" action="/kahoot/uuid">
+            <input type="text" name="uuid" placeholder="kahoot quiz Id" required/>
+            <button type="submit">Get Answers</button>
+        </form>
+
+        <div class="howto">
+            <p>
+                On the host/teacher screen of the Kahoot in the url bar there is a ?quzid=. (It's pretty long ex: 7c623725-90c9-40f5-9419-40ff01651df2), put that long id into our cheat.
+            </p>
+
+            <img src="https://schoolcheats.net/_nuxt/img/kahoot.8a60918.png" />
+        </div>
+        
+    </div>
+    
+    <!-- <div class="card">
+         <form action="/edpuzzle/login" method="post">
+            <input type="text" name="username" placeholder="username" required id="username"/>
+            <input type="password" name="password" placeholder="password" id="password" required/>
+            
+            <button onclick="loginMethod()">Get Answers!</button>
+        </form>
+    </div> -->
+   
+</section>
+
+<script>
+    function loginMethod(){
+        const username = document.getElementById("username")
+        const password = document.getElementById('password')
+
+
+       
+        
+
+      
+        
+    }
+   
+</script>
+</body>
+
+
+</html>

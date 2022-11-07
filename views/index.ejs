@@ -283,7 +283,7 @@ body {
     <!-- First container -->
     <div class="container container_solid">
       <div class="title_wrapper">
-        <h1>Edupuzzle hacks</h1>
+        <h1>Puzzle Hax</h1>
         
       </div>
     </div>
@@ -315,10 +315,10 @@ body {
     </div>
  
     
-    <div class="card">
+    <div class="card" onclick="kahootInfo()">
       <h1>Kahoot</h1>
       <img src="https://media.discordapp.net/attachments/961105604829659196/1035936248025596045/unknown.png" />
-      <p>Still in development!</p>
+      <p>New!</p>
     </div>
 
   </div>
@@ -345,6 +345,10 @@ body {
   function edpuzzleInfo(){
 
     return window.location.href = '/edpuzzle/info'
+  }
+
+  function kahootInfo(){
+    return window.location.href = '/kahoot/info'
   }
 </script>
 </html>
