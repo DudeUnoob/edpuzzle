@@ -4,17 +4,22 @@ const app = express()
 const axios = require('axios')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+
+const router = require('./server/router')
+
 const path = require('path')
 const { response } = require('express')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const cors = require('cors')
+
 app.use(session({
     secret: "helloworld",
     saveUninitialized: true,
 
     resave: false
 }));
-
+//axios.defaults.withCredentials = true
+app.use('/router', router)
 app.use(cors())
 app.use(bodyParser.json())
 app.use(express.json());
@@ -152,22 +157,85 @@ app.get('/site.webmanifest', (req, res) => {
 app.post('/edpuzzle/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-
+    let setCookie;
+    let cookieHeader;
     console.log(username, password)
 
-    fetch('http://localhost:443')
-        .then(ok => ok.json())
-        .then(get => {
+    fetch('https://edpuzzle.com/api/v3/csrf').then((response) => {
+        const arr = [...response.headers]
+        setCookie = arr[11][1]
+        cookieHeader = setCookie.slice(0, 37)
 
-            fetch('http://localhost:443/login', {
-                method:"post",
-                body:JSON.stringify({
+        //console.log(arr)
+        //console.log(cookieHeader)
+
+
+        //axios.get('http://localhost:3000/edpuzzle/csrf')
+        //note to self, get the aws-waf-token to set to header
+
+
+        // axios.post('https://edpuzzle.com/api/v3/users/login', { username: username, password: password, role:"student"}, {
+
+        //     headers:{
+        //         'x-csrf-token':`${set.CSRFToken}`,
+        //         "Cookie": `${cookieHeader};`,
+        //         "Content-Type":"application/json",
+        //         "User-Agent":"insomnia/2022.6.0",
+        //         "Accept":"*/*"
+        //     }
+        // }).catch(e => {
+        //     console.log(e)
+        // })
+
+
+
+        axios.get('http://localhost:3000/edpuzzle/csrf')
+            .then(get => {
+
+                //console.log(get.data)
+
+                axios.post('https://edpuzzle.com/api/v3/users/login', {
                     username: username,
                     password: password,
-                    role:"student"
+                    "role": "student"
+                }, {
+
+                    headers: {
+                        'x-csrf-token': "d0L8Xm4e-qUJs_E82-MvjA4k6LzHWXeK3kM8",
+                        "user-agent": 'insomnia/2022.6.0',
+                        Cookie: "edpuzzleCSRF=QQPFHjyRfWb4FBzALAXM8LBj;"
+                    }
                 })
+                    .then(lol => {
+                        console.log(lol.headers.authorization.slice(7))
+                        const token = lol.headers.authorization.slice(7)
+                        fetch('https://edpuzzle.com/api/v3/classrooms/active', {
+                            headers: {
+                                "Authorization": `Bearer ${token}`
+                            }
+                        }).then(res => res.json()).then(data => {
+                            if (data.error) {
+                                return res.status(400).send("invalid token")
+                            } else {
+                                edpuzzleData = data;
+                                req.session.token = token;
+                                req.session.valid = true;
+                                req.session.edpuzzleData = data;
+
+                                return res.redirect('/dashboard')
+                            }
+                        })
+
+
+
+                    })
+
             })
-        })
+
+    })
+
+
+
 
 
 
@@ -175,6 +243,12 @@ app.post('/edpuzzle/login', (req, res) => {
 
 app.get('/edpuzzle/info', (req, res) => {
     res.render('edpuzzleInfo')
+})
+
+app.get('/edpuzzle/csrf', (req, res) => {
+
+    fetch('https://edpuzzle.com/api/v3/csrf').then(res => res.json())
+        .then(data => res.send(data))
 })
 
 app.get('/kahoot/info', (req, res) => {
@@ -187,24 +261,24 @@ app.post('/kahoot/uuid', (req, res) => {
 
     fetch(`https://play.kahoot.it/rest/kahoots/${uuid}`).then((response) => {
         if (response.ok) {
-          return response.json();
+            return response.json();
         }
-        
-        return res.status(400).send("Invalid Kahoot quizid")
-      })
-      .then((responseJson) => {
-        // Do something with the response
-        
-        req.session.kahootData = responseJson
-        //console.log(req.session.kahootData)
-        return res.render('kahootRoom')
-      })
-      .catch((error) => {
-        console.log(error)
-      })
 
-   
-        
+        return res.status(400).send("Invalid Kahoot quizid")
+    })
+        .then((responseJson) => {
+            // Do something with the response
+
+            req.session.kahootData = responseJson
+            //console.log(req.session.kahootData)
+            return res.render('kahootRoom')
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+
+
+
 })
 
 app.get('/kahoot/data', (req, res) => {
