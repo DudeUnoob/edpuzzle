@@ -155,6 +155,7 @@ button {
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
+   
 }
 .title_wrapper h1 {
   text-align: center;
@@ -163,6 +164,11 @@ button {
   text-align: center;
   font-family: 'Fredoka One', cursive;
   font-weight: 900;
+}
+
+.title_wrapper p {
+  text-align: center;
+  color: white;
 }
 .container_solid .title_wrapper h1 {
   /* the text background */
@@ -189,6 +195,8 @@ button {
   /* position the second container below the first container */
   top: 100vh;
 }
+
+
 .container_image .title_wrapper h1 {
   color: white;
 }
@@ -263,6 +271,33 @@ body {
     box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
   }
 
+  @media (max-width: 600px) {
+          #edpuzzle_title, #kahoot_title {
+            font-size: small;
+          }
+
+          #edpuzzle_logo {
+            width: 125px;
+            height: 125px;
+            position: relative;
+            left: -20px;
+            top:25px;
+          }
+
+          #kahoot_logo {
+            width: 125px;
+            height: 70.238px;
+            position: relative;
+            top:50px;
+            left: -25px;
+          }
+
+          #new_item {
+            position: relative;
+            top:50px
+          }
+        }
+
   
     </style>
 </head>
@@ -299,7 +334,9 @@ body {
     <!-- Second container -->
     <div class="container container_image" aria-hidden="true">
       <div class="title_wrapper">
-        
+        <h1>Why Us?</h1>
+        <p id="persuasion">We're the best way to get your edpuzzle and kahoot answers!</p>
+        <p>With many more coming in the future...</p>
       </div>
     </div>
   
@@ -318,17 +355,18 @@ body {
     <!-- <h1 style="font-style: italic; text-decoration: underline;">or</h1> -->
   
     <div class="card" onclick="edpuzzleInfo()">
-      <h1>Edpuzzle</h1>
-      <img src="https://media.discordapp.net/attachments/961105604829659196/1035936188462288906/unknown.png" style=/>
+      <h1 id="edpuzzle_title">Edpuzzle</h1>
+      <img src="https://media.discordapp.net/attachments/961105604829659196/1035936188462288906/unknown.png" id="edpuzzle_logo" />
     </div>
  
     
     <div class="card" onclick="kahootInfo()">
-      <h1>Kahoot</h1>
-      <img src="https://media.discordapp.net/attachments/961105604829659196/1035936248025596045/unknown.png" />
-      <p>New!</p>
+      <h1 id="kahoot_title">Kahoot</h1>
+      <img src="https://media.discordapp.net/attachments/961105604829659196/1035936248025596045/unknown.png" id="kahoot_logo" />
+      <p id="new_item">New!</p>
     </div>
 
+    
   </div>
   <br />
   <!-- <div class="form2">

@@ -8,38 +8,43 @@
     <title>Edpuzzle Info</title>
     <meta name="referrer" content="strict-origin" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-91CBMKRN8Y"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-    gtag('config', 'G-91CBMKRN8Y');
-  </script>
+        gtag('config', 'G-91CBMKRN8Y');
+    </script>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-        video{
-         height: 100%;
-         width: 100%;
-         padding: 10px;
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+        video {
+            height: 100%;
+            width: 100%;
+            padding: 10px;
         }
+
         * {
             font-family: 'Fredoka One', cursive;
-  font-weight: 100;
+            font-weight: 100;
+            padding: 0px;
+            margin: 0px;
         }
+
         .card {
-            padding: 20px;
+
             min-height: 200px;
 
             width: 100%;
-             grid-template-rows: 20px 50px 1fr 50px; 
+            grid-template-rows: 20px 50px 1fr 50px;
             border-radius: 10px;
             box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
             transition: all 0.2s;
-            
-          
+
+
             transition: all 0.5s;
-            
-          
+
+
         }
 
         .card:hover {
@@ -90,25 +95,33 @@
 
         .bg {
             /* From https://css.glass */
-background: rgba(255, 255, 255, 0.2);
-border-radius: 16px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-backdrop-filter: blur(5px);
--webkit-backdrop-filter: blur(5px);
-text-align: center;
-margin-top: 20px;
-margin-bottom: 20px;
-transition: 0.5s;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            transition: 0.5s;
         }
 
-video {
-    
-    
-   height: 1000px;
-   width: 1000px;
-  
+        .card2{
+            margin-top: 5px;
         }
+
+        video {
+
+
+            height: 800px;
+            width: 800px;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        
+        
 
         h1 {
             font-size: 75px;
@@ -117,52 +130,61 @@ video {
         #dad {
             background: none;
         }
+
+        @media (max-width: 600px) {
+            video {
+                height: 300px;
+                width: 300px;
+            }
+        }
     </style>
 </head>
 
 <body>
-<section class="bg">
-    <br/>
-    <h1>Edpuzzle Answers</h1>
-   
-    <div class="card">
-        <h2 id="dad">Login with token</h2>
-       
-        <form method="post" action="/edpuzzle/token">
-            <input type="text" name="token" placeholder="Insert token here" required/>
-            <button type="submit">Get Answers</button>
-        </form>
-        <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video>
-       
-    </div>
-    
-    <div class="card">
-        <h2 id="dad">Login with username and password</h2>
-         <form action="/edpuzzle/login" method="post">
-            <input type="text" name="username" placeholder="username" required id="username"/>
-            <input type="password" name="password" placeholder="password" id="password" required/>
-           
-            <button onclick="loginMethod()">Get Answers!</button>
-        </form>
-    </div>
-    
-    
-</section>
+    <section class="bg">
+        <br />
+        <h1>Edpuzzle Answers</h1>
 
-<script>
-    function loginMethod(){
-        const username = document.getElementById("username")
-        const password = document.getElementById('password')
+        <div class="card">
+            <h2 id="dad">Login with token</h2>
+
+            <form method="post" action="/edpuzzle/token">
+                <input type="text" name="token" placeholder="Insert token here" required />
+                <button type="submit">Get Answers</button>
+            </form>
+            <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4">
+                
+            </video>
+
+        </div>
+
+        <div class="card2">
+            <h2 id="dad">Login with username and password</h2>
+            <form action="/edpuzzle/login" method="post">
+                <input type="text" name="username" placeholder="username" required id="username" />
+                <input type="password" name="password" placeholder="password" id="password" required />
+
+                <button onclick="loginMethod()">Get Answers!</button>
+            </form>
+        </div>
 
 
-       
-        
+    </section>
 
-      
-        
-    }
-   
-</script>
+    <script>
+        function loginMethod() {
+            const username = document.getElementById("username")
+            const password = document.getElementById('password')
+
+
+
+
+
+
+
+        }
+
+    </script>
 </body>
 
 
