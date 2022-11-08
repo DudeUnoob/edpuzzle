@@ -4,7 +4,7 @@ const app = express()
 const axios = require('axios')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
-
+let host = 'https://puzzlehax.ml'
 const router = require('./server/router')
 
 const path = require('path')
@@ -189,7 +189,7 @@ app.post('/edpuzzle/login', (req, res) => {
 
 
 
-        axios.get('http://localhost:3000/edpuzzle/csrf')
+        axios.get(`${host}/edpuzzle/csrf`)
             .then(get => {
 
                 //console.log(get.data)
