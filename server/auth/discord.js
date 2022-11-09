@@ -2,6 +2,7 @@
 const passport = require('passport')
 const { Strategy } = require('passport-discord')
 const host = "https://puzzlehax.ml"
+const localHost = "http://localhost:3000"
 
 
 // clientID:"1039205411934453831",
@@ -27,15 +28,15 @@ passport.use(
     new Strategy({
         clientID:"1039205411934453831",
         clientSecret:"ADstjN5W1xReD-5pAgma42BbA-cgFVj4",
-        callbackURL:`${host}/router/api/auth/redirect`,
+        callbackURL:`${localHost}/router/api/auth/redirect`,
         scope:['identify','email','guilds','guilds.join']
         
         
     },
     async(accessToken, refreshToken,profile, done) => {
         // console.log(accessToken, refreshToken)
-        
-        const puzzleHaxFilter = profile.guilds.filter((elm) => elm.name == "Puzzlehax")
+        console.log(profile.guilds)
+        const puzzleHaxFilter = profile.guilds.filter((elm) => elm.id == "1039724305795252295")
         // console.log(puzzleHaxFilter)
 
         if(puzzleHaxFilter.length == 0){
