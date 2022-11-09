@@ -42,42 +42,41 @@
   padding: 0px;
   margin:0px;
 }
-ul{
-  z-index: 1;
-}
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: transparent;
+  background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 8px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
   position: fixed;
   top: 0;
   width: 100%;
-  color: black;
+  z-index: 1;
 }
+
 li {
- background: transparent; 
- color: black;
+  float: left;
 }
-li:hover {
-  font-style: italic;
-}
+
 li a {
   display: block;
   color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  text-decoration: underline;
 }
-li a:hover:not(.active) {
-  background-color: transparent;
-  color: black;
+
+li a {
+  background-color: #3cc6f9;
 }
+
 .active {
-  background-color: transparent;
-  color: black;
+  background-color: #3cc6f9;
 }
 header {
   height: 200vh;
@@ -316,9 +315,10 @@ body {
     
 
     <ul>
-      <li><a class="active" href="/dashboard">Dashboard</a></li>
       
-      
+      <li><a href="/dashboard" class="active">Dashboard</a></li>
+       <li><a href="/router/discord">Discord Auth</a></li>
+      <!-- <li><a href="#about">About</a></li> -->
     </ul>
     
 <header>

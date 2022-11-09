@@ -3,13 +3,16 @@ const router = express.Router();
 const passport = require('passport')
 require('./auth/discord')
 
-router.get('/api/v1/discord', passport.authenticate('discord'), (req, res) => {
-    res.send('got data')
-    
+router.get("/discord", passport.authenticate('discord'), (req, res) => {
+    res.send(200)
 })
 
-router.get('/api/v1/auth/discord/redirect', passport.authenticate('discord'), (req, res) => {
-    res.send("Hello")
+router.get('/api/auth/redirect', passport.authenticate('discord'), (req, res) => {
+    res.send(req.session.passport)
+})
+
+router.get('/random',(req, res) => {
+    res.send(req.session.passport)
 })
 
 module.exports = router;

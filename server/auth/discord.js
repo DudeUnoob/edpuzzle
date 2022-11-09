@@ -3,30 +3,51 @@ const passport = require('passport')
 const { Strategy } = require('passport-discord')
 
 
-passport.use(
-    new Strategy(
-        {
-        clientID:"1039205411934453831",
-        clientSecret:"ADstjN5W1xReD-5pAgma42BbA-cgFVj4",
-        callbackURL:'http://localhost:3000/router/api/v1/auth/discord/redirect',
-        scope:['identify','email', 'connections'],
-    },
-    async(accessToken, refreshToken, profile, done) => {
-        console.log(accessToken, refreshToken)
-        console.log(profile)
+// clientID:"1039205411934453831",
+//clientSecret:"ADstjN5W1xReD-5pAgma42BbA-cgFVj4"
+//redirectURL:http://localhost:3000/router/api/auth/redirect
 
-        passport.serializeUser((user, done) => {
-            console.log("Serializing...")
-            console.log(user)
-            done(null, user)
-        })
-        
-       
-
-    }
-    )
-)
-
-passport.deserializeUser(async(id, done) => {
+passport.serializeUser((user, done) => {
+    // console.log(user)
     done(null, user)
 })
+
+passport.deserializeUser(async (user, done) => {
+
+    try{
+        done(null, user)
+    }
+    catch(err){
+        done(err, null)
+    }
+})
+
+passport.use(
+    new Strategy({
+        clientID:"1039205411934453831",
+        clientSecret:"ADstjN5W1xReD-5pAgma42BbA-cgFVj4",
+        callbackURL:"http://localhost:3000/router/api/auth/redirect",
+        scope:['identify','email','guilds','guilds.join']
+        
+        
+    },
+    async(accessToken, refreshToken,profile, done) => {
+        // console.log(accessToken, refreshToken)
+        
+        const puzzleHaxFilter = profile.guilds.filter((elm) => elm.name == "Puzzlehax")
+        // console.log(puzzleHaxFilter)
+
+        if(puzzleHaxFilter.length == 0){
+            return done(null, null)
+        }
+
+        try {
+            return done(null, profile.id)
+        }
+        catch(err){
+            return done(err, null)
+        }
+    }
+    
+    )
+)
