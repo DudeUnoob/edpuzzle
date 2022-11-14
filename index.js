@@ -5,6 +5,7 @@ const axios = require('axios')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 let host = 'https://puzzlehax.ml'
+const localhost = 'http://localhost:3000'
 const router = require('./server/router')
 const passport = require('passport')
 
@@ -32,7 +33,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
 
 
-    res.render('index')
+    if(req.session.passport == undefined){
+        res.render('index')
+    } else {
+        res.render('index_data', { data: req.session.passport })
+    }
 
 
 })
@@ -169,7 +174,7 @@ app.post('/edpuzzle/login', (req, res) => {
         cookieHeader = setCookie.slice(0, 37)
 
         //console.log(arr)
-        //console.log(cookieHeader)
+        console.log(cookieHeader)
 
 
         //axios.get('http://localhost:3000/edpuzzle/csrf')
@@ -190,7 +195,6 @@ app.post('/edpuzzle/login', (req, res) => {
         // })
 
 
-
         axios.get(`${host}/edpuzzle/csrf`)
             .then(get => {
 
@@ -209,7 +213,7 @@ app.post('/edpuzzle/login', (req, res) => {
                     }
                 })
                     .then(lol => {
-                        console.log(lol.headers.authorization.slice(7))
+                        //console.log(lol.headers.authorization.slice(7))
                         const token = lol.headers.authorization.slice(7)
                         fetch('https://edpuzzle.com/api/v3/classrooms/active', {
                             headers: {
@@ -233,6 +237,7 @@ app.post('/edpuzzle/login', (req, res) => {
                     })
 
             })
+        
 
     })
 
