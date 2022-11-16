@@ -43,7 +43,7 @@
   padding: 0px;
   margin:0px;
 }
-ul {
+/* ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -58,8 +58,15 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   top: 0;
   width: 100%;
   z-index: 1;
-}
+} */
 
+ul {
+  float: right;
+  
+}
+ul li {
+  margin-right: 65px;
+}
 .topnav {
   overflow: hidden;
   background-color: #333;
@@ -382,26 +389,11 @@ body {
     margin-right: 5px;
   }
 
+  #myList:hover {
+    display: flex;
+  }
   
-
-  .dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
+  
     </style>
 </head>
 <body>
@@ -431,8 +423,23 @@ body {
       <a href="/dashboard">Dashboard</a>
       <a href="/logout">Logout</a>
       
-      <a id="mything" style="float: right; background: none; "><img style="max-width: 40px;max-height:40px;" src="https://cdn.discordapp.com/avatars/<%= data.user.user %>/<%= data.user.avatar %>.png"/></a>
+      
+      <div style="cursor:pointer;" onmouseenter="testFunction()" onmouseleave="testFunction2()">
         
+      </div>  
+      <a id="mything" style="float: right; background: none; "><img style="max-width: 40px;max-height:40px; border-radius: 50%; margin-right: 5px; margin-top: 2px;" src="https://cdn.discordapp.com/avatars/<%= data.user.user %>/<%= data.user.avatar %>.png"/></a>
+
+      <a style="float: right; background: none; color:black;"><%= data.user.username %></a> 
+        
+         <ul id="li" style="display: none; z-index: 0;">
+          <li>Hello</li>
+        </ul>
+        
+         
+        
+      
+      
+     
           
         
       <!-- <a href="#about">About</a> -->
@@ -440,6 +447,7 @@ body {
         <i class="fa fa-bars"></i>
       </a>
     </div>
+    
 <header>
 
     <!-- First container -->
@@ -524,6 +532,20 @@ body {
   } else {
     x.className = "topnav";
   }
+}
+
+function testFunction(){
+  const ele = document.getElementById("li")
+
+  ele.style.display = 'flex' 
+
+}
+
+function testFunction2(){
+  const ele = document.getElementById("li")
+
+  ele.style.display = 'none' 
+
 }
 </script>
 </html>
