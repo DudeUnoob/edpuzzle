@@ -7,6 +7,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
@@ -58,11 +59,9 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   width: 100%;
   z-index: 1;
 }
-
 li {
   float: left;
 }
-
 li a {
   display: block;
   color: white;
@@ -70,19 +69,15 @@ li a {
   padding: 14px 16px;
   text-decoration: none;
 }
-
 li a {
   background-color: #3cc6f9;
 }
-
 .active {
   background-color: #3cc6f9;
 }
 header {
   height: 200vh;
 }
-
-
 #howto{
   justify-content: center;
   text-align: center;
@@ -164,7 +159,6 @@ button {
   font-family: 'Fredoka One', cursive;
   font-weight: 900;
 }
-
 .title_wrapper p {
   text-align: center;
   color: white;
@@ -194,8 +188,6 @@ button {
   /* position the second container below the first container */
   top: 100vh;
 }
-
-
 .container_image .title_wrapper h1 {
   color: white;
 }
@@ -218,7 +210,6 @@ section p {
   align-content: center;
   justify-content: center;
 }
-
 .bg {
   /* From https://css.glass */
 background: rgba(255, 255, 255, 0.2);
@@ -231,27 +222,21 @@ text-align: center;
 margin-top: 20px;
 margin-bottom: 20px;
 transition: 0.5s;
-
 }
-
 .bg h1 {
   font-size: xx-large;
 }
-
 .card h1 {
   font-size: x-large;
 }
-
 body {
   background-image: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
 }
-
 .bg:hover {
   cursor: pointer;
   /* box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52); */
   
 }
-
 .card {
     
     margin: 20px;
@@ -265,16 +250,13 @@ body {
     transition: all 0.5s;
    
   }
-
   .card:hover {
     box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
   }
-
   @media (max-width: 600px) {
           #edpuzzle_title, #kahoot_title {
             font-size: small;
           }
-
           #edpuzzle_logo {
             width: 125px;
             height: 125px;
@@ -282,7 +264,6 @@ body {
             left: -20px;
             top:25px;
           }
-
           #kahoot_logo {
             width: 125px;
             height: 70.238px;
@@ -290,14 +271,89 @@ body {
             top:50px;
             left: -25px;
           }
-
           #new_item {
             position: relative;
             top:50px
           }
         }
 
+
+        .topnav {
+  overflow: hidden;
+  background-color: #333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 8px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
   
+}
+
+div.topnav.responsive {
+  position: fixed;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  background-color: #3cc6f9;
+  
+ 
+}
+
+
+
+
+.topnav a:hover {
+  
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+    
+  }
+}
+
     </style>
 </head>
 <body>
@@ -314,13 +370,23 @@ body {
     <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video> -->
     
 
-    <ul>
+   <!-- <ul>
       
       <li><a href="/dashboard" class="active">Dashboard</a></li>
        <li><a href="/router/discord">Discord Auth</a></li>
-      <!-- <li><a href="#about">About</a></li> -->
+       <li><a href="#about">About</a></li> 
     </ul>
-    
+    -->
+
+    <div class="topnav" id="myTopnav">
+      <a href="/" class="active">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/router/discord">Discord Auth</a>
+      <!-- <a href="#about">About</a> -->
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
 <header>
 
     <!-- First container -->
@@ -397,5 +463,26 @@ body {
   function kahootInfo(){
     return window.location.href = '/kahoot/info'
   }
+
+  function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+// var navbar = document.getElementById("myTopnav");
+
+// var sticky = navbar.offsetTop;
+// function stickyNavbar(){
+//   console.log(navbar.className)
+//   if(window.pageYOffset >= sticky){
+//     navbar.classList.add("sticky")
+//   } else {
+//     navbar.classList.remove("sticky")
+//   }
+// }
 </script>
 </html>

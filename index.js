@@ -195,7 +195,7 @@ app.post('/edpuzzle/login', (req, res) => {
         // })
 
 
-        axios.get(`${host}/edpuzzle/csrf`)
+        axios.get(`${localhost}/edpuzzle/csrf`)
             .then(get => {
 
                 //console.log(get.data)
