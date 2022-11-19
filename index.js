@@ -68,13 +68,13 @@ app.post('/edpuzzle/token', (req, res) => {
     })
 
 
-
+//C:\Users\tokri\Downloads\edpuzzle\server\public\404\unauthorized.html
 })
 
 app.get('/dashboard', (req, res) => {
 
     if (!req.session.token) {
-        res.status(400).send("Please <a href=/>login</a> with your edpuzzle token")
+        res.status(404).sendFile('notloggedin.html', { root: path.join(__dirname, '/server/public/404')})
     }
     else {
         res.render('dashboard', { edpuzzleData: req.session.edpuzzleData, token: req.session.token, })

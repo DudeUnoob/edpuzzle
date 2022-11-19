@@ -1,28 +1,40 @@
+
 const express = require('express')
 const router = express.Router();
-const passport = require('passport')
+const passport = require('passport');
+const path = require('path');
 require('./auth/discord')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
+
 
 
 router.get("/discord", passport.authenticate('discord'), (req, res) => {
     res.send(200)
 })
 
-router.get('/api/auth/redirect', passport.authenticate('discord', { successRedirect: '/',failureRedirect:'/router/api/auth/unauthorized'}), (req, res) => {
+
+router.get('/api/auth/redirect', passport.authenticate('discord', { successRedirect: '/',failureRedirect:'/router/api/auth/404'}), (req, res) => {
     res.send(req.session.passport)
 })
 
-router.get('/api/auth/unauthorized', (req, res) => {
-    
-        res.status(401).send("You are not in the puzzlehax server,  <a href='https://discord.gg/uEZeFAaBaK'>join here</a>")
-   
-})
+
 
 
 
 router.get('/random',(req, res) => {
     res.send(req.session.passport)
+    console.log(__dirname)
+})
+
+router.get('/api/auth/404', (req, res) => {
+    res.sendFile('unauthorized.html', { root: path.join(__dirname, './public/404')})
 })
 
 module.exports = router;
+
+
+
+
+
+
