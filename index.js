@@ -293,7 +293,40 @@ app.get('/kahoot/data', (req, res) => {
 })
 
 
+app.get('/quizlet/info', (req, res) => {
+    res.render('quizlet')
 
+           
+})
+
+app.post('/quizlet/code', (req, res) => {
+    const quizletCode = req.body.quizlet_code
+
+    const finalCode = quizletCode.slice(0,3) + quizletCode.slice(4)
+    console.log(finalCode)
+
+ 
+        fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`)
+        .then(response => response.json()).then(stuff => {
+
+            fetch(`https://quizlet.com/${stuff.gameInstance.itemId}`)
+                .then(text => text.text()).then(send => {
+                    req.session.quizletData = JSON.stringify(send)
+                    req.session.quizletWebsite = stuff.gameInstance.itemId
+                    res.render('quizlet_data')
+                
+                })
+                
+        })
+  
+   
+})
+
+
+app.get('/quizlet/api/data', (req, res) => {
+   
+    res.send({ data: req.session.quizletData, website: req.session.quizletWebsite })
+})
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('http://localhost:3000')
