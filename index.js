@@ -259,7 +259,12 @@ app.get('/edpuzzle/csrf', (req, res) => {
 })
 
 app.get('/kahoot/info', (req, res) => {
-    res.render('kahootInfo')
+    if(!req.session.passport){
+        res.status(400).send("<a href=/router/discord>Login with discord to get access to the kahoot hack!</a>")
+    } else {
+        res.render('kahootInfo')
+    }
+    
 })
 
 
@@ -294,7 +299,13 @@ app.get('/kahoot/data', (req, res) => {
 
 
 app.get('/quizlet/info', (req, res) => {
-    res.render('quizlet')
+
+    if(!req.session.passport){
+        res.status(400).send("<a href=/router/discord>Login with discord to get access to the quizlet live hack!</a>")
+    } else {
+        res.render('quizlet')
+    }
+    
 
            
 })

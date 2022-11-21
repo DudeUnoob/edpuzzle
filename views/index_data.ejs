@@ -25,7 +25,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-91CBMKRN8Y');
   </script>
     <style>
@@ -59,7 +58,6 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
   width: 100%;
   z-index: 1;
 } */
-
 ul {
   float: right;
   
@@ -86,11 +84,9 @@ position: fixed;
   z-index: 1;
   
 }
-
 div.topnav.responsive {
   position: fixed;
 }
-
 .topnav a {
   float: left;
   display: block;
@@ -103,23 +99,16 @@ div.topnav.responsive {
   
  
 }
-
-
-
-
 .topnav a:hover {
   
 }
-
 .topnav a.active {
   background-color: #04AA6D;
   color: white;
 }
-
 .topnav .icon {
   display: none;
 }
-
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
   .topnav a.icon {
@@ -127,7 +116,6 @@ div.topnav.responsive {
     display: block;
   }
 }
-
 @media screen and (max-width: 600px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
@@ -142,11 +130,9 @@ div.topnav.responsive {
     
   }
 }
-
 li {
   float: left;
 }
-
 li a {
   display: block;
   color: white;
@@ -154,19 +140,15 @@ li a {
   padding: 14px 16px;
   text-decoration: none;
 }
-
 li a {
   background-color: #3cc6f9;
 }
-
 .active {
   background-color: #3cc6f9;
 }
 header {
   height: 200vh;
 }
-
-
 #howto{
   justify-content: center;
   text-align: center;
@@ -248,7 +230,6 @@ button {
   font-family: 'Fredoka One', cursive;
   font-weight: 900;
 }
-
 .title_wrapper p {
   text-align: center;
   color: white;
@@ -278,8 +259,6 @@ button {
   /* position the second container below the first container */
   top: 100vh;
 }
-
-
 .container_image .title_wrapper h1 {
   color: white;
 }
@@ -302,7 +281,6 @@ section p {
   align-content: center;
   justify-content: center;
 }
-
 .bg {
   /* From https://css.glass */
 background: rgba(255, 255, 255, 0.2);
@@ -315,27 +293,21 @@ text-align: center;
 margin-top: 20px;
 margin-bottom: 20px;
 transition: 0.5s;
-
 }
-
 .bg h1 {
   font-size: xx-large;
 }
-
 .card h1 {
   font-size: x-large;
 }
-
 body {
   background-image: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
 }
-
 .bg:hover {
   cursor: pointer;
   /* box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52); */
   
 }
-
 .topnav {
   z-index: 1;
 }
@@ -352,16 +324,13 @@ body {
     transition: all 0.5s;
    
   }
-
   .card:hover {
     box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
   }
-
   @media (max-width: 600px) {
           #edpuzzle_title, #kahoot_title {
             font-size: small;
           }
-
           #edpuzzle_logo {
             width: 125px;
             height: 125px;
@@ -369,7 +338,6 @@ body {
             left: -20px;
             top:25px;
           }
-
           #kahoot_logo {
             width: 125px;
             height: 70.238px;
@@ -377,18 +345,15 @@ body {
             top:50px;
             left: -25px;
           }
-
           #new_item {
             position: relative;
             top:50px
           }
   }
-
   a#mything {
     padding: 0px; 
     margin-right: 5px;
   }
-
   #myList:hover {
     display: flex;
   }
@@ -494,6 +459,12 @@ body {
       <p id="new_item" style="font-style: italic; font-weight: bold">New!</p>
     </div>
 
+    <div class="card" onclick="quizletInfo()">
+      <h1 id="quizlet_title">Quizlet</h1>
+      <img src="https://images-ext-2.discordapp.net/external/iWFYt_-7xeOknxZOocNWS9a4Mdml4gFf-xlT7No8SW4/https/o.remove.bg/downloads/511cfc46-c628-4b36-be9b-80cf3970e1c2/image-removebg-preview.png" id="quizlet_logo"/>
+      <p id="new_item" style="font-style: italic; font-weight: bold">New!</p>
+    </div>
+
     
   </div>
   <br />
@@ -517,14 +488,11 @@ body {
 
 <script>
   function edpuzzleInfo(){
-
     return window.location.href = '/edpuzzle/info'
   }
-
   function kahootInfo(){
     return window.location.href = '/kahoot/info'
   }
-
   function myFunction() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -533,19 +501,13 @@ body {
     x.className = "topnav";
   }
 }
-
 function testFunction(){
   const ele = document.getElementById("li")
-
   ele.style.display = 'flex' 
-
 }
-
 function testFunction2(){
   const ele = document.getElementById("li")
-
   ele.style.display = 'none' 
-
 }
 </script>
 </html>
