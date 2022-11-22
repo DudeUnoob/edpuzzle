@@ -8,8 +8,8 @@ let host = 'https://puzzlehax.ml'
 const localhost = 'http://localhost:3000'
 const router = require('./server/router')
 const passport = require('passport')
-
-
+const dashboardRouter = require('./server/dashboard')
+const apiRouter = require('./server/api')
 const path = require('path')
 const { response } = require('express')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
@@ -23,6 +23,8 @@ app.use(session({
 }));
 //axios.defaults.withCredentials = true
 app.use('/router', router)
+app.use('/dashboard', dashboardRouter)
+app.use('/api', apiRouter)
 app.use(cors())
 app.use(bodyParser.json())
 app.use(express.json());
@@ -63,7 +65,7 @@ app.post('/edpuzzle/token', (req, res) => {
             req.session.valid = true;
             req.session.edpuzzleData = data;
 
-            return res.redirect('/dashboard')
+            return res.redirect('/edpuzzle/dashboard')
         }
     })
 
@@ -71,7 +73,9 @@ app.post('/edpuzzle/token', (req, res) => {
 //C:\Users\tokri\Downloads\edpuzzle\server\public\404\unauthorized.html
 })
 
-app.get('/dashboard', (req, res) => {
+
+
+app.get('/edpuzzle/dashboard', (req, res) => {
 
     if (!req.session.token) {
         res.status(404).sendFile('notloggedin.html', { root: path.join(__dirname, '/server/public/404')})
@@ -228,7 +232,7 @@ app.post('/edpuzzle/login', (req, res) => {
                                 req.session.valid = true;
                                 req.session.edpuzzleData = data;
 
-                                return res.redirect('/dashboard')
+                                return res.redirect('/edpuzzle/dashboard')
                             }
                         })
 

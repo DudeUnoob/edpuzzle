@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!-- Designined by CodingLab | www.youtube.com/codinglabyt -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!--<title> Responsiive Admin Dashboard | CodingLab </title>-->
+    <link rel="stylesheet" href="style.css">
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <link rel="stylesheet" href="/dashboard/user.css">
+   </head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="/dashboard/main_dashboard">
+            <i class='bx bx-grid-alt' ></i>
+            <span class="links_name">Dashboard</span>
+          </a>
+        </li>
+        <!-- <li>
+          <a href="/products">
+            <i class='bx bx-box' ></i>
+            <span class="links_name">Product</span>
+          </a>
+        </li> -->
+        
+        <li>
+          <a href="#">
+            <i class='bx bx-pie-chart-alt-2' ></i>
+            <span class="links_name">Analytics</span>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a href="/dashboard/user"  class="active">
+            <i class='bx bx-user' ></i>
+            <span class="links_name">User</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-message' ></i>
+            <span class="links_name">Messages</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-heart' ></i>
+            <span class="links_name">Favrorites</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-cog' ></i>
+            <span class="links_name">Setting</span>
+          </a>
+        </li>
+        <li class="log_out">
+          <a href="#">
+            <i class='bx bx-log-out'></i>
+            <span class="links_name">Log out</span>
+          </a>
+        </li>
+      </ul>
+  </div>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Dashboard</span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <i class='bx bx-search' ></i>
+      </div>
+      <div class="profile-details">
+        <!--<img src="images/profile.jpg" alt="">-->
+        <span class="admin_name" id="username">Prem Shahi</span>
+        <i class='bx bx-chevron-down' ></i>
+      </div>
+    </nav>
+
+    <div class="home-content">
+      <div class="overview-boxes">
+        <div class="box">
+          <div class="right-side">
+            <div class="box-topic">User</div>
+            <div class="number" id="discord_username">Insert Username</div>
+            <img id="profile_picture" style="border-radius: 50%; display:flex;"/>
+            <div class="indicator">
+              
+              <span class="text"></span>
+            </div>
+          </div>
+          
+        </div>
+        <div class="box">
+          <div class="right-side">
+            <div class="box-topic">Email</div>
+            <div class="number" id="email">insert email</div>
+            <div class="indicator">
+              
+              <span class="text"></span>
+            </div>
+          </div>
+          
+        </div>
+        <div class="box">
+          <div class="right-side">
+            <div class="box-topic">Premium Status</div>
+            <div class="number"  id="premium_status">Placeholder</div>
+            <div class="indicator">
+              <i class='bx bx-up-arrow-alt'></i>
+              <span class="text"></span>
+            </div>
+          </div>
+          <i class='bx bx-cart cart three' ></i>
+        </div>
+        <div class="box">
+          <div class="right-side">
+            <div class="box-topic">Placeholder</div>
+            <div class="number">Placeholder</div>
+            <div class="indicator">
+              <i class='bx bx-down-arrow-alt down'></i>
+              <span class="text"></span>
+            </div>
+          </div>
+          <i class='bx bxs-cart-download cart four' ></i>
+        </div>
+      </div>
+
+      
+    </div>
+  </section>
+
+  <script>
+   let sidebar = document.querySelector(".sidebar");
+let sidebarBtn = document.querySelector(".sidebarBtn");
+sidebarBtn.onclick = function() {
+  sidebar.classList.toggle("active");
+  if(sidebar.classList.contains("active")){
+  sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+}else
+  sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+}
+const username = document.getElementById("discord_username")
+const mainUsername = document.getElementById("username")
+const email = document.getElementById("email")
+const premiumStatus = document.getElementById("premium_status")
+const profilePicture = document.getElementById("profile_picture")
+fetch('/api/v1/user')
+  .then(res => res.json())
+  .then(data => {
+    
+    username.innerHTML = data.user.username + "#" + data.user.discriminator
+    email.innerHTML = data.user.email
+    mainUsername.innerHTML = data.user.username
+    profilePicture.src = `https://cdn.discordapp.com/avatars/${data.user.user}/${data.user.avatar}.webp?size=32`
+    
+  })
+
+ fetch('/api/v1/user/premium/role').then(res => res.json())
+ .then(data => {
+  if(data.premium == true){
+    premiumStatus.innerHTML = "You have premium"
+  } else {
+    premiumStatus.innerHTML = "You do not have premium, get it  <a href=https://patreon.com/DomK>here</a>"
+  }
+ })
+ </script>
+
+</body>
+</html>
+

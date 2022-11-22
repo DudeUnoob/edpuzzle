@@ -3,6 +3,7 @@ const passport = require('passport')
 const { Strategy } = require('passport-discord')
 const host = "https://puzzlehax.ml"
 const localHost = "http://localhost:3000"
+const localIp = "http://192.168.86.235:3000"
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 
@@ -14,7 +15,9 @@ passport.serializeUser((user, done) => {
     // console.log(user)
     //{ user: user.id, username: user.username, avatar: user.avatar, discriminator: user.discriminator, user.email, user.accessToken }
    
-    done(null, { user: user.id, username: user.username, avatar: user.avatar, discriminator: user.discriminator, email: user.email, accessToken: user.accessToken })
+    done(null, { user: user.id, username: user.username, avatar: user.avatar, discriminator: user.discriminator, email: user.email, accessToken: user.accessToken, verified: user.verified, locale: user.locale, connections: user.connection, emails: user.emails
+    ,name: user.displayName, provider: user.provider
+    })
 })
 
 passport.deserializeUser(async (user, done) => {
@@ -37,12 +40,13 @@ passport.use(
 
     },
         async (accessToken, refreshToken, profile, done) => {
+            //name, verified, locale, emails, connections maybe,
             const params = new URLSearchParams()
             params.append('client_id', "1039205411934453831")
             params.append('client_secret', "ADstjN5W1xReD-5pAgma42BbA-cgFVj4")
             params.append('grant_type', "refresh_token")
             params.append('refresh_token', refreshToken)
-            console.log(accessToken, refreshToken)
+            
             
 
             //  fetch('https://discord.com/api/v10/oauth2/token',{
@@ -61,11 +65,11 @@ passport.use(
             //         }
             //     }).then(lol => lol.json()).then(set => console.log(set))
             //  })
-
+            
 
             //console.log(profile.guilds)
             const puzzleHaxFilter = profile.guilds.filter((elm) => elm.id == "1039724305795252295")
-            // console.log(puzzleHaxFilter)
+             
 
             if (puzzleHaxFilter.length == 0) {
                 const guildJoinParams = new URLSearchParams()
@@ -77,7 +81,7 @@ passport.use(
                     }),
                     headers:{
                         'Content-Type': 'application/json',
-                        'Authorization': `Bot MTAzOTIwNTQxMTkzNDQ1MzgzMQ.Gacq7G.snc-vYrCMwJKtIAx_Xkgn3iLwoajThunCA7s9M`
+                        'Authorization': `Bot MTAzOTIwNTQxMTkzNDQ1MzgzMQ.G5OaU0.z7kgdKUf6kNQvsifQIP_GKrHptmV02Rj6dDxRo`
                     }
                 }).then(res => res.json())
                 .then(data => console.log(data))
