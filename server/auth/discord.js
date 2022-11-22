@@ -5,7 +5,7 @@ const host = "https://puzzlehax.ml"
 const localHost = "http://localhost:3000"
 const localIp = "http://192.168.86.235:3000"
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-
+const config = require('../config/botconfig.json')
 
 // clientID:"1039205411934453831",
 //clientSecret:"ADstjN5W1xReD-5pAgma42BbA-cgFVj4"
@@ -81,7 +81,7 @@ passport.use(
                     }),
                     headers:{
                         'Content-Type': 'application/json',
-                        'Authorization': `Bot MTAzOTIwNTQxMTkzNDQ1MzgzMQ.G5OaU0.z7kgdKUf6kNQvsifQIP_GKrHptmV02Rj6dDxRo`
+                        'Authorization': `Bot ${config.token}`
                     }
                 }).then(res => res.json())
                 .then(data => console.log(data))
