@@ -4,6 +4,7 @@ const { Strategy } = require('passport-discord')
 const host = "https://puzzlehax.ml"
 const localHost = "http://localhost:3000"
 const localIp = "http://192.168.86.235:3000"
+const replHost = "https://edpuzzle.dudeunoob.repl.co"
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const config = require('../config/botconfig.json')
 
@@ -33,7 +34,7 @@ passport.deserializeUser(async (user, done) => {
 passport.use(
 new Strategy({
     clientID: "1039205411934453831",
-    clientSecret: "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h",
+    clientSecret: "mDwqeKHbicyRg_qjK6kleQO4N0Y4jt1P",
     callbackURL: `${host}/router/api/auth/redirect`,
     scope: ['identify', 'email', 'guilds', 'guilds.join']
 
@@ -43,7 +44,7 @@ new Strategy({
         //name, verified, locale, emails, connections maybe,
         const params = new URLSearchParams()
         params.append('client_id', "1039205411934453831")
-        params.append('client_secret', "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h")
+        params.append('client_secret', "mDwqeKHbicyRg_qjK6kleQO4N0Y4jt1P")
         params.append('grant_type', "refresh_token")
         params.append('refresh_token', refreshToken)
         

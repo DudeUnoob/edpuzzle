@@ -4,6 +4,7 @@ const app = express()
 const axios = require('axios')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const replHost = "https://edpuzzle.dudeunoob.repl.co"
 let host = 'https://puzzlehax.ml'
 const localhost = 'http://localhost:3000'
 const router = require('./server/router')
