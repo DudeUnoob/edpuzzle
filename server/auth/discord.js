@@ -6,7 +6,7 @@ const localHost = "http://localhost:3000"
 const localIp = "http://192.168.86.235:3000"
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const config = require('../config/botconfig.json')
-const HttpsProxyAgent = require('https-proxy-agent')
+
 
 // clientID:"1039205411934453831",
 //clientSecret:"ADstjN5W1xReD-5pAgma42BbA-cgFVj4"
@@ -30,7 +30,8 @@ passport.deserializeUser(async (user, done) => {
         done(err, null)
     }
 })
-const myStrat = new Strategy({
+passport.use(
+new Strategy({
     clientID: "1039205411934453831",
     clientSecret: "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h",
     callbackURL: `${host}/router/api/auth/redirect`,
@@ -97,12 +98,11 @@ const myStrat = new Strategy({
     }
 
 )
-
-const agent = new HttpsProxyAgent(process.env.HTTP_PROXY || "https://puzzlehax.ml")
-
-//myStrat._oauth2.setAgent(agent)
-passport.use(
-    myStrat
 )
+
+
+
+    
+
 
 
