@@ -6,6 +6,7 @@ const localHost = "http://localhost:3000"
 const localIp = "http://192.168.86.235:3000"
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const config = require('../config/botconfig.json')
+const HttpsProxyAgent = require('https-proxy-agent')
 
 // clientID:"1039205411934453831",
 //clientSecret:"ADstjN5W1xReD-5pAgma42BbA-cgFVj4"
@@ -29,73 +30,79 @@ passport.deserializeUser(async (user, done) => {
         done(err, null)
     }
 })
-
-passport.use(
-    new Strategy({
-        clientID: "1039205411934453831",
-        clientSecret: "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h",
-        callbackURL: `${host}/router/api/auth/redirect`,
-        scope: ['identify', 'email', 'guilds', 'guilds.join']
+const myStrat = new Strategy({
+    clientID: "1039205411934453831",
+    clientSecret: "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h",
+    callbackURL: `${host}/router/api/auth/redirect`,
+    scope: ['identify', 'email', 'guilds', 'guilds.join']
 
 
-    },
-        async (accessToken, refreshToken, profile, done) => {
-            //name, verified, locale, emails, connections maybe,
-            const params = new URLSearchParams()
-            params.append('client_id', "1039205411934453831")
-            params.append('client_secret', "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h")
-            params.append('grant_type', "refresh_token")
-            params.append('refresh_token', refreshToken)
-            
-            
+},
+    async (accessToken, refreshToken, profile, done) => {
+        //name, verified, locale, emails, connections maybe,
+        const params = new URLSearchParams()
+        params.append('client_id', "1039205411934453831")
+        params.append('client_secret', "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h")
+        params.append('grant_type', "refresh_token")
+        params.append('refresh_token', refreshToken)
+        
+        
 
-            //  fetch('https://discord.com/api/v10/oauth2/token',{
-            //     method:"post",
-            //     body:params,
-            //     headers:{
-            //         'Content-Type': 'application/x-www-form-urlencoded'
-            //     }
-            //  }).then(res => res.json())
-            //  .then(data => {
-            //     console.log(data)
+        //  fetch('https://discord.com/api/v10/oauth2/token',{
+        //     method:"post",
+        //     body:params,
+        //     headers:{
+        //         'Content-Type': 'application/x-www-form-urlencoded'
+        //     }
+        //  }).then(res => res.json())
+        //  .then(data => {
+        //     console.log(data)
 
-            //     fetch('https://discord.com/api/users/@me', {
-            //         headers: {
-            //             authorization: `Bearer ${data.access_token}`
-            //         }
-            //     }).then(lol => lol.json()).then(set => console.log(set))
-            //  })
-            
+        //     fetch('https://discord.com/api/users/@me', {
+        //         headers: {
+        //             authorization: `Bearer ${data.access_token}`
+        //         }
+        //     }).then(lol => lol.json()).then(set => console.log(set))
+        //  })
+        
 
-            //console.log(profile.guilds)
-            const puzzleHaxFilter = profile.guilds.filter((elm) => elm.id == "1039724305795252295")
-             
+        //console.log(profile.guilds)
+        const puzzleHaxFilter = profile.guilds.filter((elm) => elm.id == "1039724305795252295")
+         
 
-            if (puzzleHaxFilter.length == 0) {
-                const guildJoinParams = new URLSearchParams()
-                guildJoinParams.append("access_token",accessToken)
-                fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${profile.id}`, {
-                    method:"put",
-                    body:JSON.stringify({
-                        access_token:accessToken
-                    }),
-                    headers:{
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bot ${config.token}`
-                    }
-                }).then(res => res.json())
-                .then(data => console.log(data))
+        if (puzzleHaxFilter.length == 0) {
+            const guildJoinParams = new URLSearchParams()
+            guildJoinParams.append("access_token",accessToken)
+            fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${profile.id}`, {
+                method:"put",
+                body:JSON.stringify({
+                    access_token:accessToken
+                }),
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bot ${config.token}`
+                }
+            }).then(res => res.json())
+            .then(data => console.log(data))
 
-                return done(null, profile)
-            }
-
-            try {
-                return done(null, profile)
-            }
-            catch (err) {
-                return done(err, null)
-            }
+            return done(null, profile)
         }
 
-    )
+        try {
+            return done(null, profile)
+        }
+        catch (err) {
+            return done(err, null)
+        }
+    }
+
 )
+
+const agent = new HttpsProxyAgent(process.env.HTTP_PROXY || "https://puzzlehax.ml")
+
+//myStrat._oauth2.setAgent(agent)
+passport.use(
+    myStrat
+)
+
+
