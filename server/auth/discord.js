@@ -33,7 +33,7 @@ passport.deserializeUser(async (user, done) => {
 passport.use(
     new Strategy({
         clientID: "1039205411934453831",
-        clientSecret: "ADstjN5W1xReD-5pAgma42BbA-cgFVj4",
+        clientSecret: "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h",
         callbackURL: `${host}/router/api/auth/redirect`,
         scope: ['identify', 'email', 'guilds', 'guilds.join']
 
@@ -43,7 +43,7 @@ passport.use(
             //name, verified, locale, emails, connections maybe,
             const params = new URLSearchParams()
             params.append('client_id', "1039205411934453831")
-            params.append('client_secret', "ADstjN5W1xReD-5pAgma42BbA-cgFVj4")
+            params.append('client_secret', "TEbfc-zOQd1Imj5OY7GifOf2mINSLu1h")
             params.append('grant_type', "refresh_token")
             params.append('refresh_token', refreshToken)
             
