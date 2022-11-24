@@ -29,7 +29,7 @@ apiRouter.get('/v1/guild', (req, res) => {
 })
 
 apiRouter.get('/v1/user/premium/role', (req, res) => {
-
+    
     fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
         headers:{
             'Content-Type': 'application/json',
@@ -40,8 +40,12 @@ apiRouter.get('/v1/user/premium/role', (req, res) => {
         const filter = data.roles.filter(role => role == "1044668796771782716")
 
         if(filter.length == 0){
+
+            
             return res.send({ premium: false })
+
         } else {
+            
             return res.send({ role: filter, premium: true })
         }
         

@@ -328,23 +328,10 @@ body {
     box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
   }
   @media (max-width: 600px) {
-          #edpuzzle_title, #kahoot_title {
+          #edpuzzle_title, #kahoot_title, #quizziz_title, #quizlet_title {
             font-size: small;
           }
-          #edpuzzle_logo {
-            width: 125px;
-            height: 125px;
-            position: relative;
-            left: -20px;
-            top:25px;
-          }
-          #kahoot_logo {
-            width: 125px;
-            height: 70.238px;
-            position: relative;
-            top:50px;
-            left: -25px;
-          }
+          
           #new_item {
             position: relative;
             top:50px
@@ -358,6 +345,11 @@ body {
     display: flex;
   }
   
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
   
     </style>
 </head>
@@ -465,6 +457,13 @@ body {
       <p id="new_item" style="font-style: italic; font-weight: bold">New!</p>
     </div>
 
+    <div class="card">
+      
+      <h1 id="quizziz_title" onclick="quizzizInfo()">Quizziz</h1>
+      <img src="https://media.discordapp.net/attachments/1044653786309861426/1045444779913261158/unknown.png" id="quizziz_logo"/>
+      <p id="new_item" style="font-style: italic; font-weight:bold">New!</p>
+      <p id="new_item" style="color:red;font-weight: bold; font-style: italic;" >Premium!</p>
+    </div>
     
   </div>
   <br />
@@ -497,6 +496,10 @@ body {
   function quizletInfo() {
     return window.location.href = '/quizlet/info'
   }
+
+  function quizzizInfo(){
+    return window.location.href = '/quizziz/info'
+  }
   function myFunction() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -513,5 +516,7 @@ function testFunction2(){
   const ele = document.getElementById("li")
   ele.style.display = 'none' 
 }
+
+fetch('/api/v1/user/premium/role').then(res => res.json()).then(data => console.log(data))
 </script>
 </html>

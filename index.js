@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require("body-parser")
+const config = require('./server/config/botconfig.json')
 const app = express()
 const axios = require('axios')
 const cookieParser = require('cookie-parser')
@@ -338,10 +339,65 @@ app.post('/quizlet/code', (req, res) => {
    
 })
 
+app.get('/quizziz/info', (req, res) => {
+    if(req.session.passport){
+        fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `Bot ${config.token}`
+            }
+        }).then(response => response.json())
+        .then(data => {
+            const filter = data.roles.filter(role => role == "1044668796771782716")
+    
+            if(filter.length == 0){
+    
+                
+                //return res.send({ premium: false })
+    
+                return res.send("You do not have premium get it <a href=https://patreon.com/DomK>Here</a>")
+    
+            } else {
+                return res.render('quizziz')
+                //return res.send({ role: filter, premium: true })
+            }
+            
+        })
+    } else {
+        return res.send("Not logged in with <a href=/router/discord>Discord</a>")
+    }
+
+   
+
+    
+})
+
+app.post('/quizziz/code', (req, res) => {
+    const code = req.body.quizziz_code
+
+    fetch(`https://api.quizit.online/quizizz/answers?pin=${code}`)
+    .then(response => response.json())
+    .then(data => {
+        if(data.message == "Room not found"){
+            return res.status(400).send("Invalid quizziz game")
+        } else {
+            
+        req.session.quizzizData = data
+
+        res.render('quizziz_data')
+        }
+    })
+})
+
 
 app.get('/quizlet/api/data', (req, res) => {
    
     res.send({ data: req.session.quizletData, website: req.session.quizletWebsite })
+})
+
+
+app.get('/quizziz/api/data', (req, res) => {
+    res.send(req.session.quizzizData)
 })
 
 app.listen(process.env.PORT || 3000, () => {
