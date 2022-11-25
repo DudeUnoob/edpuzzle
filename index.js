@@ -325,15 +325,10 @@ app.post('/quizlet/code', (req, res) => {
  
         fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`)
         .then(response => response.json()).then(stuff => {
+            
+            req.session.quizletWebsite = stuff.gameInstance.itemId
 
-            fetch(`https://quizlet.com/${stuff.gameInstance.itemId}`)
-                .then(text => text.text()).then(send => {
-                    req.session.quizletData = JSON.stringify(send)
-                    req.session.quizletWebsite = stuff.gameInstance.itemId
-                    res.render('quizlet_data')
-                
-                })
-                
+            res.render('quizlet_data')
         })
   
    
@@ -392,7 +387,7 @@ app.post('/quizziz/code', (req, res) => {
 
 app.get('/quizlet/api/data', (req, res) => {
    
-    res.send({ data: req.session.quizletData, website: req.session.quizletWebsite })
+    res.send({  website: req.session.quizletWebsite })
 })
 
 
