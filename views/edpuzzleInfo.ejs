@@ -123,7 +123,9 @@
         }
 
         
-        
+        button {
+            padding: 5px;
+        }
 
         h1 {
             font-size: 75px;
@@ -139,6 +141,18 @@
                 width: 300px;
             }
         }
+
+        input {
+            margin: 10px;
+        }
+
+        hr {
+            border: 8px solid rgb(32, 128, 238);
+            margin-top: 25px;
+            height: 1px;
+            background-color: rgb(32, 128, 238);
+            
+        }
     </style>
 </head>
 
@@ -149,26 +163,33 @@
 
         <div class="card">
             <h2 id="dad">Login with token</h2>
+            
 
             <form method="post" action="/edpuzzle/token">
                 <input type="text" name="token" placeholder="Insert token here" required />
                 <button type="submit">Get Answers</button>
             </form>
+            <h2>OR</h2>
+            <div class="card2">
+                <h2 id="dad">Login with Edpuzzle Username and Password</h2>
+                <form action="/edpuzzle/login" method="post">
+                    <input type="text" name="username" placeholder="username" required id="username" />
+                    <br />
+                    <input type="password" name="password" placeholder="password" id="password" required />
+                    <br />
+    
+                    <button onclick="loginMethod()">Get Answers!</button>
+                </form>
+            </div>
+            <hr />
+            <h2>How to get your token</h2>
             <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4">
                 
             </video>
-
+            
         </div>
 
-        <div class="card2">
-            <h2 id="dad">Login with username and password</h2>
-            <form action="/edpuzzle/login" method="post">
-                <input type="text" name="username" placeholder="username" required id="username" />
-                <input type="password" name="password" placeholder="password" id="password" required />
-
-                <button onclick="loginMethod()">Get Answers!</button>
-            </form>
-        </div>
+        
 
 
     </section>
