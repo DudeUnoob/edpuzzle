@@ -328,10 +328,14 @@ app.post('/quizlet/code', (req, res) => {
             
             req.session.quizletWebsite = stuff.gameInstance.itemId
 
-            res.render('quizlet_data')
+            res.redirect('/quizlet/accept')
         })
   
    
+})
+
+app.get('/quizlet/accept', (req, res) => {
+    res.render("quizlet_data")
 })
 
 app.get('/quizziz/info', (req, res) => {
