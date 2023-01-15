@@ -323,7 +323,11 @@ app.post('/quizlet/code', (req, res) => {
     console.log(finalCode)
 
  
-        fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`)
+        fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`, {
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
         .then(response => response.json()).then(stuff => {
             
             req.session.quizletWebsite = stuff.gameInstance.itemId
