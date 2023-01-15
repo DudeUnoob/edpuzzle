@@ -155,7 +155,7 @@ video {
 <script>
    function quizletCode() {
     const quizletCode = document.getElementById("quizlet_code")
-
+    const finalCode = quizletCode.value.slice(0,3) + quizletCode.value.slice(4)
     fetch("/quizlet/code", {
         method:"post",
         headers:{
@@ -177,6 +177,21 @@ video {
         headingLinkElement.appendChild(linkElement)
         card.appendChild(headingLinkElement)
     })
+
+// fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`, {
+//     headers:{
+        
+//         "Content-Type":"application/json",
+        
+        
+//     },
+//     method:"GET",
+    
+   
+    
+    
+// })
+//     .then((res) => res.json()).then(data => console.log(data))
    }
 </script>
 </body>
