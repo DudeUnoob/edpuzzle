@@ -333,7 +333,7 @@ app.post('/quizlet/code', (req, res) => {
             
             req.session.quizletWebsite = stuff.gameInstance.itemId
 
-            res.redirect('/quizlet/accept')
+            res.send(stuff)
         })
   
    

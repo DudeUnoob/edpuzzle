@@ -135,7 +135,7 @@ video {
            <button type="submit" onclick="quizletCode()">Get Answers</button>
         <!-- </form> -->
 
-        <div class="howto">
+        <div class="card" id="card">
            
         </div>
         
@@ -167,6 +167,15 @@ video {
     }).then((res) => res.json())
     .then((data) => {
         console.log(data)
+        const card = document.getElementById("card")
+
+        const headingLinkElement = document.createElement("h2")
+        const linkElement = document.createElement("a")
+        linkElement.setAttribute("href", `https://quizlet.com/${data.gameInstance.itemId}`)
+        linkElement.target = "_blank"
+        linkElement.innerHTML = "Get Answers"
+        headingLinkElement.appendChild(linkElement)
+        card.appendChild(headingLinkElement)
     })
    }
 </script>
