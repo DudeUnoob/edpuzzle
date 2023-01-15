@@ -329,7 +329,7 @@ app.post('/quizlet/code', (req, res) => {
                 "Content-Type":"application/json"
             }
         })
-        .then(response => response.text()).then(stuff => {
+        .then(response => response.json()).then(stuff => {
             
             req.session.quizletWebsite = stuff.gameInstance.itemId
 
