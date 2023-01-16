@@ -5,7 +5,7 @@ const passport = require('passport');
 const path = require('path');
 require('./auth/discord')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-
+const serverImages = { root: path.join(__dirname, './public/images')}
 
 
 
@@ -18,7 +18,10 @@ router.get('/api/auth/redirect', passport.authenticate('discord', { successRedir
     res.send(req.session.passport)
 })
 
-
+router.get('/public/images/backgroundDarkVoid.png', (req, res) => {
+    
+    res.sendFile('backgroundDarkVoid.png', serverImages)
+})
 
 
 
