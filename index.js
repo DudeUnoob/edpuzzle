@@ -255,7 +255,12 @@ app.post('/edpuzzle/login', (req, res) => {
 })
 
 app.get('/edpuzzle/info', (req, res) => {
-    res.render('edpuzzleInfo')
+    if(req.session.token){
+        res.redirect('/edpuzzle/dashboard')
+    } else {
+res.render('edpuzzleInfo')
+    }
+    
 })
 
 app.get('/edpuzzle/csrf', (req, res) => {
