@@ -121,6 +121,12 @@ video {
         #dad {
             background: none;
         }
+
+        @media screen and (max-width: 600px) {
+            .card {
+                padding:0px;
+            }
+        }
     </style>
 </head>
 
@@ -132,7 +138,7 @@ video {
     <div class="card">
         
         <form method="post" action="/quizziz/code">
-           <input  name="quizziz_code" id="quizziz_code" placeholder="Enter quizziz link or join code here"/>
+           <input  name="quizziz_code" id="quizziz_code" placeholder="Enter quizziz link or join code here" required/>
            <button type="submit">Get Answers</button>
         </form>
 
