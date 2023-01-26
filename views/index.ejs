@@ -25,7 +25,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-91CBMKRN8Y');
   </script>
     <style>
@@ -109,7 +108,6 @@ input {
  #profile_link {
   color:white;
 }
-
 #profile_link:hover {
   color:rgb(67, 141, 252);
 }
@@ -260,13 +258,11 @@ body {
   .card:hover {
     box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
   }
-
   #edpuzzle_logo, #kahoot_logo, #quizlet_logo {
     
     width: 100%;
   max-width: 400px;
   height: auto;
-
   }
   @media (max-width: 600px) {
           #edpuzzle_title, #kahoot_title, #quizlet_title {
@@ -280,8 +276,6 @@ body {
           }
           
         }
-
-
         .topnav {
   overflow: hidden;
   background-color: #333;
@@ -301,11 +295,9 @@ position: fixed;
   z-index: 1;
   
 }
-
 div.topnav.responsive {
   position: fixed;
 }
-
 .topnav a {
   float: left;
   display: block;
@@ -318,31 +310,27 @@ div.topnav.responsive {
   
  
 }
-
-
-
-
 .topnav a:hover {
   
 }
-
 .topnav a.active {
   background-color: #04AA6D;
   color: white;
 }
-
 .topnav .icon {
   display: none;
 }
-
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
   .topnav a.icon {
     float: right;
     display: block;
   }
-}
 
+  .bg {
+    min-height: 50vw;
+  }
+}
 @media screen and (max-width: 600px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {
@@ -356,7 +344,6 @@ div.topnav.responsive {
     text-align: left;
     
   }
-
   #login_prompt {
     overflow: hidden;
     font-size: medium;
@@ -364,6 +351,58 @@ div.topnav.responsive {
  
 }
 
+
+footer{
+    
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1492c0;
+    height: auto;
+    width: 100vw;
+    padding-top: 40px;
+    color: white;
+}
+
+.footer-content {
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.footer-content h3 {
+  font-size: 2.1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  line-height: 3rem;
+}
+
+.footer-content p{
+    max-width: 500px;
+    line-height: 28px;
+    font-size: 14px;
+   
+}
+
+.socials{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0 3rem 0;
+    
+}
+ 
+.socials li{
+    margin: 0 10px;
+    
+}
+ 
+.socials a{
+    background: transparent;
+}
     </style>
 </head>
 <body>
@@ -458,23 +497,33 @@ div.topnav.responsive {
     <p id="howto">(Made by <b>dom#3755</b> on discord. Check out my <a href="https://github.com/DudeUnoob">github!</a> )</p>
     <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video> -->
   </section>
+  <footer>
+    <div class="footer-content">
+      <h3>About This</h3>
+      <p>In October of 2022, I randomly decided</p>
+      <p>why not make a website to get "help"</p>
+      <p style="font-style: italic; color: rgb(34, 22, 22);">dom ✌</p>
 
+      
+        <div class="socials">
+        <li><a href="https://www.linkedin.com/in/damodar-kamani-a7204123a/" target="_blank"><i class="fa fa-linkedin-square" style="font-size: 36px;"></i></a></li>
+        <li><a href="https://www.instagram.com/damodar_kamanii/" target="_blank"><i class="fa fa-instagram" style="font-size: 36px;"></i></a></li>
+        <li><a href="https://github.com/dudeunoob" target="_blank"><i class="fa fa-github" style="font-size: 36px;"></i></a></li>
+      </div>
+  </div>
+  </footer>
 </body>
 
 <script>
   function edpuzzleInfo(){
-
     return window.location.href = '/edpuzzle/info'
   }
-
   function kahootInfo(){
     return window.location.href = '/kahoot/info'
   }
-
   function quizletInfo(){
     return window.location.href = '/quizlet/info'
   }
-
   function myFunction() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -483,9 +532,7 @@ div.topnav.responsive {
     x.className = "topnav";
   }
 }
-
 // var navbar = document.getElementById("myTopnav");
-
 // var sticky = navbar.offsetTop;
 // function stickyNavbar(){
 //   console.log(navbar.className)

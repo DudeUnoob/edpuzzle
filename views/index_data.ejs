@@ -341,6 +341,10 @@ body {
           #edpuzzle_title, #kahoot_title, #quizziz_title, #quizlet_title {
             font-size: small;
           }
+
+          .bg {
+    min-height: 50vw;
+  }
           
           #new_item {
             position: relative;
@@ -382,6 +386,59 @@ body {
     max-width: 100%;
     height: auto;
   }
+
+
+  footer{
+    
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1492c0;
+    height: auto;
+    width: 100vw;
+    padding-top: 40px;
+    color: white;
+}
+
+.footer-content {
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.footer-content h3 {
+  font-size: 2.1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  line-height: 3rem;
+}
+
+.footer-content p{
+    max-width: 500px;
+    line-height: 28px;
+    font-size: 14px;
+   
+}
+
+.socials{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0 3rem 0;
+    
+}
+ 
+.socials li{
+    margin: 0 10px;
+    
+}
+ 
+.socials a{
+    background: transparent;
+}
   
     </style>
 </head>
@@ -515,7 +572,21 @@ body {
     <p id="howto">(Made by <b>dom#3755</b> on discord. Check out my <a href="https://github.com/DudeUnoob">github!</a> )</p>
     <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video> -->
   </section>
+  <footer>
+    <div class="footer-content">
+      <h3>About This</h3>
+      <p>In October of 2022, I randomly decided</p>
+      <p>why not make a website to get "help"</p>
+      <p style="font-style: italic; color: rgb(34, 22, 22);">dom ✌</p>
 
+      
+        <div class="socials">
+        <li><a href="https://www.linkedin.com/in/damodar-kamani-a7204123a/" target="_blank"><i class="fa fa-linkedin-square" style="font-size: 36px;"></i></a></li>
+        <li><a href="https://www.instagram.com/damodar_kamanii/" target="_blank"><i class="fa fa-instagram" style="font-size: 36px;"></i></a></li>
+        <li><a href="https://github.com/dudeunoob" target="_blank"><i class="fa fa-github" style="font-size: 36px;"></i></a></li>
+      </div>
+  </div>
+  </footer>
 </body>
 
 <script>
