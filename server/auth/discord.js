@@ -22,6 +22,7 @@ passport.serializeUser((user, done) => {
     })
 })
 
+
 passport.deserializeUser(async (user, done) => {
 
     try {
