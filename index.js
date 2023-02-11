@@ -281,24 +281,39 @@ app.get('/kahoot/info', (req, res) => {
 
 app.post('/kahoot/uuid', (req, res) => {
     const uuid = req.body.uuid;
+    //https://play.kahoot.it/rest/answers
+    // fetch(`https://play.kahoot.it/rest/kahoots/${uuid}`).then((response) => {
+    //     if (response.ok) {
+    //         return response.json();
+    //     }
 
-    fetch(`https://play.kahoot.it/rest/kahoots/${uuid}`).then((response) => {
-        if (response.ok) {
-            return response.json();
+    //     return res.status(400).send("Invalid Kahoot quizid")
+    // })
+    fetch(`https://balancer.schoolcheats.net/kahoot/getAnswers`, {
+        method:"post",
+        body:JSON.stringify({
+            input: uuid
+        }),
+        headers:{
+            "Cookie":"token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI0MzI2MDU0MTEwNDkyMDk4NjciLCJpYXQiOjE2NzYxNDQ4NjYsImV4cCI6MTY3NjE0ODQ2Nn0.4Efr0vVVPJUSSKO0Bo9hGp3v6kYrw3qFtuu-TOxQR0g",
+            "Content-Type":"application/json"
         }
-
-        return res.status(400).send("Invalid Kahoot quizid")
+    }).then((responseJson) => responseJson.json()).then((log) => {
+        req.session.kahootData = log
+        return res.render('kahootRoom')
+    }).catch((error) => {
+        res.send(error)
     })
-        .then((responseJson) => {
-            // Do something with the response
+        // .then((responseJson) => {
+        //     // Do something with the response
 
-            req.session.kahootData = responseJson
-            //console.log(req.session.kahootData)
-            return res.render('kahootRoom')
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+        //     req.session.kahootData = responseJson
+        //     //console.log(req.session.kahootData)
+        //     return res.render('kahootRoom')
+        // })
+        // .catch((error) => {
+        //     console.log(error)
+        // })
 
 
 

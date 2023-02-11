@@ -84,6 +84,10 @@
 #question {
     margin-bottom: 5px;
 }
+
+#questionImage {
+    max-width: 200px;
+}
     </style>
 </head>
 <body>
@@ -91,18 +95,107 @@
 
 <script>
     window.addEventListener('load', (event) => {
+        // fetch('/kahoot/data')
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         //console.log(data)
+        //         const br = document.createElement('br')
+        //         const title = document.createElement('h1')
+        //         const divQuestions = document.getElementById("questions")
+                
+        //         title.textContent = data.title
+        //         document.body.append(title)
+                
+        //         let myData = data.questions.filter((item) => item.type != "survey" && item.type != "open_ended" && item.type != "content")
+
+                
+        //         myData.forEach((elm) => {
+        //             const card = document.createElement('div')
+        //             card.setAttribute('class', 'card')
+        //             document.body.appendChild(card)
+
+        //             const questionElm = document.createElement('p')
+        //             questionElm.setAttribute('id', 'question')
+        //             questionElm.textContent = elm.question
+                    
+        //             card.appendChild(questionElm)
+                    
+        //             const correctFilter = elm.choices.filter((item) => item.correct != false)
+                    
+
+        //             correctFilter.map((item) => {
+        //                 console.log(item.answer)
+
+        //                 const answerElement = document.createElement('p')
+        //                 answerElement.setAttribute('id','answer')
+        //                 answerElement.textContent = item.answer
+                        
+        //                 card.appendChild(answerElement)
+                        
+        //             })
+                    
+                    
+        //         })
+            
+        //     })
+    })
         fetch('/kahoot/data')
-            .then(res => res.json())
-            .then(data => {
-                //console.log(data)
+        //data.kahoot.questions has all data
+        .then(res => res.json())
+        .then(info => {
+            //console.log(info)
+            //console.log(info.data.challenge.kahoot)
+            if(info.data.challenge?.kahoot){
+                const br = document.createElement("br")
+            const title = document.createElement("h1")
+            const divQuestions = document.getElementById("questions")
+
+            title.textContent = info.data.challenge.kahoot.title
+            document.body.append(title)
+
+            info.data.challenge.kahoot.questions.map((elm,i) => {
+                console.log(elm)
+
+                const card = document.createElement("div")
+                const questionImage = document.createElement("img")
+                questionImage.setAttribute("id","questionImage")
+                questionImage.src = elm.image ? elm.image : ""
+                card.appendChild(questionImage)
+                card.setAttribute("class", "card")
+                document.body.appendChild(card)
+
+                const questionElm = document.createElement("p")
+                questionElm.setAttribute("id", "question")
+                questionElm.innerHTML = elm.question
+
+                card.appendChild(questionElm)
+
+                const correctFilter = elm.choices.filter((choice) => choice.correct != false)
+
+                correctFilter.map((item) => {
+                    //console.log(item.answer)
+
+                    const answerElement = document.createElement("p")
+                    answerElement.setAttribute("id","answer")
+                    answerElement.innerHTML = item.answer
+
+                    card.appendChild(answerElement)
+                })
+            })
+            } else {
                 const br = document.createElement('br')
                 const title = document.createElement('h1')
                 const divQuestions = document.getElementById("questions")
                 
-                title.textContent = data.title
+                title.textContent = info.title
                 document.body.append(title)
                 
-                let myData = data.questions.filter((item) => item.type != "survey" && item.type != "open_ended" && item.type != "content")
+                console.log(info)
+
+                // info.data.questions.map((elm, i) => {
+                    
+                // })
+                let myData = info.data.questions.filter((item) => item.type != "survey" && item.type != "open_ended" && item.type != "content")
 
                 
                 myData.forEach((elm) => {
@@ -115,8 +208,8 @@
                     questionElm.textContent = elm.question
                     
                     card.appendChild(questionElm)
-                    
-                    const correctFilter = elm.choices.filter((item) => item.correct != false)
+                    console.log(elm)
+                     const correctFilter = elm.choices.filter((item) => item.correct != false)
                     
 
                     correctFilter.map((item) => {
@@ -132,9 +225,9 @@
                     
                     
                 })
-            
-            })
-    })
+
+            }
+        })
 </script>
 </body>
 </html>
