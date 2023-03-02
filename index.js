@@ -16,7 +16,7 @@ const path = require('path')
 const { response } = require('express')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const cors = require('cors')
-
+const isLoggedIn = require('./server/auth/isLoggedIn')
 app.use(session({
     secret: "helloworld",
     saveUninitialized: true,
@@ -271,13 +271,8 @@ app.get('/edpuzzle/csrf', (req, res) => {
         .then(data => res.send(data))
 })
 
-app.get('/kahoot/info', (req, res) => {
-    if(!req.session.passport){
-        res.status(400).send("<a href=/router/discord>Login with discord to get access to the kahoot hack!</a>")
-    } else {
+app.get('/kahoot/info', isLoggedIn, (req, res, next) => {
         res.render('kahootInfo')
-    }
-    
 })
 
 
@@ -321,16 +316,11 @@ app.get('/kahoot/data', (req, res) => {
 })
 
 
-app.get('/quizlet/info', (req, res) => {
+app.get('/quizlet/info',isLoggedIn, (req, res) => {
 
-    if(!req.session.passport){
-        res.status(400).send("<a href=/router/discord>Login with discord to get access to the quizlet live hack!</a>")
-    } else {
+   
         res.render('quizlet')
-    }
     
-
-           
 })
 
 app.post('/quizlet/code', (req, res) => {
@@ -419,6 +409,10 @@ app.get('/quizlet/api/data', (req, res) => {
 
 app.get('/quizziz/api/data', (req, res) => {
     res.send(req.session.quizzizData)
+})
+
+app.get('/kahoot/search',isLoggedIn, (req, res) => {
+    res.render("kahootSearch")
 })
 
 app.listen(process.env.PORT || 3000, () => {
