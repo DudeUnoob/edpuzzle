@@ -5,61 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Document</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-
-        .header-search {
-            
-        }
-
-        * {
-            font-family: 'Fredoka One', cursive;
-            font-weight: 100;
-            overflow-x: hidden;
-
-            padding: 0px;
-            margin: 0px;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 60vh;
-            /* This sets the height of the container to be the height of the viewport */
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        input[type="text"] {
-
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            border: none;
-            -webkit-appearance: none;
-            -ms-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background: #f2f2f2;
-            padding: 12px;
-            border-radius: 3px;
-            width: 300px;
-            font-size: 14px;
-            height: 25px;
-        }
-
-        body {
-            background-image: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
-            overflow-y: auto;
-            overflow-x: hidden;
-            margin: 0px;
-            padding: 0px;
-        }
-
         h3 {
             color: blue;
             text-decoration: underline;
@@ -77,7 +25,6 @@
 
        h1{
         text-align: center;
-        font-size: 48px;
        }
 
        body{
@@ -131,47 +78,46 @@
 #questionImage {
     max-width: 200px;
 }
-#loader {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
-  border-radius: 50%;
-  width: 30px;
-  height:30px;
-  animation: spin 1s linear infinite;
-    /* Styles from previous example */
-    position: absolute;
-  left: 48%;
-  top: 50%;
-
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-
     </style>
-   <script src="/v1/public/scripts/kahootsearch.js" defer>
-    
-  </script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="header-search">
-            <h1>Kahoot Search</h1>
-            <input type="text" id="kahootSearchInput" oninput="onInput()" placeholder="Search for a Kahoot...🔍"/>
-            
-        </div>
-        
-    </div>
-    <div id="loader"></div>
-
-    <div class="kahoot-rooms" id="kahoot-rooms">
-
-    </div>
 
 </body>
+<script>
+    fetch('/kahoot/data')
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            data.data.answers.map((elm, i) => {
+                const br = document.createElement('br')
+
+            const card = document.createElement("div")
+            card.setAttribute("class", "card")
+            document.body.appendChild(card)
+            
+            const questionElm = document.createElement("p")
+            questionElm.setAttribute("id", "question")
+            questionElm.innerHTML = elm.question.text
+
+
+            const answerElement = document.createElement("p")
+            answerElement.setAttribute("id", "answer")
+            answerElement.innerHTML = elm.answers[0].text
+
+            if(elm.question.image){
+                const imageQuestionElm = document.createElement("img")
+                imageQuestionElm.src = elm.question.image
+                imageQuestionElm.setAttribute("id", "questionImage")
+                card.appendChild(imageQuestionElm)
+
+            }
+
+            card.appendChild(br)
+            card.appendChild(questionElm)
+            card.appendChild(answerElement)
+            })
+        })
+</script>
 
 </html>

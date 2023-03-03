@@ -16,6 +16,7 @@ const path = require('path')
 const { response } = require('express')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const cors = require('cors')
+const scriptsRouter = require("./server/scripts")
 const isLoggedIn = require('./server/auth/isLoggedIn')
 app.use(session({
     secret: "helloworld",
@@ -26,6 +27,7 @@ app.use(session({
 
 //axios.defaults.withCredentials = true
 app.use('/router', router)
+app.use('/v1/public/scripts', scriptsRouter)
 app.use('/dashboard', dashboardRouter)
 app.use('/api', apiRouter)
 app.use(cors())
@@ -344,6 +346,16 @@ app.post('/quizlet/code', (req, res) => {
         })
   
    
+})
+
+app.get('/kahoot/room/:quizId', isLoggedIn, (req, res) => {
+    fetch(`https://api.quizit.online/kahoot/answers?quizId=${req.params.quizId}`)
+        .then(response => response.json())
+        .then(data => {
+            req.session.kahootData = data
+
+            return res.render('kahootSearchedRoom')
+        })
 })
 
 app.get('/quizlet/accept', (req, res) => {
