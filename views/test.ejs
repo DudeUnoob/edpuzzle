@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        const ws = new WebSocket('wss://mp.quizlet.com/multiplayer-k9hzl-krzhs/games/socket/?gameId=MN6X40&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2Nzc5OTM4MzAsInBlcnNvbklkIjoiMjg1ODk0NTM0IiwiY2FuQWRtaW5pc3RlckdhbWUiOnRydWUsImlzQWRtaW4iOmZhbHNlLCJpc1BhaWRUZWFjaGVyIjpmYWxzZX0.h0bH9B8xeBAi47l3ESv81_2ByIJukSvBen3hHihB8aEIVbuQYiV-C0T0Y8kK2pMuQXuEny6k2nCO-3F0SrKQQdi6JoETQlLgczbW72ivXXs2Bt9-1c8PgJDkaoMCpIWRcnTFbtIQPDsLYM6ZaYPlgN0BaSg4Vv43MqIB-oM0LoMf2PuI_8tKVpBLMJjfge_XGRRDh7Sz7p2CFc4eo_CQF0r72onqJkmobLgZUpqzbYIFF5zSJr9x1bpNM8E3D-nBaPusd0D421kHZJ-fYxE3bPfOnNEowHwwu1kxL2WqqJLavNxaX_MUtljt1tIUbVx6QIQua_8sCrUc_jxYXhxmoA&EIO=4&transport=websocket&sid=5gNFih-qhZ-33WEZAADp')
+
+ws.on('open', (message, headers) => {
+    console.log(headers)
+  res.send(message)
+  
+})
+
+ws.on('error', (message, headers) => {
+    console.log(headers)
+    res.send(message + " hello gang error")
+})
+    </script>
+</body>
+</html>

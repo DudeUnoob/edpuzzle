@@ -10,38 +10,41 @@
     <title>Quizlet Info</title>
     <meta name="referrer" content="strict-origin" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-91CBMKRN8Y"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-    gtag('config', 'G-91CBMKRN8Y');
-  </script>
+        gtag('config', 'G-91CBMKRN8Y');
+    </script>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-        video{
-         height: 100%;
-         width: 100%;
-         padding: 10px;
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+        video {
+            height: 100%;
+            width: 100%;
+            padding: 10px;
         }
+
         * {
             font-family: 'Fredoka One', cursive;
-  font-weight: 100;
+            font-weight: 100;
         }
+
         .card {
             padding: 20px;
             min-height: 200px;
 
             width: 100%;
-             grid-template-rows: 20px 50px 1fr 50px; 
+            grid-template-rows: 20px 50px 1fr 50px;
             border-radius: 10px;
             box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
             transition: all 0.2s;
+
             
-          
             transition: all 0.5s;
-            
-          
+
+
         }
 
         .card:hover {
@@ -62,27 +65,28 @@
             padding: 0px;
         }
 
-        input {
-            border: none;
-            -webkit-appearance: none;
-            -ms-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background: #f2f2f2;
-            padding: 12px;
-            border-radius: 3px;
-            width: 300px;
-            font-size: 14px;
-            height: 25px;
+        input[type="text"] {
 
-        }
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+border: none;
+-webkit-appearance: none;
+-ms-appearance: none;
+-moz-appearance: none;
+appearance: none;
+background: #f2f2f2;
+padding: 12px;
+border-radius: 3px;
+width: 300px;
+font-size: 14px;
+
+}
 
         button {
 
             background-color: rgb(204, 201, 201);
             cursor: pointer;
             border: none;
-            height: 50px;
+            height: 43px;
             border-radius: 5px;
         }
 
@@ -92,25 +96,25 @@
 
         .bg {
             /* From https://css.glass */
-background: rgba(255, 255, 255, 0.2);
-border-radius: 16px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-backdrop-filter: blur(5px);
--webkit-backdrop-filter: blur(5px);
-text-align: center;
-margin-top: 20px;
-margin-bottom: 20px;
-transition: 0.5s;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            transition: 0.5s;
         }
 
-video {
-    position: fixed;
-    right: 0;
-  top: 550px;
-  min-width: 100%;
-  min-height: 100%;
-  z-index: -1;
+        video {
+            position: fixed;
+            right: 0;
+            top: 550px;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
         }
 
         h1 {
@@ -122,40 +126,52 @@ video {
         }
 
         @media screen and (max-width: 600px) {
-  #card {
-    padding: 0px;
-  }
+            #card {
+                padding: 0px;
+            }
 
-  .card {
-    padding:0px;
-  }
+            .card {
+                padding: 0px;
+            }
 
-  input {
-    margin:5px;
-  }
-}
+            input {
+                margin: 5px;
+            }
+        }
+
+        h2 {
+            font-size: 28px;
+        }
+
+        #answer {
+            color: red;
+        }
+
+        #renderCard {
+            text-align: left !important;
+        }
+        
     </style>
 </head>
 
 <body>
-<section class="bg">
-    <br/>
-    <h1>Quizlet Answers</h1>
-   
-    <div class="card">
-        
-        <!-- <form method="post" action="/quizlet/code"> -->
-           <input  name="quizlet_code" id="quizlet_code" placeholder="Enter quizlet live code here" required/>
-           <button type="submit" onclick="quizletCode()">Get Answers</button>
-        <!-- </form> -->
+    <section class="bg">
+        <br />
+        <h1>Quizlet Live Answers</h1>
 
-        <div class="card" id="card">
-           
+        <div class="card" id="main_section">
+
+            <!-- <form method="post" action="/quizlet/code"> -->
+            <input  type="text" name="quizlet_code" id="quizlet_code" placeholder="Enter quizlet live code here (ex: M7L-F2S)" required />
+            <button type="submit" onclick="quizletCode()">Get Answers</button>
+            <!-- </form> -->
+
         </div>
-        
-    </div>
-    
-    <!-- <div class="card">
+
+        <div class="questionCards" id="questionCards">
+
+        </div>
+        <!-- <div class="card">
          <form action="/edpuzzle/login" method="post">
             <input type="text" name="username" placeholder="username" required id="username"/>
             <input type="password" name="password" placeholder="password" id="password" required/>
@@ -163,51 +179,104 @@ video {
             <button onclick="loginMethod()">Get Answers!</button>
         </form>
     </div> -->
-   
-</section>
 
-<script>
-   function quizletCode() {
-    const quizletCode = document.getElementById("quizlet_code")
-    const finalCode = quizletCode.value.slice(0,3) + quizletCode.value.slice(4)
-    fetch("/quizlet/code", {
-        method:"post",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-            quizlet_code: quizletCode.value
-        })
-    }).then((res) => res.json())
-    .then((data) => {
-        console.log(data)
-        const card = document.getElementById("card")
+    </section>
 
-        const headingLinkElement = document.createElement("h2")
-        const linkElement = document.createElement("a")
-        linkElement.setAttribute("href", `https://quizlet.com/${data.gameInstance.itemId}`)
-        linkElement.target = "_blank"
-        linkElement.innerHTML = "Get Answers"
-        headingLinkElement.appendChild(linkElement)
-        card.appendChild(headingLinkElement)
-    })
+    <script>
+        function quizletCode() {
+            const allQuestionCards = document.getElementsByClassName("questionCards")
+            const quizletCode = document.getElementById("quizlet_code")
+            const finalCode = quizletCode.value.slice(0, 3) + quizletCode.value.slice(4)
+            const mainSection = document.getElementById("main_section")
 
-// fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`, {
-//     headers:{
-        
-//         "Content-Type":"application/json",
-        
-        
-//     },
-//     method:"GET",
-    
-   
-    
-    
-// })
-//     .then((res) => res.json()).then(data => console.log(data))
-   }
-</script>
+            fetch("/quizlet/code", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    quizlet_code: quizletCode.value
+                })
+            }).then((res) => res.json())
+                .then((data) => {
+                    if(data.message == "Your game couldn't be found!"){
+                        const errorElement = document.createElement("p")
+                        errorElement.setAttribute("id", "errorElement")
+                        errorElement.textContent = data.message
+                        console.log("lol")
+                        mainSection.appendChild(errorElement)
+
+                    } else {
+                        const errorElementId = document.getElementById("errorElement")
+
+                        errorElementId.remove()
+                    }
+                    while (allQuestionCards[0].firstChild) {
+                        allQuestionCards[0].firstChild.remove()
+
+                    }
+                    const serverBasePath = data.gameInstance.serverBasePath
+
+                    const ws = new WebSocket(`wss://mp.quizlet.com/${serverBasePath}/games/socket/?gameId=${finalCode}&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2Nzc5OTM5NjksInBlcnNvbklkIjoiLTU4ODEyNDc3OTM0NjUzNTgzMTUiLCJjYW5BZG1pbmlzdGVyR2FtZSI6dHJ1ZSwiaXNBZG1pbiI6ZmFsc2UsImlzUGFpZFRlYWNoZXIiOmZhbHNlfQ.cKfAoWEXgYzDmdlrXFUVhPhOLuF5rRUcmKhuGfj9S6Zo7IFLtPWhX6EPGNxPNoBz8SOdXLHESBo-BR_8JK7Zjzy8mepV54iq2eEl5EWBwg205esEXKeD2_m2zekpCqWEwP9gj20paVd_9QEnW59xEnT6kHT_sfLj4_Y6MBcUwJY_0VZFrbaO2h513qREnTfqfu1CaPfuTG3uhw_Q2DZFLJKd349qqIQX-eAHzibOqnsCF5au323vlXYjXK8LJDLceKQYJEPb7fGE0ZsFmqyFOIAHh3ngZPVPqWi2fbdeFYb2y4FkPsa83h4cblQqxH6jv033BQAAPbcbd0fph1J3vg&EIO=4&transport=websocket`)
+
+                    ws.addEventListener('open', (event) => {
+                        ws.send(40)
+                    })
+
+                    ws.addEventListener("message", (message) => {
+                        const payloadData = message.data
+
+                        if (payloadData.startsWith('42')) {
+
+                            const quizletLiveAnswers = JSON.parse(payloadData.slice(32, -1))
+
+
+
+                            quizletLiveAnswers.allTerms.map((elm, i) => {
+
+                                const br = document.createElement("br")
+
+                                const card = document.createElement("div")
+
+                                card.setAttribute("class", "card")
+                                card.setAttribute("id", `renderCard`)
+                                document.body.appendChild(card)
+                                const imageQuestionElm = document.createElement("img")
+
+                                if (elm._imageUrl) {
+                                    imageQuestionElm.src = elm._imageUrl
+                                } else {
+                                    imageQuestionElm.src = ""
+                                }
+
+                                imageQuestionElm.setAttribute("id", "questionImage")
+
+                                const questionElm = document.createElement("h2")
+                                questionElm.setAttribute("id", "question")
+                                questionElm.innerHTML = elm.word
+
+                                const answerElement = document.createElement("p")
+                                answerElement.setAttribute("id", "answer")
+                                answerElement.innerHTML = elm.definition
+
+                                card.appendChild(imageQuestionElm)
+                                card.appendChild(br)
+                                card.appendChild(questionElm)
+                                card.appendChild(answerElement)
+                                allQuestionCards[0].appendChild(card)
+                            })
+
+                        }
+                    })
+
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+
+        }
+    </script>
 </body>
 
 

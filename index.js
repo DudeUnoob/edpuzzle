@@ -13,6 +13,7 @@ const passport = require('passport')
 const dashboardRouter = require('./server/dashboard')
 const apiRouter = require('./server/api')
 const path = require('path')
+const WebSocket = require("ws")
 const { response } = require('express')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const cors = require('cors')
@@ -329,7 +330,6 @@ app.post('/quizlet/code', (req, res) => {
     const quizletCode = req.body.quizlet_code
 
     const finalCode = quizletCode.slice(0,3) + quizletCode.slice(4)
-    console.log(finalCode)
 
  
         fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`,
@@ -343,6 +343,9 @@ app.post('/quizlet/code', (req, res) => {
             req.session.quizletWebsite = stuff.gameInstance.itemId
 
             res.send(stuff)
+        })
+        .catch(error => {
+            res.status(400).send({ message: "Your game couldn't be found!" })
         })
   
    
@@ -425,6 +428,10 @@ app.get('/quizziz/api/data', (req, res) => {
 
 app.get('/kahoot/search',isLoggedIn, (req, res) => {
     res.render("kahootSearch")
+})
+
+app.get('/test/route', (req, res) => {
+    res.render('test')
 })
 
 app.listen(process.env.PORT || 3000, () => {
