@@ -185,9 +185,7 @@ font-size: 14px;
                     ws.addEventListener("message", (message) => {
                         const payloadData = message.data
                         if (payloadData.startsWith('42')) {
-                            if(document.getElementById("errorElement").textContent == "Your game couldn't be found!"){
-                        document.getElementById("errorElement").remove()
-                    }
+                            
                             const quizletLiveAnswers = JSON.parse(payloadData.slice(32, -1))
                             quizletLiveAnswers.allTerms.map((elm, i) => {
                                 const br = document.createElement("br")
