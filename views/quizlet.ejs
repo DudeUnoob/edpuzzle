@@ -14,47 +14,36 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-91CBMKRN8Y');
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-
         video {
             height: 100%;
             width: 100%;
             padding: 10px;
         }
-
         * {
             font-family: 'Fredoka One', cursive;
             font-weight: 100;
         }
-
         .card {
             padding: 20px;
             min-height: 200px;
-
             width: 100%;
             grid-template-rows: 20px 50px 1fr 50px;
             border-radius: 10px;
             box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
             transition: all 0.2s;
-
             
             transition: all 0.5s;
-
-
         }
-
         .card:hover {
             transition: 0.5s;
             box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
             transform: scale(1.01);
             cursor: pointer;
-
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
                 Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -64,9 +53,7 @@
             margin: 0px;
             padding: 0px;
         }
-
         input[type="text"] {
-
 box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 border: none;
 -webkit-appearance: none;
@@ -78,22 +65,17 @@ padding: 12px;
 border-radius: 3px;
 width: 300px;
 font-size: 14px;
-
 }
-
         button {
-
             background-color: rgb(204, 201, 201);
             cursor: pointer;
             border: none;
             height: 43px;
             border-radius: 5px;
         }
-
         button:hover {
             background-color: darkgrey;
         }
-
         .bg {
             /* From https://css.glass */
             background: rgba(255, 255, 255, 0.2);
@@ -107,7 +89,6 @@ font-size: 14px;
             margin-bottom: 20px;
             transition: 0.5s;
         }
-
         video {
             position: fixed;
             right: 0;
@@ -116,37 +97,29 @@ font-size: 14px;
             min-height: 100%;
             z-index: -1;
         }
-
         h1 {
             font-size: 75px;
         }
-
         #dad {
             background: none;
         }
-
         @media screen and (max-width: 600px) {
             #card {
                 padding: 0px;
             }
-
             .card {
                 padding: 0px;
             }
-
             input {
                 margin: 5px;
             }
         }
-
         h2 {
             font-size: 28px;
         }
-
         #answer {
             color: red;
         }
-
         #renderCard {
             text-align: left !important;
         }
@@ -189,15 +162,9 @@ font-size: 14px;
             const finalCode = quizletCode.value.slice(0, 3) + quizletCode.value.slice(4)
             const mainSection = document.getElementById("main_section")
 
-            fetch("/quizlet/code", {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    quizlet_code: quizletCode.value
-                })
-            }).then((res) => res.json())
+
+            fetch(`https://quizlet.varedz.workers.dev/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`)
+        .then((res) => res.json())
                 .then((data) => {
                     if(data.message == "Your game couldn't be found!"){
                         const errorElement = document.createElement("p")
@@ -205,76 +172,56 @@ font-size: 14px;
                         errorElement.textContent = data.message
                         console.log("lol")
                         mainSection.appendChild(errorElement)
-
-                    } else {
-                        const errorElementId = document.getElementById("errorElement")
-
-                        errorElementId.remove()
-                    }
+                    } 
+                    
                     while (allQuestionCards[0].firstChild) {
                         allQuestionCards[0].firstChild.remove()
-
                     }
                     const serverBasePath = data.gameInstance.serverBasePath
-
                     const ws = new WebSocket(`wss://mp.quizlet.com/${serverBasePath}/games/socket/?gameId=${finalCode}&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2Nzc5OTM5NjksInBlcnNvbklkIjoiLTU4ODEyNDc3OTM0NjUzNTgzMTUiLCJjYW5BZG1pbmlzdGVyR2FtZSI6dHJ1ZSwiaXNBZG1pbiI6ZmFsc2UsImlzUGFpZFRlYWNoZXIiOmZhbHNlfQ.cKfAoWEXgYzDmdlrXFUVhPhOLuF5rRUcmKhuGfj9S6Zo7IFLtPWhX6EPGNxPNoBz8SOdXLHESBo-BR_8JK7Zjzy8mepV54iq2eEl5EWBwg205esEXKeD2_m2zekpCqWEwP9gj20paVd_9QEnW59xEnT6kHT_sfLj4_Y6MBcUwJY_0VZFrbaO2h513qREnTfqfu1CaPfuTG3uhw_Q2DZFLJKd349qqIQX-eAHzibOqnsCF5au323vlXYjXK8LJDLceKQYJEPb7fGE0ZsFmqyFOIAHh3ngZPVPqWi2fbdeFYb2y4FkPsa83h4cblQqxH6jv033BQAAPbcbd0fph1J3vg&EIO=4&transport=websocket`)
-
                     ws.addEventListener('open', (event) => {
                         ws.send(40)
                     })
-
                     ws.addEventListener("message", (message) => {
                         const payloadData = message.data
-
                         if (payloadData.startsWith('42')) {
-
+                            if(document.getElementById("errorElement").textContent == "Your game couldn't be found!"){
+                        document.getElementById("errorElement").remove()
+                    }
                             const quizletLiveAnswers = JSON.parse(payloadData.slice(32, -1))
-
-
-
                             quizletLiveAnswers.allTerms.map((elm, i) => {
-
                                 const br = document.createElement("br")
-
                                 const card = document.createElement("div")
-
                                 card.setAttribute("class", "card")
                                 card.setAttribute("id", `renderCard`)
                                 document.body.appendChild(card)
                                 const imageQuestionElm = document.createElement("img")
-
                                 if (elm._imageUrl) {
                                     imageQuestionElm.src = elm._imageUrl
                                 } else {
                                     imageQuestionElm.src = ""
                                 }
-
                                 imageQuestionElm.setAttribute("id", "questionImage")
-
                                 const questionElm = document.createElement("h2")
                                 questionElm.setAttribute("id", "question")
                                 questionElm.innerHTML = elm.word
-
                                 const answerElement = document.createElement("p")
                                 answerElement.setAttribute("id", "answer")
                                 answerElement.innerHTML = elm.definition
-
                                 card.appendChild(imageQuestionElm)
                                 card.appendChild(br)
                                 card.appendChild(questionElm)
                                 card.appendChild(answerElement)
                                 allQuestionCards[0].appendChild(card)
                             })
-
                         }
                     })
 
+                    
                 })
                 .catch(error => {
                     console.log(error)
                 })
-
-
         }
     </script>
 </body>
