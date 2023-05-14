@@ -94,37 +94,112 @@
   
 
 <script>
-    fetch("/kahoot/data")
-    .then(res => res.json())
-    .then(info => {
-        const title = document.createElement('h1')
+    // fetch("/kahoot/data")
+    // .then(res => res.json())
+    // .then(info => {
+    //     const title = document.createElement('h1')
+    //     const divQuestions = document.getElementById("questions")
+    //     console.log(info)
+    //     info.data.answers.map((elm, i) => {
+    //         const br = document.createElement('br')
+
+    //         const card = document.createElement("div")
+    //         card.setAttribute("class", "card")
+    //         document.body.appendChild(card)
+    //         const imageQuestionElm = document.createElement("img")
+    //         imageQuestionElm.src = elm.question.image
+    //         imageQuestionElm.setAttribute("id", "questionImage")
+
+    //         const questionElm = document.createElement("p")
+    //         questionElm.setAttribute("id", "question")
+    //         questionElm.innerHTML = elm.question.text
+
+
+    //         const answerElement = document.createElement("p")
+    //         answerElement.setAttribute("id", "answer")
+    //         answerElement.innerHTML = elm.answers[0].text
+
+            
+    //         card.appendChild(imageQuestionElm)
+    //         card.appendChild(br)
+    //         card.appendChild(questionElm)
+    //         card.appendChild(answerElement)
+    //     })
+    // })
+
+    fetch('/kahoot/data')
+    .then(res =>res.json())
+    .then(responseData => {
+        const title = document.createElement("h1")
         const divQuestions = document.getElementById("questions")
-        console.log(info)
-        info.data.answers.map((elm, i) => {
-            const br = document.createElement('br')
+        console.log(responseData.data.hasOwnProperty("questions"))
+        if(responseData.data.hasOwnProperty("questions")){
+            responseData.data.questions.map((elm, i) => {
+                const br = document.createElement("br")
+
+            const card = document.createElement("div")
+            card.setAttribute("class", "card")
+            document.body.appendChild(card)
+
+            const imageQuestionElm = document.createElement("img")
+            imageQuestionElm.src = elm.image
+            imageQuestionElm.setAttribute("id", "questionImage")
+
+            const questionElm = document.createElement("p")
+            questionElm.setAttribute("id", "question")
+            questionElm.innerHTML = elm?.question
+
+            const answerElement = document.createElement("p")
+            answerElement.setAttribute("id", "answer")
+            if(elm.type != "content"){
+                const answerFilter = elm.choices.filter((answer) => answer.correct == true)
+
+answerFilter.forEach((ans, e) => {
+    answerElement.innerHTML += ans.answer + "<br />"
+})
+            } else {
+                answerElement.innerHTML = elm.description
+                questionElm.innerHTML = ""
+            }
+            
+
+            card.appendChild(imageQuestionElm)
+            card.appendChild(br)
+            card.appendChild(questionElm)
+            card.appendChild(answerElement)
+            })
+        }
+
+       else{
+            responseData.data.challenge.kahoot.questions.map((elm, i) => {
+            const br = document.createElement("br")
 
             const card = document.createElement("div")
             card.setAttribute("class", "card")
             document.body.appendChild(card)
             const imageQuestionElm = document.createElement("img")
-            imageQuestionElm.src = elm.question.image
+            imageQuestionElm.src = elm.image 
             imageQuestionElm.setAttribute("id", "questionImage")
 
             const questionElm = document.createElement("p")
             questionElm.setAttribute("id", "question")
-            questionElm.innerHTML = elm.question.text
-
+            questionElm.innerHTML = elm.question
 
             const answerElement = document.createElement("p")
-            answerElement.setAttribute("id", "answer")
-            answerElement.innerHTML = elm.answers[0].text
+            answerElement.setAttribute("id","answer")
+            const answerFilter = elm.choices.filter((answer) => answer.correct == true)
 
-            
+            answerFilter.forEach((ans, e) => {
+                answerElement.innerHTML += ans.answer + " "
+            })
+
             card.appendChild(imageQuestionElm)
             card.appendChild(br)
             card.appendChild(questionElm)
             card.appendChild(answerElement)
         })
+        } 
+        
     })
     window.addEventListener('load', (event) => {
         // fetch('/kahoot/data')

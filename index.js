@@ -289,16 +289,34 @@ app.post('/kahoot/uuid', (req, res) => {
 
     //     return res.status(400).send("Invalid Kahoot quizid")
     // })
-    fetch(`https://api.quizit.online/kahoot/answers?quizId=${uuid}`)
-        .then((response) => response.json())
-        .then(data => {
-            req.session.kahootData = data
+    // fetch(`https://api.quizit.online/kahoot/answers?quizId=${uuid}`)
+    //     .then((response) => response.json())
+    //     .then(data => {
+    //         req.session.kahootData = data
 
-            return res.render('kahootRoom')
-        })
-        .catch((error) => {
-            return res.send(error)
-        })
+    //         return res.render('kahootRoom')
+    //     })
+    //     .catch((error) => {
+    //         return res.send(error)
+    //     })
+
+    fetch(`https://balancer.schoolcheats.net/kahoot/getAnswers`, {
+        method:"post",
+        body:JSON.stringify({
+            input: uuid
+        }),
+        headers:{
+            "Content-Type":"application/json"
+        }
+    }).then((response) => response.json())
+    .then(data => {
+        req.session.kahootData = data
+
+        return res.render('kahootRoom')
+    })
+    .catch((error) => {
+        return res.send(error)
+    })
         // .then((responseJson) => {
         //     // Do something with the response
 
