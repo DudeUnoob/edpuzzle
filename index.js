@@ -452,10 +452,10 @@ app.get('/test/route', (req, res) => {
     res.render('test')
 })
 
-app.get('/access', (req, res) => {
+/*app.get('/access', (req, res) => {
   req.session.passport = true
   res.render('access')
-})
+})*/
 
 app.listen(process.env.PORT || 3000, () => {
     console.log('http://localhost:3000')
