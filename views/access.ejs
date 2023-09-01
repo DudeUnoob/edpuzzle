@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Unpuzzle">
+    <meta property="og:title" content="Unpuzzle">
+    <meta property="og:description"
+        content="Get any and all the edpuzzle answers for free">
+    <meta property="og:image"
+        content="https://media.discordapp.net/attachments/961105604829659196/1027775283346026536/EH2.png">
+
+    <title>Unpuzzle</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-91CBMKRN8Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-91CBMKRN8Y');
+  </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+        video{
+         height: 100%;
+         width: 100%;
+         padding: 10px;
+        }
+* {
+  font-family: 'Fredoka One', cursive;
+  font-weight: 100;
+  overflow-x: hidden;
+  
+  padding: 0px;
+  margin:0px;
+}
+/* ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 8px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+} */
+ul {
+  float: right;
+  
+}
+ul li {
+  margin-right: 65px;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 8px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  
+}
+div.topnav.responsive {
+  position: fixed;
+}
+.topnav a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  background-color: #3cc6f9;
+  
+ 
+}
+.topnav a:hover {
+  
+}
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+.topnav .icon {
+  display: none;
+}
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+    
+  }
+}
+li {
+  float: left;
+}
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a {
+  background-color: #3cc6f9;
+}
+.active {
+  background-color: #3cc6f9;
+}
+header {
+  height: 200vh;
+}
+#howto{
+  justify-content: center;
+  text-align: center;
+  margin-top: 30px;
+}
+form{
+  display: flex;
+    justify-content: space-evenly;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    align-items: stretch;
+    align-content: center;
+    padding: 25px;
+}
+input {
+    border: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #f2f2f2;
+  padding: 12px;
+  border-radius: 3px;
+  width: 300px;
+  font-size: 14px;
+  height: 25px;
+  
+}
+button {
+   
+    background-color: rgb(204, 201, 201);
+    cursor: pointer;
+    border: none;
+    height: 35px;
+    
+ }
+ button:hover{
+  background-color: darkgrey;
+ }
+.container {
+  /* hide fixed overflow contents */
+  clip: rect(0, auto, auto, 0);
+  /* does not work if overflow = visible */
+  overflow: hidden;
+  /* only works with absolute positioning */
+  position: absolute;
+  /* Make sure containers are full-width and height */
+  height: 100vh;
+  left: 0;
+  width: 100%;
+  
+  
+  /* safari hack */
+  -webkit-mask-image: -webkit-linear-gradient(top, #ffffff 0%,#ffffff 100%);
+}
+.container_solid {
+  background: white;
+  
+  /* position this container at the top of its parent element */
+  top: 0;
+}
+.title_wrapper {
+  position: fixed;
+  display: block;  
+  margin: auto;
+  width: 100%;
+  /* center the text wrapper vertically */
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+   
+}
+.title_wrapper h1 {
+  text-align: center;
+  font-size: 64px;
+  text-transform: uppercase;
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+  font-weight: 900;
+}
+.title_wrapper p {
+  text-align: center;
+  color: white;
+}
+.container_solid .title_wrapper h1 {
+  /* the text background */
+  background: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
+  background-size: 100vw auto;
+  background-position: center;
+  
+  /* clip the text is possible */
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  
+  /* fallback text color */
+  color: black;
+}
+.container_image {
+  /* Grab a free image from unsplash */
+  background-image: url("/router/public/images/backgroundDarkVoid.png");
+  background-size:100vw auto;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  /* position the second container below the first container */
+  top: 100vh;
+}
+.container_image .title_wrapper h1 {
+  color: white;
+}
+section {
+  min-height: 100vh;
+  padding: 2em;
+  margin: auto;
+  max-width: 800px;
+}
+section h2 {
+  font-family: 'Fraunces', serif;
+}
+section p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+.form1, .form2{
+  text-align: center;
+  align-items: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.bg {
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.2);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+text-align: center;
+margin-top: 20px;
+margin-bottom: 20px;
+transition: 0.5s;
+}
+.bg h1 {
+  font-size: xx-large;
+}
+.card h1 {
+  font-size: x-large;
+}
+body {
+  background-image: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
+}
+.bg:hover {
+  cursor: pointer;
+  /* box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52); */
+  
+}
+
+#profile_link {
+  color:white;
+}
+
+#profile_link:hover {
+  color:rgb(67, 141, 252);
+}
+
+.topnav {
+  z-index: 1;
+}
+.card {
+    
+    margin: 20px;
+    padding: 20px;
+    width: 500px;
+    min-height: 200px;
+    /* display: grid; */
+    /* grid-template-rows: 20px 50px 1fr 50px; */
+    border-radius: 10px;
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+    transition: all 0.5s;
+   
+  }
+  .card:hover {
+    box-shadow: 0px 4px 19px 5px rgba(0,0,0,0.52);
+  }
+  @media (max-width: 600px) {
+          #edpuzzle_title, #kahoot_title, #quizziz_title, #quizlet_title {
+            font-size: small;
+          }
+
+          .bg {
+    min-height: 50vw;
+  }
+          
+          #new_item {
+            position: relative;
+            top:50px
+          }
+
+          .form1,.form2 {
+            flex-direction: column;
+          }
+
+          img {
+            max-width: 100%;
+          }
+
+          #quizziz_card {
+            padding: 55px;
+          }
+
+          .card {
+            max-width:75%;
+          }
+
+          #quizlet_logo {
+            max-width: 100%;
+            max-height: 125px;
+            
+          }
+  }
+  a#mything {
+    padding: 0px; 
+    margin-right: 5px;
+  }
+  #myList:hover {
+    display: flex;
+  }
+  
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+
+  footer{
+    
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1492c0;
+    height: auto;
+    width: 100vw;
+    padding-top: 40px;
+    color: white;
+}
+
+.footer-content {
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.footer-content h3 {
+  font-size: 2.1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  line-height: 3rem;
+}
+
+.footer-content p{
+    max-width: 500px;
+    line-height: 28px;
+    font-size: 14px;
+   
+}
+
+.socials{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0 3rem 0;
+    
+}
+ 
+.socials li{
+    margin: 0 10px;
+    
+}
+ 
+.socials a{
+    background: transparent;
+}
+  
+    </style>
+</head>
+<body>
+    <!-- <h1>
+        Enter Edpuzzle token
+    </h1> -->
+
+    
+    <!-- <form action="/edpuzzle/token" method="post">
+        <input type="text" name="token" placeholder="edpuzzle token"/>
+        <button type="submit">Get Answers!</button>
+         </form>
+    
+    <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video> -->
+    
+    
+
+    <!-- <ul>
+      
+      <li><a href="/dashboard" class="active">Dashboard</a></li>
+       <li><a href="/router/discord">Discord Auth</a></li>
+      
+     
+    </ul> -->
+    <div class="topnav" id="myTopnav">
+      <a href="/" class="active">Home</a>
+      <a href="/dashboard/main_dashboard">Dashboard</a>
+      <a href="/logout">Logout</a>
+      
+      
+      <div style="cursor:pointer;" onmouseenter="testFunction()" onmouseleave="testFunction2()">
+        
+      </div>  
+      <a id="mything" style="float: right; background: none; "><img style="max-width: 40px;max-height:40px; border-radius: 50%; margin-right: 5px; margin-top: 2px;"/></a>
+
+      <a style="float: right; background: none; color:black;">Guest</a> 
+        
+         <ul id="li" style="display: none; z-index: 0;">
+          <li>Hello</li>
+        </ul>
+        
+         
+        
+      
+      
+     
+          
+        
+      <!-- <a href="#about">About</a> -->
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+    
+<header>
+
+    <!-- First container -->
+    <div class="container container_solid">
+      <div class="title_wrapper">
+        <h1>Unpuzzle</h1>
+        
+      </div>
+    </div>
+  
+    <!-- Second container -->
+    <div class="container container_image" aria-hidden="true">
+      <div class="title_wrapper">
+        <h1>Why Us?</h1>
+        <p id="persuasion">We're the best way to get your edpuzzle, kahoot, and more answers!</p>
+        <p>With many more coming in the future...</p>
+        <p><i style="cursor:pointer;">Created by <a id="profile_link" href="https://www.instagram.com/damodar_kamanii/">@dom</a></i></p>
+      </div>
+    </div>
+  
+  </header>
+  
+  <section class="bg">
+    <h1>Get Answers</h1>
+    
+    <div class="form1">
+      
+      <!-- <h1>Sign in with Token</h1>
+    <form action="/edpuzzle/token" method="post">
+      <button type="submit">Get Answers!</button>
+        <input type="text" name="token" placeholder="edpuzzle token" required/>
+        
+    </form> -->
+    <!-- <h1 style="font-style: italic; text-decoration: underline;">or</h1> -->
+  
+    <div class="card" onclick="edpuzzleInfo()">
+      <h1 id="edpuzzle_title">Edpuzzle</h1>
+      <img src="https://media.discordapp.net/attachments/961105604829659196/1035936188462288906/unknown.png" id="edpuzzle_logo" />
+    </div>
+ 
+    
+    <div class="card" onclick="kahootInfo()">
+      <h1 id="kahoot_title">Kahoot</h1>
+      <img src="https://media.discordapp.net/attachments/961105604829659196/1035936248025596045/unknown.png" id="kahoot_logo" />
+      <p id="new_item" style="font-style: italic; font-weight: bold">New kahoot botter!</p>
+    </div>
+
+    <div class="card" onclick="quizletInfo()">
+      <h1 id="quizlet_title">Quizlet</h1>
+      <img src="https://media.discordapp.net/attachments/953660750285664330/1046440242581884948/unknown.png" id="quizlet_logo"/>
+      <p id="new_item" style="font-style: italic; font-weight: bold">New!</p>
+    </div>
+
+    <div class="card" onclick="quizzizInfo()" id="quizziz_card">
+      
+      <h1 id="quizziz_title">Quizziz</h1>
+      <img src="https://media.discordapp.net/attachments/953660750285664330/1046440635349086348/unknown.png" id="quizziz_logo"/>
+      <p id="new_item" style="font-style: italic; font-weight:bold">New!</p>
+      <p id="new_item" style="color:red;font-weight: bold; font-style: italic;" >Premium!</p>
+    </div>
+    
+  </div>
+  <br />
+  <!-- <div class="form2">
+    <h1>Username and Password</h1>
+    <form action="/edpuzzle/login" method="post">
+      <button type="submit">Get Answers!</button>
+      <input type="password" name="password" placeholder="password" required/>
+      <input type="text" name="username" placeholder="username" required/>
+      
+  </form>
+</div> -->
+    
+    <!-- <h1 id="howto">How to get Your Token</h1>
+    <p id="howto">(Do <b>NOT</b> leak your token or people can <b>hack your account!!</b>)</p>
+    <p id="howto">(Made by <b>dom#3755</b> on discord. Check out my <a href="https://github.com/DudeUnoob">github!</a> )</p>
+    <video src="/edpuzzlehax1.mp4" type="video/mp4" muted autoplay loop poster="/edpuzzlehax1.mp4"></video> -->
+  </section>
+  <footer>
+    <div class="footer-content">
+      <h3>About This</h3>
+      <p>In October of 2022, I randomly decided</p>
+      <p>why not make a website to get "help"</p>
+      <p style="font-style: italic; color: rgb(34, 22, 22);">dom ✌</p>
+
+      
+        <div class="socials">
+        <li><a href="https://www.linkedin.com/in/damodar-kamani-a7204123a/" target="_blank"><i class="fa fa-linkedin" style="font-size: 36px;"></i></a></li>
+        <li><a href="https://www.instagram.com/damodar_kamanii/" target="_blank"><i class="fa fa-instagram" style="font-size: 36px;"></i></a></li>
+        <li><a href="https://github.com/dudeunoob" target="_blank"><i class="fa fa-github" style="font-size: 36px;"></i></a></li>
+      </div>
+  </div>
+  </footer>
+</body>
+
+<script>
+  function edpuzzleInfo(){
+    return window.location.href = '/edpuzzle/info'
+  }
+  function kahootInfo(){
+    return window.location.href = '/kahoot/info'
+  }
+
+  function quizletInfo() {
+    return window.location.href = '/quizlet/info'
+  }
+
+  function quizzizInfo(){
+    return window.location.href = '/quizziz/info'
+  }
+  function myFunction() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+function testFunction(){
+  const ele = document.getElementById("li")
+  ele.style.display = 'flex' 
+}
+function testFunction2(){
+  const ele = document.getElementById("li")
+  ele.style.display = 'none' 
+}
+
+fetch('/api/v1/user/premium/role').then(res => res.json()).then(data => console.log(data))
+</script>
+</html>
