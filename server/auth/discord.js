@@ -1,7 +1,7 @@
 //https://discord.com/api/oauth2/authorize?client_id=1039205411934453831&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Frouter%2Fapi%2Fv1%2Fdiscord&response_type=code&scope=identify%20email%20guilds%20connections
 const passport = require('passport')
 const { Strategy } = require('passport-discord')
-const host = "https://puzzlehax.ml"
+const host = "https://unpuzzle.org"
 const localHost = "http://localhost:3000"
 const localIp = "http://192.168.86.235:3000"
 const replHost = "https://edpuzzle.dudeunoob.repl.co"

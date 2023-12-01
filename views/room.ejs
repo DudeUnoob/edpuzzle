@@ -38,11 +38,14 @@
              const card = document.createElement('div')
              card.classList = 'card'
              
-            card.setAttribute("onclick",`redirectLesson('${elm._id}')`)
+            card.setAttribute("onclick",`redirectLesson('${elm.teacherAssignments[0]}')`)
 
              let textNode = document.createTextNode(elm.title)
              document.body.appendChild(card)
-             card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm._id}')><b>${elm.title}</b></h1></p>`
+             /*card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm._id}')><b>${elm.title}</b></h1></p>`*/
+           card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm.teacherAssignments[0]}')><b>${elm.title}</b></h1></p>`
+
+           console.log(elm.teacherAssignments[0])
 
              
      
