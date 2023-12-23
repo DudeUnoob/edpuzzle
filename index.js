@@ -141,6 +141,19 @@ app.get('/edpuzzle/room/:classroom_id/:lesson_id', async(req, res) => {
     ).then(data => res.render('lesson', { classroom_id: req.params.classroom_id, token: req.session.token, data: data, lesson_id: req.params.lesson_id }))
 })
 
+app.post("/edpuzzle/set_attempt_id", async(req, res) => {
+    const attempt_id = req.body.attempt_id
+
+    req.session.attempt_id = attempt_id
+
+    res.json({ message: "Set the ATTEMPT_ID" })
+
+})
+
+app.get("/edpuzzle/get_attempt_id", (req, res) => {
+    res.json({ attempt_id: req.session.attempt_id })
+})
+
 app.get('/test2', async(req, res) => {
     /*fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${id}/students?needle=`, {
         headers: {
@@ -198,13 +211,13 @@ app.post('/edpuzzle/login', (req, res) => {
     let cookieHeader;
     console.log(username, password)
 
-    fetch('https://edpuzzle.com/api/v3/csrf').then((response) => {
-        const arr = [...response.headers]
-        setCookie = arr[11][1]
-        cookieHeader = setCookie.slice(0, 37)
+    // fetch('https://edpuzzle.com/api/v3/csrf').then((response) => {
+    //     const arr = [...response.headers]
+    //     setCookie = arr[11][1]
+    //     cookieHeader = setCookie.slice(0, 37)
 
-        //console.log(arr)
-        console.log(cookieHeader)
+    //     //console.log(arr)
+    //     console.log(cookieHeader)
 
 
         //axios.get('http://localhost:3000/edpuzzle/csrf')
@@ -226,7 +239,7 @@ app.post('/edpuzzle/login', (req, res) => {
         // })
 
 
-        axios.get(`${host}/edpuzzle/csrf`)
+        axios.get(`${localhost}/edpuzzle/csrf`)
             .then(get => {
 
                 //console.log(get.data)
@@ -270,7 +283,7 @@ app.post('/edpuzzle/login', (req, res) => {
             })
         
 
-    })
+    // })
 
 
 

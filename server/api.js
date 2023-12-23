@@ -4,7 +4,8 @@ const apiRouter = express.Router();
 const bodyParser = require('body-parser')
 const path = require('path')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const config = require("./config/botconfig.json")
+const config = require("./config/botconfig.json");
+const axios = require('axios');
 
 
 apiRouter.use(bodyParser.urlencoded({ extended: true }));
@@ -55,6 +56,7 @@ apiRouter.get('/v1/user/premium/role', (req, res) => {
         }
         
     })
+
 })
 
 apiRouter.get('/v1/guild/members', (req, res) => {
@@ -113,6 +115,41 @@ apiRouter.post('/kahoot/bots', (req, res) => {
         
     })
 })
+
+apiRouter.get('/v1/get_token', (req, res) => {
+    res.send({ token: req.session.token })
+})
+
+apiRouter.post('/v1/edpuzzle/complete-question', async (req, res) => {
+    try {
+        //https://edpuzzle.com/api/v3/attempts/658070bddde980e974ef5361/answers
+
+        // fetch('https://localhost:3000/api/v1/user/premium/role')
+        // .then(res => res.json())
+        // .then(statement => {
+        //     if(statement.premium != true){
+        //         return res.status(400).send("Sorry you need premium to access this!")
+
+
+        //     }
+        // })
+        
+        fetch(`https://edpuzzle.com/api/v3/attempts/${req.session.attempt_id}/answers`, {
+            method:"post",
+            headers:{
+                "Content-Type":"application/json",
+            },
+            body: req.body
+            
+        }).then(res => res.json())
+        .then(data => console.log(data))
+
+        return res.status(200).send("Successfully completed?");
+    } catch (error) {
+        console.error("Error completing question:", error.message);
+        return res.status(500).send({ error: 'Internal Server Error' }); // Handle error appropriately
+    }
+});
 
 apiRouter.get('/user', (req, res) => {
     res.send({ user: req.session.passport.user.user })
