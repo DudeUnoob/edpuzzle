@@ -133,18 +133,42 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res) => {
 
         //     }
         // })
-        
+        const response = await fetch('http://localhost:3000/edpuzzle/csrf')
+
+        const final = await response.json()
+      
+
+        //   fetch(`https://www.unpuzzle.net/api/complete-questions`, {
+        //     method:"post",
+        //     headers:{
+        //       "Content-Type":"application/json",
+              
+        //     },
+        //     body: req.body
+        //   }).then(res => res.json())
+        //   .then(statement => console.log(statement))
+        console.log(req.session.attempt_id)
+        console.log(JSON.stringify(req.body))
         fetch(`https://edpuzzle.com/api/v3/attempts/${req.session.attempt_id}/answers`, {
             method:"post",
             headers:{
                 "Content-Type":"application/json",
+                "Cookie":`token=${req.session.token}; edpuzzleCSRF=FHBpCb2INy6dNw0QZKPGbeKx;`,
+                "x-csrf-token": "0J07nPIa-aL17wtlQe_n-rW3iylXzF-ef8ZY"
             },
-            body: req.body
+            body: JSON.stringify(req.body)
             
-        }).then(res => res.json())
-        .then(data => console.log(data))
+        }).then(response => {
+            if(response.status == 200){
 
-        return res.status(200).send("Successfully completed?");
+                const data = response.json()
+                return res.status(200).json({ message: `Successfully submitted questionId: ${req.body.answers[0].questionId}`, data: data })
+            } else {
+                return res.status(400).json({ error: "Answer failed to submit" })
+            }
+        })
+        
+
     } catch (error) {
         console.error("Error completing question:", error.message);
         return res.status(500).send({ error: 'Internal Server Error' }); // Handle error appropriately

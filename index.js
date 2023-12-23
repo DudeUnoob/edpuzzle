@@ -257,7 +257,6 @@ app.post('/edpuzzle/login', (req, res) => {
                     }
                 })
                     .then(lol => {
-                        //console.log(lol.headers.authorization.slice(7))
                         const token = lol.headers.authorization.slice(7)
                         fetch('https://edpuzzle.com/api/v3/classrooms/active', {
                             headers: {

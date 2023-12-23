@@ -307,26 +307,54 @@
 
           const transformedJsonString = JSON.stringify(transformFunctionTwo, null, 2)
           
+          // fetch("https://www.unpuzzle.net/api/complete-video", {
+          //   method:"post",
+          //   headers:{
+          //     "Content-Type":"application/json"
+          //   },
+          //   body: JSON.stringify({
+          //     csrf: csrfToken,
+          //     userToken: token,
+          //     attemptId: attemptId
+          //   })
+          // })
 
-          fetch(`https://edpuzzle.com/api/v3/attempts/${attemptId}/answers`, {
-            method:"post",
+          // fetch(`https://www.unpuzzle.net/api/complete-questions`, {
+          //   method:"post",
+          //   headers:{
+          //     "Content-Type":"application/json",
+              
+          //   },
+          //   body: JSON.stringify(filter)
+          // }).then(res => res.json())
+          // .then(statement => console.log(statement))
+            console.log(filter)
+          fetch('/api/v1/edpuzzle/complete-question', {
+            method:"POST",
             headers:{
               "Content-Type":"application/json"
-            },
+            }, 
             body: transformedJsonString
-          }).then(res => res.json())
-          .then(statement => console.log(statement))
+          }).then((res) => res.json()).then(data => console.log(data))
 
-         
-        });
+        //   fetch(`https://edpuzzle.com/api/v3/attempts/${attemptId}/answers`, {
+        //     method:"post",
+        //     headers:{
+        //         "Content-Type":"application/json",
+        //     },
+        //     body: transformedJsonString
+            
+        // }).then(res => res.json())
+        // .then(data => console.log(data))
+        // });
       })
       .catch((err) => {
         console.log("You need to log into discord and buy premium to use autoanswer!");
       });
   });
 
-
   }
+  )}
 </script>
 
 <body>
