@@ -242,124 +242,104 @@
   })
 </script>
 <script>
-  let attemptId;
   let csrfToken;
-  async function autoanswerEdpuzzle() {
+  let attemptId;
+  let token;
 
-    fetch('/api/v1/user/premium/role')
-  .then((res) => res.json())
-  .then(data => {
-    if (data.premium !== true) {
-       throw new Error("Premium access error");
-    }
-  })
-  .catch(error => {
-    console.log(error.message);
-    throw error; // Re-throw the error to prevent subsequent .then blocks from executing
-  })
-  .then(() => {
-    let csrfToken;
-    let attemptId;
-    let token;
-    
-    fetch('/edpuzzle/csrf')
-      .then((res) => res.json())
-      .then(data => csrfToken = data.CSRFToken);
+  async function fetchData() {
+    try {
+      const [csrfResponse, attemptIdResponse, tokenResponse, testData] = await Promise.all([
+        fetch('/edpuzzle/csrf').then(res => res.json()),
+        fetch('/edpuzzle/get_attempt_id').then(res => res.json()),
+        fetch('/api/v1/get_token').then(res => res.json()),
+        fetch('/test2').then(res => res.json())
+      ]);
 
-    fetch('/edpuzzle/get_attempt_id')
-      .then((res) => res.json())
-      .then(data => attemptId = data.attempt_id);
+      csrfToken = csrfResponse.CSRFToken;
+      attemptId = attemptIdResponse.attempt_id;
+      token = tokenResponse.token;
 
-    fetch('/api/v1/get_token')
-      .then((res) => res.json())
-      .then(data => token = data.token);
+      testData.edpuzzle.answers.forEach(async (elm) => {
+        const multipleChoiceFilter = elm.choices.filter(ans => ans.isCorrect === true);
+        const transformed = multipleChoiceFilter.map(item => ({
+          choiceText: item.body[0].html,
+          choiceNumber: item.choiceNumber.toString(),
+          choiceID: item._id
+        }));
 
-    fetch('/test2')
-      .then(res => res.json())
-      .then(data => {
-        data.edpuzzle.answers.map((elm, i) => {
-          const multipleChoiceFilter = elm.choices.filter(ans => ans.isCorrect === true);
+        const filter = {
+          correctChoices: transformed,
+          attemptId: attemptId,
+          questionId: elm._id,
+          type: elm.type,
+          csrf: csrfToken,
+          userToken: token
+        };
 
-          const transformed = multipleChoiceFilter.map(item => ({
-            choiceText: item.body[0].html,
-            choiceNumber: item.choiceNumber.toString(),
-            choiceID: item._id
-          }));
+        const transformFunctionTwo = {
+          answers: [
+            {
+              type: elm.type,
+              questionId: elm._id,
+              choices: filter.correctChoices.map(choice => choice.choiceID)
+            }
+          ]
+        };
 
-          const filter = {
-            correctChoices: transformed,
-            attemptId: attemptId,
-            questionId: elm._id,
-            type: elm.type,
-            csrf: csrfToken,
-            userToken: token
-          };
+        const transformedJsonString = JSON.stringify(transformFunctionTwo, null, 2);
+        console.log(filter);
 
-          const transformFunctionTwo = {
-            answers: [
-              {
-                type: elm.type,
-                questionId: elm._id,
-                choices: filter.correctChoices.map(choice => choice.choiceID)
-              }
-            ]
-          }
+        const completeQuestionResponse = await fetch('/api/v1/edpuzzle/complete-question', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: transformedJsonString
+        });
 
-          const transformedJsonString = JSON.stringify(transformFunctionTwo, null, 2)
-          
-          // fetch("https://www.unpuzzle.net/api/complete-video", {
-          //   method:"post",
-          //   headers:{
-          //     "Content-Type":"application/json"
-          //   },
-          //   body: JSON.stringify({
-          //     csrf: csrfToken,
-          //     userToken: token,
-          //     attemptId: attemptId
-          //   })
-          // })
+        const completeQuestionData = await completeQuestionResponse.json();
+        console.log(completeQuestionData);
 
-          // fetch(`https://www.unpuzzle.net/api/complete-questions`, {
-          //   method:"post",
-          //   headers:{
-          //     "Content-Type":"application/json",
-              
-          //   },
-          //   body: JSON.stringify(filter)
-          // }).then(res => res.json())
-          // .then(statement => console.log(statement))
-            console.log(filter)
-          fetch('/api/v1/edpuzzle/complete-question', {
-            method:"POST",
-            headers:{
-              "Content-Type":"application/json"
-            }, 
-            body: transformedJsonString
-          }).then((res) => res.json()).then(data => console.log(data))
+        const asyncGetTeacherAssignment = await fetch('/edpuzzle/get_teacher_assignment_id');
+        const responseGetTeacherAssignmentData = await asyncGetTeacherAssignment.json();
+        const teacherAssignmentMediaId = responseGetTeacherAssignmentData.teacherAssignmentMediaId;
 
-        //   fetch(`https://edpuzzle.com/api/v3/attempts/${attemptId}/answers`, {
-        //     method:"post",
-        //     headers:{
-        //         "Content-Type":"application/json",
-        //     },
-        //     body: transformedJsonString
-            
-        // }).then(res => res.json())
-        // .then(data => console.log(data))
-        // });
-      })
-      .catch((err) => {
-        console.log("You need to log into discord and buy premium to use autoanswer!");
+        setTimeout(async() => {
+          const skipPOne = await fetch(`https://edpuzzle.com/api/v4/media_attempts/${attemptId}/watch`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Csrf-Token": csrfToken,
+              "X-Edpuzzle-Referrer": `https://edpuzzle.com/assignments/${teacherAssignmentMediaId}/watch`,
+              "X-Edpuzzle-Web-Version": "7.35.28",
+              "Cookie":`token=${token}; edpuzzleCSRF=nkRQuDvP_ILq3jd_qtcaC-89;`
+            },
+            body: JSON.stringify({
+              timeIntervalNumber: 10
+            }),
+            credentials: "include"
+          });
+        }, 3000)
+        
+
+        
       });
-  });
-
+    } catch (err) {
+      console.log("You need to log into discord and buy premium to use autoanswer!");
+    }
   }
-  )}
+
+  // Call the fetchData function
+ async function autoAnswerEdpuzzle() {
+   fetchData();
+
+ }
+
 </script>
 
 <body>
   <div class="heading">
-    <button class="autoanswer" onclick="autoanswerEdpuzzle()">Autoanswer</button>
+    <button class="autoanswer" onclick="autoAnswerEdpuzzle()">Autoanswer</button>
   </div>
 </body>
 

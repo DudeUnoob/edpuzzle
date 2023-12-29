@@ -6,6 +6,7 @@ const path = require('path')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const config = require("./config/botconfig.json");
 const axios = require('axios');
+const checkPremiumUser = require("./middleware/premiumUser");
 
 
 apiRouter.use(bodyParser.urlencoded({ extended: true }));
@@ -120,7 +121,7 @@ apiRouter.get('/v1/get_token', (req, res) => {
     res.send({ token: req.session.token })
 })
 
-apiRouter.post('/v1/edpuzzle/complete-question', async (req, res) => {
+apiRouter.post('/v1/edpuzzle/complete-question', async (req, res, next) => {
     try {
         //https://edpuzzle.com/api/v3/attempts/658070bddde980e974ef5361/answers
 

@@ -154,6 +154,18 @@ app.get("/edpuzzle/get_attempt_id", (req, res) => {
     res.json({ attempt_id: req.session.attempt_id })
 })
 
+app.post('/edpuzzle/set_teacher_assignment_id', async(req, res) => {
+  req.session.teacherAssignmentMediaId = req.body.teacherAssignmentMediaId
+
+  res.status(200).json({ teacherAssignmentMediaId: req.body.teacherAssignmentMediaId })
+
+})
+
+app.get('/edpuzzle/get_teacher_assignment_id', (req, res) => {
+
+  res.status(200).json({ teacherAssignmentMediaId: req.session.teacherAssignmentMediaId })
+})
+
 app.get('/test2', async(req, res) => {
     /*fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${id}/students?needle=`, {
         headers: {
@@ -239,7 +251,7 @@ app.post('/edpuzzle/login', (req, res) => {
         // })
 
 
-        axios.get(`${localhost}/edpuzzle/csrf`)
+        axios.get(`${host}/edpuzzle/csrf`)
             .then(get => {
 
                 //console.log(get.data)
