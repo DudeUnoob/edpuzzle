@@ -6,7 +6,7 @@ const path = require('path')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const config = require("./config/botconfig.json");
 const axios = require('axios');
-
+const { routerHost } = require("./config/config.json")
 
 apiRouter.use(bodyParser.urlencoded({ extended: true }));
 apiRouter.use(express.json())
@@ -136,10 +136,20 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res, next) => {
         if(!req.session.passport.user.user){
             return res.status(400).send({ message: "Sorry you need to be logged in with discord to access this!", statusCode: 400 })
         } else {
-            fetch(`https://unpuzzle.org/api/v1/user/premium/role`).then((response) => response.json())
+            fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bot ${config.token}`
+                }
+            }).then(response => response.json())
             .then(async data => {
-                if(data.premium == false){
+                const filter = data.roles.filter(role => role == "1044668796771782716")
+
+                if(filter.length == 0){
+        
+                    
                     return res.status(400).send({ message: "Sorry you need to have premium to access this! Get it here: http://patreon.com/DomK", statusCode: 400 })
+        
                 } else {
                     const response = await fetch('http://localhost:3000/edpuzzle/csrf')
 
