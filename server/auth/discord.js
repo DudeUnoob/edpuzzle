@@ -5,6 +5,7 @@ const host = "https://unpuzzle.org"
 const localHost = "http://localhost:3000"
 const localIp = "http://192.168.86.235:3000"
 const replHost = "https://edpuzzle.dudeunoob.repl.co"
+const { routerHost } = require("../config/config.json")
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const config = require('../config/botconfig.json')
 
@@ -36,7 +37,7 @@ passport.use(
 new Strategy({
     clientID: "1039205411934453831",
     clientSecret: "mDwqeKHbicyRg_qjK6kleQO4N0Y4jt1P",
-    callbackURL: `${host}/router/api/auth/redirect`,
+    callbackURL: `${routerHost}/router/api/auth/redirect`,
     scope: ['identify', 'email', 'guilds', 'guilds.join']
 
 

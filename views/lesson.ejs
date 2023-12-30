@@ -18,6 +18,8 @@
   <meta property="og:image"
     content="https://media.discordapp.net/attachments/961105604829659196/1027775283346026536/EH2.png">
   <title>Edpuzzle</title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-91CBMKRN8Y"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -256,7 +258,7 @@
       ]);
 
       csrfToken = csrfResponse.CSRFToken;
-      attemptId = attemptIdResponse.attempt_id;
+      attemptId = attemptIdResponse.attempt_id != null ? attemptIdResponse.attemptId : window.localStorage.getItem("attemptId");
       token = tokenResponse.token;
 
       testData.edpuzzle.answers.forEach(async (elm) => {
@@ -299,28 +301,56 @@
 
         const completeQuestionData = await completeQuestionResponse.json();
         console.log(completeQuestionData);
+        if(completeQuestionData.statusCode == 200){
+          Toastify({
+            text: "Successfully autoanswered question-id ✅: " + elm._id,
+            duration: 5000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+              background: "linear-gradient(to right, rgb(0, 176, 155), rgb(150, 201, 61))"
+            }
+          }).showToast();
+        } else {
+          Toastify({
+            text: "There was an error autoanswering question-id ⚠️: " + elm._id + "\n Make sure you are logged in with discord and have premium! Get it here at http://patreon.com/DomK",
+            duration: 5000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+              background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))"
+            }
+          }).showToast();
+        }
 
-        const asyncGetTeacherAssignment = await fetch('/edpuzzle/get_teacher_assignment_id');
-        const responseGetTeacherAssignmentData = await asyncGetTeacherAssignment.json();
+        // const asyncGetTeacherAssignment = await fetch('/edpuzzle/get_teacher_assignment_id');
+        // const responseGetTeacherAssignmentData = await asyncGetTeacherAssignment.json();
         const teacherAssignmentMediaId = responseGetTeacherAssignmentData.teacherAssignmentMediaId;
 
-        setTimeout(async() => {
-          const skipPOne = await fetch(`https://edpuzzle.com/api/v4/media_attempts/${attemptId}/watch`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-Csrf-Token": csrfToken,
-              "X-Edpuzzle-Referrer": `https://edpuzzle.com/assignments/${teacherAssignmentMediaId}/watch`,
-              "X-Edpuzzle-Web-Version": "7.35.28",
-              "Cookie":`token=${token}; edpuzzleCSRF=nkRQuDvP_ILq3jd_qtcaC-89;`
-            },
-            body: JSON.stringify({
-              timeIntervalNumber: 10
-            }),
-            credentials: "include"
-          });
-        }, 3000)
+        // setTimeout(async() => {
+        //   const skipPOne = await fetch(`https://edpuzzle.com/api/v4/media_attempts/${attemptId}/watch`, {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       "Cookie":`edpuzzleCSRF=tGQHPZ1sphZUeSCEWhFqArrx;token=${token};`,
+        //       "X-Csrf-Token": csrfToken,
+        //       "X-Edpuzzle-Referrer": `https://edpuzzle.com/assignments/${teacherAssignmentMediaId}/watch`,
+        //       "X-Edpuzzle-Web-Version": "7.35.28",
+        //       "Referer":"https://unpuzzle.org/"
+        //     },
+        //     body: JSON.stringify({
+        //       timeIntervalNumber: 10
+        //     }),
+        //   });
+        // }, 3000)
         
+        // await fetch('/api/v1/skip_video', {
+        //   method:"POST"
+        // })
 
         
       });

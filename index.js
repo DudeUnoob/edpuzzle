@@ -8,6 +8,7 @@ const session = require('express-session')
 const replHost = "https://edpuzzle.dudeunoob.repl.co"
 let host = 'https://unpuzzle.org'
 const localhost = 'http://localhost:3000'
+const { routerHost } = require("./server/config/config.json")
 const router = require('./server/router')
 const passport = require('passport')
 const dashboardRouter = require('./server/dashboard')
@@ -111,8 +112,11 @@ app.get('/edpuzzle/classroom/:id', (req, res) => {
         }
     })
         .then(res => res.json()).then(data => {
-            console.log(data)
-            return res.render('room', { id: req.params.id, token: req.session.token, data: data })
+            if(data.errorCode){
+                return res.redirect('/')
+            } else {
+                return res.render('room', { id: req.params.id, token: req.session.token, data: data })
+            }
 
         })
 
@@ -251,7 +255,7 @@ app.post('/edpuzzle/login', (req, res) => {
         // })
 
 
-        axios.get(`${host}/edpuzzle/csrf`)
+        axios.get(`${routerHost}/edpuzzle/csrf`)
             .then(get => {
 
                 //console.log(get.data)

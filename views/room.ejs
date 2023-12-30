@@ -105,15 +105,15 @@
         function redirectLesson(id, attempt_id, teacherAssignmentId){
            console.log(id)
 
-          fetch('/edpuzzle/set_teacher_assignment_id', {
-            method:"post",
-            headers:{
-              "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-              teacherAssignmentMediaId: teacherAssignmentId
-            })
-          })
+          // fetch('/edpuzzle/set_teacher_assignment_id', {
+          //   method:"post",
+          //   headers:{
+          //     "Content-Type":"application/json"
+          //   },
+          //   body:JSON.stringify({
+          //     teacherAssignmentMediaId: teacherAssignmentId
+          //   })
+          // })
 
            fetch('/edpuzzle/set_attempt_id', {
             method:"post",
@@ -125,6 +125,8 @@
               attempt_id: attempt_id
             })
            })
+
+           window.localStorage.setItem("attemptId", attempt_id)
            window.location.href = `/edpuzzle/room/${currentId}/${id}` 
         }
          
