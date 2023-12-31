@@ -20,6 +20,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const cors = require('cors')
 const scriptsRouter = require("./server/scripts")
 const isLoggedIn = require('./server/auth/isLoggedIn')
+const client = require('./server/cache/redisConnection')
 app.use(session({
     secret: "helloworld",
     saveUninitialized: true,
@@ -170,30 +171,42 @@ app.get('/edpuzzle/get_teacher_assignment_id', (req, res) => {
   res.status(200).json({ teacherAssignmentMediaId: req.session.teacherAssignmentMediaId })
 })
 
-app.get('/test2', async(req, res) => {
-    /*fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${id}/students?needle=`, {
-        headers: {
-            "Authorization": `Bearer ${req.session.token}`
+app.get('/test2', async (req, res) => {
+    try {
+
+        const lessonData = await client.json.get(req.session.lesson_id);
+        
+        if (lessonData) {
+            console.log("Send redis cached data")
+            res.status(200).send(lessonData);
+            return;  
         }
-    }).then(
-        res => res.json()
-    ).then(data => res.send(data))
-})*/
-  
-   fetch(`https://balancer.schoolcheats.net/edpuzzle/getAnswers`, {
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify({
-      url:`https://edpuzzle.com/assignments/${req.session.lesson_id}/watch`
-    })
-  }).then((res) => res.json())
-  .then(data => res.send(data))
 
-  
+        const response = await fetch(`https://balancer.schoolcheats.net/edpuzzle/getAnswers`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                url: `https://edpuzzle.com/assignments/${req.session.lesson_id}/watch`
+            })
+        });
 
-})
+        const data = await response.json();
+
+        const value = await client.json.set(req.session.lesson_id.toString(), "$", data, { NX: true });
+
+        if (value === "OK") {
+            await client.expire(req.session.lesson_id.toString(), 300);
+        }
+
+        res.status(200).send(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 
 app.get('/lesson_id', (req, res) => {
     res.send({ lesson_id: req.session.lesson_id })
