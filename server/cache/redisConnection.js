@@ -1,6 +1,6 @@
 const { createClient } = require("redis");
 
-const client = createClient({ url: "redis://default:nyaJGHN1JfP87MsY9dJd0dHrckaUoKR4@redis-13764.c326.us-east-1-3.ec2.cloud.redislabs.com:13764" });
+const client = createClient({ url: "" });
 
 client.on("error", (err) => console.log(err));
 
