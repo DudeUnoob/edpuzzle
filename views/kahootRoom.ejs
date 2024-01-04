@@ -132,9 +132,9 @@
     .then(responseData => {
         const title = document.createElement("h1")
         const divQuestions = document.getElementById("questions")
-        console.log(responseData.kahoot.hasOwnProperty("questions"))
-        if(responseData.kahoot.hasOwnProperty("questions")){
-            responseData.kahoot.questions.map((elm, i) => {
+        console.log(responseData.hasOwnProperty("questions"))
+        if(responseData.hasOwnProperty("questions")){
+            responseData.questions.map((elm, i) => {
                 const br = document.createElement("br")
 
             const card = document.createElement("div")

@@ -21,6 +21,7 @@ const cors = require('cors')
 const scriptsRouter = require("./server/scripts")
 const isLoggedIn = require('./server/auth/isLoggedIn')
 const client = require('./server/cache/redisConnection')
+const getQueryParamByName = require("./server/functions/getQueryParamByName")
 app.use(session({
     secret: "helloworld",
     saveUninitialized: true,
@@ -41,12 +42,12 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    if (req.session.passport == true){
-      req.session.destroy()
-      res.redirect('/')
+    if (req.session.passport == true) {
+        req.session.destroy()
+        res.redirect('/')
     }
 
-    if(req.session.passport == undefined){
+    if (req.session.passport == undefined) {
         res.render('index')
     } else {
         res.render('index_data', { data: req.session.passport })
@@ -81,7 +82,7 @@ app.post('/edpuzzle/token', (req, res) => {
     })
 
 
-//C:\Users\tokri\Downloads\edpuzzle\server\public\404\unauthorized.html
+    //C:\Users\tokri\Downloads\edpuzzle\server\public\404\unauthorized.html
 })
 
 
@@ -89,7 +90,7 @@ app.post('/edpuzzle/token', (req, res) => {
 app.get('/edpuzzle/dashboard', (req, res) => {
 
     if (!req.session.token) {
-        res.status(404).sendFile('notloggedin.html', { root: path.join(__dirname, '/server/public/404')})
+        res.status(404).sendFile('notloggedin.html', { root: path.join(__dirname, '/server/public/404') })
     }
     else {
         res.render('dashboard', { edpuzzleData: req.session.edpuzzleData, token: req.session.token, })
@@ -113,7 +114,7 @@ app.get('/edpuzzle/classroom/:id', (req, res) => {
         }
     })
         .then(res => res.json()).then(data => {
-            if(data.errorCode){
+            if (data.errorCode) {
                 return res.redirect('/')
             } else {
                 return res.render('room', { id: req.params.id, token: req.session.token, data: data })
@@ -123,8 +124,8 @@ app.get('/edpuzzle/classroom/:id', (req, res) => {
 
 })
 
-app.get('/test', async(req, res) => {
-  fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${id}/students?needle=`, {
+app.get('/test', async (req, res) => {
+    fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${id}/students?needle=`, {
         headers: {
             "Authorization": `Bearer ${req.session.token}`
         }
@@ -133,7 +134,7 @@ app.get('/test', async(req, res) => {
     ).then(data => res.send(data))
 })
 
-app.get('/edpuzzle/room/:classroom_id/:lesson_id', async(req, res) => {
+app.get('/edpuzzle/room/:classroom_id/:lesson_id', async (req, res) => {
     req.session.lesson_id = req.params.lesson_id;
 
 
@@ -146,7 +147,7 @@ app.get('/edpuzzle/room/:classroom_id/:lesson_id', async(req, res) => {
     ).then(data => res.render('lesson', { classroom_id: req.params.classroom_id, token: req.session.token, data: data, lesson_id: req.params.lesson_id }))
 })
 
-app.post("/edpuzzle/set_attempt_id", async(req, res) => {
+app.post("/edpuzzle/set_attempt_id", async (req, res) => {
     const attempt_id = req.body.attempt_id
 
     req.session.attempt_id = attempt_id
@@ -159,27 +160,27 @@ app.get("/edpuzzle/get_attempt_id", (req, res) => {
     res.json({ attempt_id: req.session.attempt_id })
 })
 
-app.post('/edpuzzle/set_teacher_assignment_id', async(req, res) => {
-  req.session.teacherAssignmentMediaId = req.body.teacherAssignmentMediaId
+app.post('/edpuzzle/set_teacher_assignment_id', async (req, res) => {
+    req.session.teacherAssignmentMediaId = req.body.teacherAssignmentMediaId
 
-  res.status(200).json({ teacherAssignmentMediaId: req.body.teacherAssignmentMediaId })
+    res.status(200).json({ teacherAssignmentMediaId: req.body.teacherAssignmentMediaId })
 
 })
 
 app.get('/edpuzzle/get_teacher_assignment_id', (req, res) => {
 
-  res.status(200).json({ teacherAssignmentMediaId: req.session.teacherAssignmentMediaId })
+    res.status(200).json({ teacherAssignmentMediaId: req.session.teacherAssignmentMediaId })
 })
 
 app.get('/test2', async (req, res) => {
     try {
 
         const lessonData = await client.json.get(req.session.lesson_id);
-        
+
         if (lessonData) {
             console.log("Send redis cached data")
             res.status(200).send(lessonData);
-            return;  
+            return;
         }
 
         const response = await fetch(`https://balancer.schoolcheats.net/edpuzzle/getAnswers`, {
@@ -249,67 +250,67 @@ app.post('/edpuzzle/login', (req, res) => {
     //     console.log(cookieHeader)
 
 
-        //axios.get('http://localhost:3000/edpuzzle/csrf')
-        //note to self, get the aws-waf-token to set to header
+    //axios.get('http://localhost:3000/edpuzzle/csrf')
+    //note to self, get the aws-waf-token to set to header
 
 
-        // axios.post('https://edpuzzle.com/api/v3/users/login', { username: username, password: password, role:"student"}, {
-
-        
-        //     headers:{
-        //         'x-csrf-token':`${set.CSRFToken}`,
-        //         "Cookie": `${cookieHeader};`,
-        //         "Content-Type":"application/json",
-        //         "User-Agent":"insomnia/2022.6.0",
-        //         "Accept":"*/*"
-        //     }
-        // }).catch(e => {
-        //     console.log(e)
-        // })
+    // axios.post('https://edpuzzle.com/api/v3/users/login', { username: username, password: password, role:"student"}, {
 
 
-        axios.get(`${routerHost}/edpuzzle/csrf`)
-            .then(get => {
-
-                //console.log(get.data)
-
-                axios.post('https://edpuzzle.com/api/v3/users/login', {
-                    username: username,
-                    password: password,
-                    "role": "student"
-                }, {
-
-                    headers: {
-                        'x-csrf-token': "d0L8Xm4e-qUJs_E82-MvjA4k6LzHWXeK3kM8",
-                        "user-agent": 'insomnia/2022.6.0',
-                        Cookie: "edpuzzleCSRF=QQPFHjyRfWb4FBzALAXM8LBj;"
-                    }
-                })
-                    .then(lol => {
-                        const token = lol.headers.authorization.slice(7)
-                        fetch('https://edpuzzle.com/api/v3/classrooms/active', {
-                            headers: {
-                                "Authorization": `Bearer ${token}`
-                            }
-                        }).then(res => res.json()).then(data => {
-                            if (data.error) {
-                                return res.status(400).send("invalid token")
-                            } else {
-                                edpuzzleData = data;
-                                req.session.token = token;
-                                req.session.valid = true;
-                                req.session.edpuzzleData = data;
-
-                                return res.redirect('/edpuzzle/dashboard')
-                            }
-                        })
+    //     headers:{
+    //         'x-csrf-token':`${set.CSRFToken}`,
+    //         "Cookie": `${cookieHeader};`,
+    //         "Content-Type":"application/json",
+    //         "User-Agent":"insomnia/2022.6.0",
+    //         "Accept":"*/*"
+    //     }
+    // }).catch(e => {
+    //     console.log(e)
+    // })
 
 
+    axios.get(`${routerHost}/edpuzzle/csrf`)
+        .then(get => {
 
+            //console.log(get.data)
+
+            axios.post('https://edpuzzle.com/api/v3/users/login', {
+                username: username,
+                password: password,
+                "role": "student"
+            }, {
+
+                headers: {
+                    'x-csrf-token': "d0L8Xm4e-qUJs_E82-MvjA4k6LzHWXeK3kM8",
+                    "user-agent": 'insomnia/2022.6.0',
+                    Cookie: "edpuzzleCSRF=QQPFHjyRfWb4FBzALAXM8LBj;"
+                }
+            })
+                .then(lol => {
+                    const token = lol.headers.authorization.slice(7)
+                    fetch('https://edpuzzle.com/api/v3/classrooms/active', {
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }).then(res => res.json()).then(data => {
+                        if (data.error) {
+                            return res.status(400).send("invalid token")
+                        } else {
+                            edpuzzleData = data;
+                            req.session.token = token;
+                            req.session.valid = true;
+                            req.session.edpuzzleData = data;
+
+                            return res.redirect('/edpuzzle/dashboard')
+                        }
                     })
 
-            })
-        
+
+
+                })
+
+        })
+
 
     // })
 
@@ -321,12 +322,12 @@ app.post('/edpuzzle/login', (req, res) => {
 })
 
 app.get('/edpuzzle/info', (req, res) => {
-    if(req.session.token){
+    if (req.session.token) {
         res.redirect('/edpuzzle/dashboard')
     } else {
-res.render('edpuzzleInfo')
+        res.render('edpuzzleInfo')
     }
-    
+
 })
 
 app.get('/edpuzzle/csrf', (req, res) => {
@@ -336,131 +337,82 @@ app.get('/edpuzzle/csrf', (req, res) => {
 })
 
 app.get('/kahoot/info', isLoggedIn, (req, res, next) => {
-        res.render('kahootInfo')
+    res.render('kahootInfo')
 })
 
 
-app.post('/kahoot/uuid', async(req, res) => {
+app.post('/kahoot/uuid', async (req, res) => {
     const uuid = req.body.uuid;
-    //https://play.kahoot.it/rest/answers
-    // fetch(`https://play.kahoot.it/rest/kahoots/${uuid}`).then((response) => {
-    //     if (response.ok) {
-    //         return response.json();
-    //     }
+    let endpointUrl;
+    let cacheKey;
 
-    //     return res.status(400).send("Invalid Kahoot quizid")
-    // })
-    // fetch(`https://api.quizit.online/kahoot/answers?quizId=${uuid}`)
-    //     .then((response) => response.json())
-    //     .then(data => {
-    //         req.session.kahootData = data
-
-    //         return res.render('kahootRoom')
-    //     })
-    //     .catch((error) => {
-    //         return res.send(error)
-    //     })
-    function getQueryParamByName(url, name){
-        const urlObj = new URL(url)
-
-        const params = new URLSearchParams(urlObj.search)
-
-        return params.get(name)
-    }
-    const fetchInputRedisData = await client.json.get(uuid)
-
-    if(fetchInputRedisData){
-        console.log("Send kahoot redis cached data")
-        req.session.kahootData = fetchInputRedisData
-        res.render('kahootRoom')
-        return;
-    } else {
-        if(uuid.startsWith("https")){
-            const challengeId = getQueryParamByName(uuid, 'challenge-id')
-            console.log(challengeId)
-    
-            fetch(`https://create.kahoot.it/rest/challenges/${challengeId}?includeKahoot=true`)
-            .then((response) => response.json())
-            .then(async data => {
-                req.session.kahootData = data
-                const value = await client.json.set(challengeId, "$", data, { NX: true })
-
-                if(value === "OK"){
-                    await client.expire(challengeId, 300)
-                }
-                
-                return res.render('kahootRoom')
-            })
-            .catch(error => {
-                return res.send(error)
-            })
-
+    const fetchKahootData = async (url) => {
+        try {
+            const response = await fetch(url);
+            return await response.json();
+        } catch (error) {
+            throw error;
         }
-        else {
-    
-        
-    
-        fetch(`https://create.kahoot.it/rest/kahoots/${uuid}/card/?includeKahoot=true`, {
-            method:"GET"
-        }).then((response) => response.json())
-        .then(async data => {
-            req.session.kahootData = data
-            const value = await client.json.set(uuid, "$", data, { NX: true })
+    };
 
-            if(value === "OK"){
-                await client.expire(uuid, 300)
-            }
-
-            return res.render('kahootRoom')
-        })
-        .catch((error) => {
-            return res.send(error)
-        })
-    }
+    if (uuid.startsWith("https")) {
+        const challengeId = getQueryParamByName(uuid, 'challenge-id');
+        endpointUrl = `https://create.kahoot.it/rest/challenges/${challengeId}?includeKahoot=true`;
+        cacheKey = challengeId;
+    } else {
+        endpointUrl = `https://create.kahoot.it/rest/kahoots/${uuid}/card/?includeKahoot=true`;
+        cacheKey = uuid;
     }
 
-    
-        // .then((responseJson) => {
-        //     // Do something with the response
+    try {
+        let kahootData = await client.json.get(cacheKey);
 
-        //     req.session.kahootData = responseJson
-        //     //console.log(req.session.kahootData)
-        //     return res.render('kahootRoom')
-        // })
-        // .catch((error) => {
-        //     console.log(error)
-        // })
+        if (!kahootData) {
+            const fetchedData = await fetchKahootData(endpointUrl);
+            const { title, questions } = fetchedData.kahoot;
+            await client.json.set(cacheKey, "$", { title, questions }, { NX: true });
+            await client.expire(cacheKey, 300);
+            kahootData = { kahoot: { title, questions } }; // Update kahootData structure for subsequent use
+        } else {
+            
+            req.session.kahootData = kahootData
+
+            res.render('kahootRoom');
+        }
 
 
+    } catch (error) {
+        res.send(error);
+    }
+});
 
-})
 
 app.get('/kahoot/data', (req, res) => {
     res.send(req.session.kahootData)
 })
 
 
-app.get('/quizlet/info',isLoggedIn, (req, res) => {
+app.get('/quizlet/info', isLoggedIn, (req, res) => {
 
-   
-        res.render('quizlet')
-    
+
+    res.render('quizlet')
+
 })
 
 app.post('/quizlet/code', (req, res) => {
     const quizletCode = req.body.quizlet_code
 
-    const finalCode = quizletCode.slice(0,3) + quizletCode.slice(4)
+    const finalCode = quizletCode.slice(0, 3) + quizletCode.slice(4)
 
- 
-        fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`,
+
+    fetch(`https://quizlet.com/webapi/3.8/multiplayer/game-instance?gameCode=${finalCode}`,
         {
-            headers:{
-                "Content-Type":"application/json"
+            headers: {
+                "Content-Type": "application/json"
             }
         })
         .then(response => response.json()).then(stuff => {
-            
+
             req.session.quizletWebsite = stuff.gameInstance.itemId
 
             res.send(stuff)
@@ -468,8 +420,8 @@ app.post('/quizlet/code', (req, res) => {
         .catch(error => {
             res.status(400).send({ message: "Your game couldn't be found!" })
         })
-  
-   
+
+
 })
 
 app.get('/kahoot/room/:quizId', isLoggedIn, (req, res) => {
@@ -487,62 +439,62 @@ app.get('/quizlet/accept', (req, res) => {
 })
 
 app.get('/quizziz/info', (req, res) => {
-  if(req.session.passport  == true){
-    return res.render('quizziz')
-  }
-    if(req.session.passport){
+    if (req.session.passport == true) {
+        return res.render('quizziz')
+    }
+    if (req.session.passport) {
         fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
-            headers:{
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bot ${config.token}`
             }
         }).then(response => response.json())
-        .then(data => {
-            const filter = data.roles.filter(role => role == "1044668796771782716")
-    
-            if(filter.length == 0){
-    
-                
-                //return res.send({ premium: false })
-    
-                return res.send("You do not have premium get it <a href=https://patreon.com/DomK>Here</a>")
-    
-            } else {
-                return res.render('quizziz')
-                //return res.send({ role: filter, premium: true })
-            }
-            
-        })
+            .then(data => {
+                const filter = data.roles.filter(role => role == "1044668796771782716")
+
+                if (filter.length == 0) {
+
+
+                    //return res.send({ premium: false })
+
+                    return res.send("You do not have premium get it <a href=https://patreon.com/DomK>Here</a>")
+
+                } else {
+                    return res.render('quizziz')
+                    //return res.send({ role: filter, premium: true })
+                }
+
+            })
     } else {
         return res.send("Not logged in with <a href=/router/discord>Discord</a>")
     }
 
-   
 
-    
+
+
 })
 
 app.post('/quizziz/code', (req, res) => {
     const code = req.body.quizziz_code
 
     fetch(`https://api.quizit.online/quizizz/answers?pin=${code}`)
-    .then(response => response.json())
-    .then(data => {
-        if(data.message == "Room not found"){
-            return res.status(400).send("Invalid quizziz game")
-        } else {
-            
-        req.session.quizzizData = data
+        .then(response => response.json())
+        .then(data => {
+            if (data.message == "Room not found") {
+                return res.status(400).send("Invalid quizziz game")
+            } else {
 
-        res.render('quizziz_data')
-        }
-    })
+                req.session.quizzizData = data
+
+                res.render('quizziz_data')
+            }
+        })
 })
 
 
 app.get('/quizlet/api/data', (req, res) => {
-   
-    res.send({  website: req.session.quizletWebsite })
+
+    res.send({ website: req.session.quizletWebsite })
 })
 
 
@@ -550,7 +502,7 @@ app.get('/quizziz/api/data', (req, res) => {
     res.send(req.session.quizzizData)
 })
 
-app.get('/kahoot/search',isLoggedIn, (req, res) => {
+app.get('/kahoot/search', isLoggedIn, (req, res) => {
     res.render("kahootSearch")
 })
 
@@ -559,8 +511,8 @@ app.get('/test/route', (req, res) => {
 })
 
 app.get('/access', (req, res) => {
-  req.session.passport = true
-  res.render('access')
+    req.session.passport = true
+    res.render('access')
 })
 
 app.listen(process.env.PORT || 3000, () => {
