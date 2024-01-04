@@ -84,6 +84,7 @@ apiRouter.post('/kahoot/bots', (req, res) => {
         }
     }).then(response => response.json())
     .then(data => {
+        console.log(data)
         const filter = data.roles.filter(role => role == "1044668796771782716")
 
         if(filter.length == 0){

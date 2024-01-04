@@ -262,6 +262,9 @@
       token = tokenResponse.token;
 
       testData.edpuzzle.answers.forEach(async (elm) => {
+        if(elm.type != "multiple-choice"){
+          return
+        }
         const multipleChoiceFilter = elm.choices.filter(ans => ans.isCorrect === true);
         const transformed = multipleChoiceFilter.map(item => ({
           choiceText: item.body[0].html,
@@ -287,6 +290,8 @@
             }
           ]
         };
+        
+        
 
         const transformedJsonString = JSON.stringify(transformFunctionTwo, null, 2);
         console.log(filter);

@@ -1,6 +1,7 @@
 const { createClient } = require("redis");
+const { redisURL } = require('../config/config.json')
 
-const client = createClient({ url: "" });
+const client = createClient({ url: redisURL });
 
 client.on("error", (err) => console.log(err));
 

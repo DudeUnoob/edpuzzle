@@ -147,7 +147,7 @@ video {
     <div class="card">
         
         <form method="post" action="/kahoot/uuid">
-            <input type="text" name="uuid" placeholder="kahoot quiz Id" required/>
+            <input type="text" name="uuid" placeholder="QuizId or https://kahoot.it/challenge/03650543" required/>
             <button type="submit">Get Answers</button>
         </form>
 
@@ -156,7 +156,7 @@ video {
                 On the host/teacher screen of the Kahoot in the url bar there is a ?quzid=. (It's pretty long ex: 7c623725-90c9-40f5-9419-40ff01651df2), put that long id into our cheat.
             </p>
 
-            <img src="https://schoolcheats.net/_nuxt/img/kahoot.8a60918.png" />
+            <img src="https://schoolcheats.net/_nuxt/kahoot.6d140182.png" />
             <div>
             <br />
             <a href="/kahoot/search"><b>Or search for a kahoot!</b></a>
@@ -210,63 +210,63 @@ video {
     const botName = document.getElementById("botname")
     const nubmerOfBots = document.getElementById("numberofbots")
     const statusMessage = document.getElementById("statusMessage")
-    function sendBots(){
-        fetch('/api/user').then(res => res.json()).then(data => {
-            const userId = data.user
+    // function sendBots(){
+    //     fetch('/api/user').then(res => res.json()).then(data => {
+    //         const userId = data.user
 
-            fetch('/api/kahoot/bots', {
-                method:"post",
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Accept':'application/json, text/plain, */*'
-                },
-                body:JSON.stringify({
-                    botName: botName.value,
-                    gamePin: gamePin.value,
-                    botAmount: nubmerOfBots.value,
-                    userId: data.user
-                })
-            }).then(lol => lol.json()).then(bruh => {
+    //         fetch('/api/kahoot/bots', {
+    //             method:"post",
+    //             headers:{
+    //                 'Content-Type': 'application/json',
+    //                 'Accept':'application/json, text/plain, */*'
+    //             },
+    //             body:JSON.stringify({
+    //                 botName: botName.value,
+    //                 gamePin: gamePin.value,
+    //                 botAmount: nubmerOfBots.value,
+    //                 userId: data.user
+    //             })
+    //         }).then(lol => lol.json()).then(bruh => {
 
 
-                if(bruh.message == "Sorry you don't have premium, get it here at http://patreon.com/DomK"){
+    //             if(bruh.message == "Sorry you don't have premium, get it here at http://patreon.com/DomK"){
 
-                    statusMessage.innerHTML = ''
-                    const p = document.createElement("p")
+    //                 statusMessage.innerHTML = ''
+    //                 const p = document.createElement("p")
 
-                    p.id = "statusText"
+    //                 p.id = "statusText"
 
-                    p.innerHTML = bruh.message
+    //                 p.innerHTML = bruh.message
 
-                    statusMessage.appendChild(p)
+    //                 statusMessage.appendChild(p)
 
-                    //statusMessage.innerHTML = bruh.message
+    //                 //statusMessage.innerHTML = bruh.message
 
-                }
-                if(bruh.message.errors){
-                    statusMessage.innerHTML = ''
-                    bruh.message.errors.map((err) => {
+    //             }
+    //             if(bruh.message.errors){
+    //                 statusMessage.innerHTML = ''
+    //                 bruh.message.errors.map((err) => {
 
-                        const p = document.createElement("p")
-                        p.id = "statusText"
-                        p.innerHTML = err.message
+    //                     const p = document.createElement("p")
+    //                     p.id = "statusText"
+    //                     p.innerHTML = err.message
                         
-                        statusMessage.appendChild(p)
-                    })
-                }
-                if(bruh.message.data){
+    //                     statusMessage.appendChild(p)
+    //                 })
+    //             }
+    //             if(bruh.message.data){
 
                     
-                    statusMessage.innerHTML = ''
-                    const p = document.createElement("p")
-                    p.id = "statusText"
-                    p.innerHTML = bruh.message.data.spawnBots.description
+    //                 statusMessage.innerHTML = ''
+    //                 const p = document.createElement("p")
+    //                 p.id = "statusText"
+    //                 p.innerHTML = bruh.message.data.spawnBots.description
 
-                    statusMessage.appendChild(p)
-                }
-            })
-        })
-    }
+    //                 statusMessage.appendChild(p)
+    //             }
+    //         })
+    //     })
+    // }
 
     
    

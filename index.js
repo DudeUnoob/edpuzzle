@@ -340,7 +340,7 @@ app.get('/kahoot/info', isLoggedIn, (req, res, next) => {
 })
 
 
-app.post('/kahoot/uuid', (req, res) => {
+app.post('/kahoot/uuid', async(req, res) => {
     const uuid = req.body.uuid;
     //https://play.kahoot.it/rest/answers
     // fetch(`https://play.kahoot.it/rest/kahoots/${uuid}`).then((response) => {
@@ -360,24 +360,66 @@ app.post('/kahoot/uuid', (req, res) => {
     //     .catch((error) => {
     //         return res.send(error)
     //     })
+    function getQueryParamByName(url, name){
+        const urlObj = new URL(url)
 
-    fetch(`https://balancer.schoolcheats.net/kahoot/getAnswers`, {
-        method:"post",
-        body:JSON.stringify({
-            input: uuid
-        }),
-        headers:{
-            "Content-Type":"application/json"
+        const params = new URLSearchParams(urlObj.search)
+
+        return params.get(name)
+    }
+    const fetchInputRedisData = await client.json.get(uuid)
+
+    if(fetchInputRedisData){
+        console.log("Send kahoot redis cached data")
+        req.session.kahootData = fetchInputRedisData
+        res.render('kahootRoom')
+        return;
+    } else {
+        if(uuid.startsWith("https")){
+            const challengeId = getQueryParamByName(uuid, 'challenge-id')
+            console.log(challengeId)
+    
+            fetch(`https://create.kahoot.it/rest/challenges/${challengeId}?includeKahoot=true`)
+            .then((response) => response.json())
+            .then(async data => {
+                req.session.kahootData = data
+                const value = await client.json.set(challengeId, "$", data, { NX: true })
+
+                if(value === "OK"){
+                    await client.expire(challengeId, 300)
+                }
+                
+                return res.render('kahootRoom')
+            })
+            .catch(error => {
+                return res.send(error)
+            })
+
         }
-    }).then((response) => response.json())
-    .then(data => {
-        req.session.kahootData = data
+        else {
+    
+        
+    
+        fetch(`https://create.kahoot.it/rest/kahoots/${uuid}/card/?includeKahoot=true`, {
+            method:"GET"
+        }).then((response) => response.json())
+        .then(async data => {
+            req.session.kahootData = data
+            const value = await client.json.set(uuid, "$", data, { NX: true })
 
-        return res.render('kahootRoom')
-    })
-    .catch((error) => {
-        return res.send(error)
-    })
+            if(value === "OK"){
+                await client.expire(uuid, 300)
+            }
+
+            return res.render('kahootRoom')
+        })
+        .catch((error) => {
+            return res.send(error)
+        })
+    }
+    }
+
+    
         // .then((responseJson) => {
         //     // Do something with the response
 
