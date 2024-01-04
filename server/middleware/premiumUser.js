@@ -5,7 +5,7 @@ async function premiumUser(req, res, next) {
   fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
       headers:{
           'Content-Type': 'application/json',
-          'Authorization': `Bot ${config.token}`
+          'Authorization': `Bot ${process.env.token || config.token}`
       }
   }).then(response => response.json())
   .then(data => {

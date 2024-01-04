@@ -25,7 +25,7 @@ apiRouter.get('/v1/guild', (req, res) => {
         
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': `Bot ${config.token}`
+            'Authorization': `Bot ${process.env.token || config.token}`
         }
     }).then(response => response.json())
     .then(data => {
@@ -39,7 +39,7 @@ apiRouter.get('/v1/user/premium/role', (req, res) => {
     fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': `Bot ${config.token}`
+            'Authorization': `Bot ${process.env.token || config.token}`
         }
     }).then(response => response.json())
     .then(data => {
@@ -65,7 +65,7 @@ apiRouter.get('/v1/guild/members', (req, res) => {
     fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members?limit=50`, {
         headers:{
             'Content-Type': 'application/json',
-            'Authorization': `Bot ${config.token}`
+            'Authorization': `Bot ${process.env.token || config.token}`
         }
     }).then(response => response.json()).then(data => res.send(data))
 })
@@ -142,7 +142,7 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res, next) => {
             fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
                 headers:{
                     'Content-Type': 'application/json',
-                    'Authorization': `Bot ${config.token}`
+                    'Authorization': `Bot ${process.env.token || config.token}`
                 }
             }).then(response => response.json())
             .then(async data => {

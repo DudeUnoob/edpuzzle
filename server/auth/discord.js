@@ -84,7 +84,7 @@ new Strategy({
                 }),
                 headers:{
                     'Content-Type': 'application/json',
-                    'Authorization': `Bot ${config.token}`
+                    'Authorization': `Bot ${process.env.token || config.token}`
                 }
             }).then(res => res.json())
             .then(data => console.log(data))
