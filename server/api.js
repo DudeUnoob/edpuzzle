@@ -123,35 +123,42 @@ apiRouter.get('/v1/get_token', (req, res) => {
     res.send({ token: req.session.token })
 })
 
-apiRouter.post('/v1/edpuzzle/complete-question', async (req, res, next) => {
-    try {
-        if (!req.session.passport.user.user) {
-            return res.status(400).send({
-                message: "Sorry you need to be logged in with discord to access this!",
-                statusCode: 400
-            });
-        }
-
-        const discordResponse = await fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
+apiRouter.post('/v1/edpuzzle/complete-question', async (req, res) => {
+    const validateDiscordUser = async (userId, token) => {
+        const response = await fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${userId}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bot ${process.env.token || config.token}`
+                'Authorization': `Bot ${token}`
             }
         });
-
-        const discordData = await discordResponse.json();
-
-        // Check if discordData.roles exists and is an array before using .includes()
-        if (!discordData.roles || !Array.isArray(discordData.roles) || !discordData.roles.includes("1044668796771782716")) {
+    
+        const data = await response.json();
+        return data.roles && Array.isArray(data.roles) && data.roles.includes("1044668796771782716");
+    };
+    
+    const fetchCsrfToken = async () => {
+        const response = await fetch('http://localhost:3000/edpuzzle/csrf');
+        const data = await response.json();
+        return data.CSRFToken; // Assuming you get a csrfToken from your endpoint
+    };
+    try {
+        const userId = req.session?.passport?.user?.user;
+        if (!userId) {
             return res.status(400).send({
-                message: "Sorry you need to have premium to access this! Get it here: http://patreon.com/DomK",
+                message: "Please log in with Discord to access this.",
                 statusCode: 400
             });
         }
 
-        const csrfResponse = await fetch('http://localhost:3000/edpuzzle/csrf');
-        const csrfData = await csrfResponse.json();
+        const isPremiumUser = await validateDiscordUser(userId, process.env.token || config.token);
+        if (!isPremiumUser) {
+            return res.status(400).send({
+                message: "Premium access required. Get it here: http://patreon.com/DomK",
+                statusCode: 400
+            });
+        }
 
+        const csrfToken = await fetchCsrfToken();
         const edpuzzleResponse = await fetch(`https://edpuzzle.com/api/v3/attempts/${req.session.attempt_id}/answers`, {
             method: "post",
             headers: {
@@ -162,27 +169,26 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res, next) => {
             body: JSON.stringify(req.body)
         });
 
+        const responseData = await edpuzzleResponse.json();
         if (edpuzzleResponse.status === 200) {
-            const responseData = await edpuzzleResponse.json();
             return res.status(200).json({
-                message: `Successfully submitted questionId: ${req.body.answers[0].questionId}`,
+                message: `Successfully submitted questionId: ${req.body.answers[0]?.questionId}`,
                 data: responseData,
                 statusCode: 200
             });
         } else {
-            return res.status(400).json({
-                error: "Answer failed to submit",
-                statusCode: 400
-            });
+            throw new Error("Answer failed to submit");
         }
 
     } catch (error) {
         console.error("Error completing question:", error.message);
+        
+        console.error("Full error:", error);
         return res.status(500).send({
             error: 'Internal Server Error',
             statusCode: 500,
-            errorMessage: error
-        }); // Handle error appropriately
+            errorMessage: error.message
+        });
     }
 });
 
