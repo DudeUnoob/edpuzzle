@@ -180,7 +180,8 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res, next) => {
         console.error("Error completing question:", error.message);
         return res.status(500).send({
             error: 'Internal Server Error',
-            statusCode: 500
+            statusCode: 500,
+            errorMessage: error
         }); // Handle error appropriately
     }
 });
