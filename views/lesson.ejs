@@ -138,110 +138,146 @@
     lesson_id = data.lesson_id
   })
   fetch('/test2').then(res => res.json()).then(data => {
-    console.log(data)
-    //const filter = data.medias.filter(i => i._id = lesson_id)
-    //console.log(filter)
-
-    data.edpuzzle.answers.map((elm) => {
+    if (data.statusCode) {
+      window.location.href = '/'
+    }
+    data.pageProps.answers.map((elm) => {
       const div = document.createElement('div')
       div.className = 'card'
 
-      const p = document.createElement('h3')
+      const p = document.createElement("h3")
       p.id = 'type_of_question'
-      p.innerHTML = `${elm.body[0].html}<p id='hello2'></p>`
+      p.innerHTML = `${elm.bodyDisplay}<p id='hello2'></p>`
 
       div.appendChild(p)
 
       if (elm.type == 'open-ended') {
-        elm.body.map((o) => {
-          p.id = 'type_of_question'
+        p.id = 'type_of_question'
 
-          p.innerHTML = `${o.html}<p id='hello'>${elm.type}</p>`
-          div.appendChild(p)
+        p.innerHTML = `${elm.bodyDisplay}<p id='hello'>${elm.type}</p>`
+        div.appendChild(p)
 
+        document.body.appendChild(div)
+      } else {
+        elm.correctChoices.map((ans) => {
+          const string = ans.choiceText
+          const br = document.createElement("br")
+          div.appendChild(br)
+          const l = document.createElement("p")
+
+          l.innerHTML = `<b id='helloworld'>${string}</b>`
+
+          div.appendChild(l)
           document.body.appendChild(div)
         })
-      } else {
-        const multipleChoiceFilter = elm.choices.filter(ans => ans.isCorrect == true)
-
-        if (multipleChoiceFilter.length > 0) {
-          multipleChoiceFilter.map((constant) => {
-            const string = constant.body[0].html
-            const br = document.createElement('br')
-            div.appendChild(br)
-            const l = document.createElement('p')
-
-            l.innerHTML = `<b id='helloworld'>${string}</b>`
-
-            div.appendChild(l)
-            document.body.appendChild(div)
-          })
-        }
-      }
-    })
-    data.medias.map((elm) => {
-      const div = document.createElement('div')
-      div.className = 'card'
-
-      if (elm._id == lesson_id) {
-
-
-        elm.questions.map((i) => {
-
-          const div = document.createElement('div')
-          div.classList = 'card'
-
-          //console.log(elm)
-
-          const p = document.createElement('h3')
-          p.id = 'type_of_question'
-          //const question = i.body[0].html + ` ` + i.type
-          p.innerHTML = `${i.body[0].html}<p id='hello2'></p>`
-
-          div.appendChild(p)
-
-
-          if (i.type == 'open-ended') {
-            i.body.map((o) => {
-              console.log(o)
-              p.id = 'type_of_question'
-
-              p.innerHTML = `${o.html}<p id='hello'>${i.type}</p>`
-
-              div.appendChild(p)
-
-              document.body.appendChild(div)
-
-
-            })
-          } else {
-            const ok = i.choices.filter(j => j.isCorrect == true)
-            //console.log(ok)
-            if (ok.length > 0) {
-              ok.map((j) => {
-                const string = j.body[0].html
-                const br = document.createElement('br')
-                div.appendChild(br)
-                const l = document.createElement('p')
-
-                l.innerHTML = `<b id='helloworld'>${string}</b>`
-                //document.body.appendChild(l)
-                div.appendChild(l)
-                document.body.appendChild(div)
-              })
-            }
-          }
-
-
-
-
-
-        })
-      } else {
-        return
       }
     })
   })
+  // console.log(data)
+  // //const filter = data.medias.filter(i => i._id = lesson_id)
+  // //console.log(filter)
+
+  // data.edpuzzle.answers.map((elm) => {
+  //   const div = document.createElement('div')
+  //   div.className = 'card'
+
+  //   const p = document.createElement('h3')
+  //   p.id = 'type_of_question'
+  //   p.innerHTML = `${elm.body[0].html}<p id='hello2'></p>`
+
+  //   div.appendChild(p)
+
+  //   if (elm.type == 'open-ended') {
+  //     elm.body.map((o) => {
+  //       p.id = 'type_of_question'
+
+  //       p.innerHTML = `${o.html}<p id='hello'>${elm.type}</p>`
+  //       div.appendChild(p)
+
+  //       document.body.appendChild(div)
+  //     })
+  //   } else {
+  //     const multipleChoiceFilter = elm.choices.filter(ans => ans.isCorrect == true)
+
+  //     if (multipleChoiceFilter.length > 0) {
+  //       multipleChoiceFilter.map((constant) => {
+  //         const string = constant.body[0].html
+  //         const br = document.createElement('br')
+  //         div.appendChild(br)
+  //         const l = document.createElement('p')
+
+  //         l.innerHTML = `<b id='helloworld'>${string}</b>`
+
+  //         div.appendChild(l)
+  //         document.body.appendChild(div)
+  //       })
+  //     }
+  //   }
+  // })
+  // data.medias.map((elm) => {
+  //   const div = document.createElement('div')
+  //   div.className = 'card'
+
+  //   if (elm._id == lesson_id) {
+
+
+  //     elm.questions.map((i) => {
+
+  //       const div = document.createElement('div')
+  //       div.classList = 'card'
+
+  //       //console.log(elm)
+
+  //       const p = document.createElement('h3')
+  //       p.id = 'type_of_question'
+  //       //const question = i.body[0].html + ` ` + i.type
+  //       p.innerHTML = `${i.body[0].html}<p id='hello2'></p>`
+
+  //       div.appendChild(p)
+
+
+  //       if (i.type == 'open-ended') {
+  //         i.body.map((o) => {
+  //           console.log(o)
+  //           p.id = 'type_of_question'
+
+  //           p.innerHTML = `${o.html}<p id='hello'>${i.type}</p>`
+
+  //           div.appendChild(p)
+
+  //           document.body.appendChild(div)
+
+
+  //         })
+  //       } else {
+  //         const ok = i.choices.filter(j => j.isCorrect == true)
+  //         //console.log(ok)
+  //         if (ok.length > 0) {
+  //           ok.map((j) => {
+  //             const string = j.body[0].html
+  //             const br = document.createElement('br')
+  //             div.appendChild(br)
+  //             const l = document.createElement('p')
+
+  //             l.innerHTML = `<b id='helloworld'>${string}</b>`
+  //             //document.body.appendChild(l)
+  //             div.appendChild(l)
+  //             document.body.appendChild(div)
+  //           })
+  //         }
+  //       }
+
+
+
+
+
+  //     })
+  //   } else {
+  //     return
+  //   }
+  // })
+
+
 </script>
 <script>
   let csrfToken;
@@ -250,32 +286,40 @@
 
   async function fetchData() {
     try {
-      const [csrfResponse, attemptIdResponse, tokenResponse, testData] = await Promise.all([
+ 
+      const responses = await Promise.all([
         fetch('/edpuzzle/csrf').then(res => res.json()),
         fetch('/edpuzzle/get_attempt_id').then(res => res.json()),
         fetch('/api/v1/get_token').then(res => res.json()),
         fetch('/test2').then(res => res.json())
       ]);
 
+ 
+      const [csrfResponse, attemptIdResponse, tokenResponse, testData] = responses;
+
+ 
       csrfToken = csrfResponse.CSRFToken;
-      attemptId = attemptIdResponse.attempt_id != null ? attemptIdResponse.attemptId : window.localStorage.getItem("attemptId");
+      attemptId = attemptIdResponse.attempt_id != null ? attemptIdResponse.attempt_id : window.localStorage.getItem("attemptId");
       token = tokenResponse.token;
 
-      testData.edpuzzle.answers.forEach(async (elm) => {
-        if(elm.type != "multiple-choice"){
-          return
+
+      for (const elm of testData.pageProps.answers) {
+        
+        if (elm.type !== "multiple-choice") {
+          continue; 
         }
-        const multipleChoiceFilter = elm.choices.filter(ans => ans.isCorrect === true);
-        const transformed = multipleChoiceFilter.map(item => ({
-          choiceText: item.body[0].html,
+
+  
+        const transformed = elm.correctChoices.map((item) => ({
+          choiceText: item.choiceText,
           choiceNumber: item.choiceNumber.toString(),
-          choiceID: item._id
+          choiceID: item.choiceID
         }));
 
         const filter = {
           correctChoices: transformed,
           attemptId: attemptId,
-          questionId: elm._id,
+          questionId: elm.id,
           type: elm.type,
           csrf: csrfToken,
           userToken: token
@@ -285,16 +329,15 @@
           answers: [
             {
               type: elm.type,
-              questionId: elm._id,
+              questionId: elm.id,
               choices: filter.correctChoices.map(choice => choice.choiceID)
             }
           ]
         };
-        
-        
+
 
         const transformedJsonString = JSON.stringify(transformFunctionTwo, null, 2);
-        console.log(filter);
+
 
         const completeQuestionResponse = await fetch('/api/v1/edpuzzle/complete-question', {
           method: "POST",
@@ -304,11 +347,14 @@
           body: transformedJsonString
         });
 
+
         const completeQuestionData = await completeQuestionResponse.json();
         console.log(completeQuestionData);
-        if(completeQuestionData.statusCode == 200){
+
+        if (completeQuestionData.statusCode == 200) {
+
           Toastify({
-            text: "Successfully autoanswered question-id ✅: " + elm._id,
+            text: "Successfully autoanswered question-id ✅: " + elm.id,
             duration: 5000,
             close: true,
             gravity: "top",
@@ -319,8 +365,9 @@
             }
           }).showToast();
         } else {
+
           Toastify({
-            text: "There was an error autoanswering question-id ⚠️: " + elm._id + "\n Make sure you are logged in with discord and have premium! Get it here at http://patreon.com/DomK",
+            text: "There was an error autoanswering question-id ⚠️: " + elm.id + "\n Make sure you are logged in with discord and have premium! Get it here at http://patreon.com/DomK",
             duration: 5000,
             close: true,
             gravity: "top",
@@ -332,43 +379,17 @@
           }).showToast();
         }
 
-        // const asyncGetTeacherAssignment = await fetch('/edpuzzle/get_teacher_assignment_id');
-        // const responseGetTeacherAssignmentData = await asyncGetTeacherAssignment.json();
-        const teacherAssignmentMediaId = responseGetTeacherAssignmentData.teacherAssignmentMediaId;
-
-        // setTimeout(async() => {
-        //   const skipPOne = await fetch(`https://edpuzzle.com/api/v4/media_attempts/${attemptId}/watch`, {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       "Cookie":`edpuzzleCSRF=tGQHPZ1sphZUeSCEWhFqArrx;token=${token};`,
-        //       "X-Csrf-Token": csrfToken,
-        //       "X-Edpuzzle-Referrer": `https://edpuzzle.com/assignments/${teacherAssignmentMediaId}/watch`,
-        //       "X-Edpuzzle-Web-Version": "7.35.28",
-        //       "Referer":"https://unpuzzle.org/"
-        //     },
-        //     body: JSON.stringify({
-        //       timeIntervalNumber: 10
-        //     }),
-        //   });
-        // }, 3000)
-        
-        // await fetch('/api/v1/skip_video', {
-        //   method:"POST"
-        // })
-
-        
-      });
+      }
     } catch (err) {
-      console.log("You need to log into discord and buy premium to use autoanswer!");
+      console.log("Error in fetchData:", err);
+      
     }
   }
 
-  // Call the fetchData function
- async function autoAnswerEdpuzzle() {
-   fetchData();
-
- }
+  
+  async function autoAnswerEdpuzzle() {
+    await fetchData(); 
+  }
 
 </script>
 

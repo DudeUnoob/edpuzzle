@@ -125,80 +125,66 @@ apiRouter.get('/v1/get_token', (req, res) => {
 
 apiRouter.post('/v1/edpuzzle/complete-question', async (req, res, next) => {
     try {
-        //https://edpuzzle.com/api/v3/attempts/658070bddde980e974ef5361/answers
-
-        // fetch('https://localhost:3000/api/v1/user/premium/role')
-        // .then(res => res.json())
-        // .then(statement => {
-        //     if(statement.premium != true){
-        //         return res.status(400).send("Sorry you need premium to access this!")
-
-
-        //     }
-        // })
-        if(!req.session.passport.user.user){
-            return res.status(400).send({ message: "Sorry you need to be logged in with discord to access this!", statusCode: 400 })
-        } else {
-            fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bot ${process.env.token || config.token}`
-                }
-            }).then(response => response.json())
-            .then(async data => {
-                const filter = data.roles.filter(role => role == "1044668796771782716")
-
-                if(filter.length == 0){
-        
-                    
-                    return res.status(400).send({ message: "Sorry you need to have premium to access this! Get it here: http://patreon.com/DomK", statusCode: 400 })
-        
-                } else {
-                    const response = await fetch('http://localhost:3000/edpuzzle/csrf')
-
-                    const final = await response.json()
-                  
-            
-                    //   fetch(`https://www.unpuzzle.net/api/complete-questions`, {
-                    //     method:"post",
-                    //     headers:{
-                    //       "Content-Type":"application/json",
-                          
-                    //     },
-                    //     body: req.body
-                    //   }).then(res => res.json())
-                    //   .then(statement => console.log(statement))
-                    console.log(req.session.attempt_id)
-                    console.log(JSON.stringify(req.body))
-                    fetch(`https://edpuzzle.com/api/v3/attempts/${req.session.attempt_id}/answers`, {
-                        method:"post",
-                        headers:{
-                            "Content-Type":"application/json",
-                            "Cookie":`token=${req.session.token}; edpuzzleCSRF=FHBpCb2INy6dNw0QZKPGbeKx;`,
-                            "x-csrf-token": "0J07nPIa-aL17wtlQe_n-rW3iylXzF-ef8ZY"
-                        },
-                        body: JSON.stringify(req.body)
-                        
-                    }).then(response => {
-                        if(response.status == 200){
-            
-                            const data = response.json()
-                            return res.status(200).json({ message: `Successfully submitted questionId: ${req.body.answers[0].questionId}`, data: data, statusCode: 200 })
-                        } else {
-                            return res.status(400).json({ error: "Answer failed to submit", statusCode: 400 })
-                        }
-                    })
-                }
-            })
+        if (!req.session.passport.user.user) {
+            return res.status(400).send({
+                message: "Sorry you need to be logged in with discord to access this!",
+                statusCode: 400
+            });
         }
-        
-        
+
+        const discordResponse = await fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${req.session.passport.user.user}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bot ${process.env.token || config.token}`
+            }
+        });
+
+        const discordData = await discordResponse.json();
+
+        // Check if discordData.roles exists and is an array before using .includes()
+        if (!discordData.roles || !Array.isArray(discordData.roles) || !discordData.roles.includes("1044668796771782716")) {
+            return res.status(400).send({
+                message: "Sorry you need to have premium to access this! Get it here: http://patreon.com/DomK",
+                statusCode: 400
+            });
+        }
+
+        const csrfResponse = await fetch('http://localhost:3000/edpuzzle/csrf');
+        const csrfData = await csrfResponse.json();
+
+        const edpuzzleResponse = await fetch(`https://edpuzzle.com/api/v3/attempts/${req.session.attempt_id}/answers`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": `token=${req.session.token}; edpuzzleCSRF=FHBpCb2INy6dNw0QZKPGbeKx;`,
+                "x-csrf-token": "0J07nPIa-aL17wtlQe_n-rW3iylXzF-ef8ZY"
+            },
+            body: JSON.stringify(req.body)
+        });
+
+        if (edpuzzleResponse.status === 200) {
+            const responseData = await edpuzzleResponse.json();
+            return res.status(200).json({
+                message: `Successfully submitted questionId: ${req.body.answers[0].questionId}`,
+                data: responseData,
+                statusCode: 200
+            });
+        } else {
+            return res.status(400).json({
+                error: "Answer failed to submit",
+                statusCode: 400
+            });
+        }
 
     } catch (error) {
         console.error("Error completing question:", error.message);
-        return res.status(500).send({ error: 'Internal Server Error', statusCode: 400 }); // Handle error appropriately
+        return res.status(500).send({
+            error: 'Internal Server Error',
+            statusCode: 500
+        }); // Handle error appropriately
     }
 });
+
 
 apiRouter.post('/v1/skip_video', async(req, res) => {
     fetch(`https://edpuzzle.com/api/v4/media_attempts/${req.session.attempt_id}/watch`, {

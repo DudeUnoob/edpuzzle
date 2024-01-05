@@ -39,19 +39,19 @@
           let findAttemptId = elm._id
           
           let getAttemptId = data.attempts.filter(j => j.mediaId == findAttemptId)
-          console.log(getAttemptId)
+          
           let finalId = getAttemptId[0]._id
           let teacherAssignmentMediaId = getAttemptId[0].teacherAssignmentId
           
              const card = document.createElement('div')
              card.classList = 'card'
              
-            card.setAttribute("onclick",`redirectLesson('${elm.teacherAssignments[0]}','${finalId}','${teacherAssignmentMediaId}')`)
+            card.setAttribute("onclick",`redirectLesson('${elm.teacherAssignments[0]}','${finalId}','${teacherAssignmentMediaId}', '${findAttemptId}')`)
 
              let textNode = document.createTextNode(elm.title)
              document.body.appendChild(card)
              /*card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm._id}')><b>${elm.title}</b></h1></p>`*/
-           card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm.teacherAssignments[0]}','${finalId}','${teacherAssignmentMediaId}')><b>${elm.title}</b></h1></p>`
+           card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm.teacherAssignments[0]}','${finalId}','${teacherAssignmentMediaId}','${findAttemptId}')><b>${elm.title}</b></h1></p>`
 
 
              
@@ -102,7 +102,7 @@
             currentId = window.location.href.slice(59)
         }
         
-        function redirectLesson(id, attempt_id, teacherAssignmentId){
+        function redirectLesson(id, attempt_id, teacherAssignmentId, keyId){
            console.log(id)
 
           // fetch('/edpuzzle/set_teacher_assignment_id', {
@@ -122,11 +122,13 @@
             },
 
             body: JSON.stringify({
-              attempt_id: attempt_id
+              attempt_id: attempt_id,
+              key_id: keyId
             })
            })
 
            window.localStorage.setItem("attemptId", attempt_id)
+           window.localStorage.setItem("keyId", keyId)
            window.location.href = `/edpuzzle/room/${currentId}/${id}` 
         }
          

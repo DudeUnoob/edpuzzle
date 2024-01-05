@@ -149,10 +149,12 @@ app.get('/edpuzzle/room/:classroom_id/:lesson_id', async (req, res) => {
 
 app.post("/edpuzzle/set_attempt_id", async (req, res) => {
     const attempt_id = req.body.attempt_id
+    const key_id = req.body.key_id
 
     req.session.attempt_id = attempt_id
+    req.session.key_id = key_id
 
-    res.json({ message: "Set the ATTEMPT_ID" })
+    res.json({ message: "Set the ATTEMPT_ID and the KEY_ID" })
 
 })
 
@@ -174,39 +176,46 @@ app.get('/edpuzzle/get_teacher_assignment_id', (req, res) => {
 
 app.get('/test2', async (req, res) => {
     try {
+        const cachedLessonData = await client.json.get(req.session.lesson_id);
 
-        const lessonData = await client.json.get(req.session.lesson_id);
-
-        if (lessonData) {
-            console.log("Send redis cached data")
-            res.status(200).send(lessonData);
-            return;
+        if (cachedLessonData) {
+            console.log("Send redis cached data");
+            return res.status(200).send(cachedLessonData);
         }
 
-        const response = await fetch(`https://balancer.schoolcheats.net/edpuzzle/getAnswers`, {
-            method: "POST",
+        const apiUrl = `https://www.unpuzzle.net/_next/data/t41KPPLry9XjCurY9vmZT/answers/${req.session.key_id}.json?userToken=${req.session.token}&contentId=${req.session.key_id}`;
+        
+        const response = await fetch(apiUrl, {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                url: `https://edpuzzle.com/assignments/${req.session.lesson_id}/watch`
-            })
         });
 
-        const data = await response.json();
+        const responseData = await response.json();
 
-        const value = await client.json.set(req.session.lesson_id.toString(), "$", data, { NX: true });
-
-        if (value === "OK") {
-            await client.expire(req.session.lesson_id.toString(), 300);
+        if (responseData.error) {
+            return res.status(400).send({
+                error: "Error occurred",
+                message: "Most likely happened due to session of KEY_ID was undefined",
+                statusCode: 400
+            });
         }
 
-        res.status(200).send(data);
-    } catch (err) {
-        console.error(err);
+        const cacheResult = await client.json.set(req.session.lesson_id, "$", responseData, { NX: true });
+
+        if (cacheResult === "OK") {
+            await client.expire(req.session.lesson_id, 300);
+        }
+
+        res.status(200).send(responseData);
+
+    } catch (error) {
+        console.error(error);
         res.status(500).send("Internal Server Error");
     }
 });
+
 
 
 app.get('/lesson_id', (req, res) => {
