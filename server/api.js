@@ -136,11 +136,6 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res) => {
         return data.roles && Array.isArray(data.roles) && data.roles.includes("1044668796771782716");
     };
     
-    const fetchCsrfToken = async () => {
-        const response = await fetch('http://localhost:3000/edpuzzle/csrf');
-        const data = await response.json();
-        return data.CSRFToken; // Assuming you get a csrfToken from your endpoint
-    };
     try {
         const userId = req.session?.passport?.user?.user;
         if (!userId) {
@@ -158,7 +153,7 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res) => {
             });
         }
 
-        const csrfToken = await fetchCsrfToken();
+        
         const edpuzzleResponse = await fetch(`https://edpuzzle.com/api/v3/attempts/${req.session.attempt_id}/answers`, {
             method: "post",
             headers: {
