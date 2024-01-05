@@ -37,7 +37,7 @@ passport.use(
 new Strategy({
     clientID: "1039205411934453831",
     clientSecret: "mDwqeKHbicyRg_qjK6kleQO4N0Y4jt1P",
-    callbackURL: `${routerHost}/router/api/auth/redirect`,
+    callbackURL: `/router/api/auth/redirect`,
     scope: ['identify', 'email', 'guilds', 'guilds.join']
 
 
