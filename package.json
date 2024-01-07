@@ -22,7 +22,7 @@
     "dev": "nodemon index"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.0"
