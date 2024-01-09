@@ -77,17 +77,7 @@ new Strategy({
         if (puzzleHaxFilter.length == 0) {
             const guildJoinParams = new URLSearchParams()
             guildJoinParams.append("access_token",accessToken)
-            fetch(`https://discord.com/api/v10/guilds/1039724305795252295/members/${profile.id}`, {
-                method:"put",
-                body:JSON.stringify({
-                    access_token:accessToken
-                }),
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bot ${process.env.token || config.token}`
-                }
-            }).then(res => res.json())
-            .then(data => console.log(data))
+            
 
             return done(null, profile)
         }
@@ -96,6 +86,7 @@ new Strategy({
             return done(null, profile)
         }
         catch (err) {
+            console.log(err, "There was an error")
             return done(err, null)
         }
     }

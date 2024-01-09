@@ -24,7 +24,8 @@ const client = require('./server/cache/redisConnection')
 const getQueryParamByName = require("./server/functions/getQueryParamByName")
 app.use(session({
     secret: "helloworld",
-    saveUninitialized: false,
+    saveUninitialized: true,
+    
     resave: false
 }));
 
