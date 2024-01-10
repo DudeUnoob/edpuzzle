@@ -98,9 +98,10 @@
         else if(window.location.href.startsWith('https://unpuzzle.org')){
           currentId = window.location.href.slice(40)
         }
-        else if(window.location.href.startsWith('https://edpuzzlehax.up.railway.app')){
-            currentId = window.location.href.slice(59)
+        else if(window.location.href.startsWith("https://edpuzzle.fly.dev")){
+          currentId = window.location.href.slice(44)
         }
+        
         
         function redirectLesson(id, attempt_id, teacherAssignmentId, keyId){
            console.log(id)

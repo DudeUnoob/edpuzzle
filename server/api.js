@@ -188,8 +188,9 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res) => {
 });
 
 
-apiRouter.post('/v1/skip_video', async(req, res) => {
-    fetch(`https://edpuzzle.com/api/v4/media_attempts/${req.session.attempt_id}/watch`, {
+apiRouter.get('/v1/skip_video', async(req, res) => {
+    console.log(req.session.attempt_id)
+    fetch(`https://edpuzzle.com/api/v4/media_attempts/${req.session?.attempt_id.toString()}/watch`, {
         method:"POST",
         headers: {
             "Content-Type":"application/json",
@@ -200,8 +201,9 @@ apiRouter.post('/v1/skip_video', async(req, res) => {
             timeIntervalNumber: 10
         })
     }).then(response => {
-        res.send(response.ok)
+        res.json({ statusCode: response.status })
     })
+    
 })
 
 apiRouter.get('/user', (req, res) => {

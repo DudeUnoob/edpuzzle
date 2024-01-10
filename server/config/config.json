@@ -1,4 +1,4 @@
 {
-    "routerHost":"https://unpuzzle.org",
+    "routerHost":"https://edpuzzle.fly.dev",
     "redisURL":""
 }

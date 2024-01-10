@@ -380,15 +380,20 @@
         }
 
       }
+
+      
     } catch (err) {
       console.log("Error in fetchData:", err);
       
     }
   }
 
-  
+    
   async function autoAnswerEdpuzzle() {
+    
+    await fetch('/api/v1/skip_video')
     await fetchData(); 
+
   }
 
 </script>
