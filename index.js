@@ -25,7 +25,9 @@ const getQueryParamByName = require("./server/functions/getQueryParamByName")
 app.use(session({
     secret: "helloworld",
     saveUninitialized: true,
-    
+    cookie:{
+        maxAge: 172800000
+    },
     resave: false
 }));
 
@@ -202,13 +204,28 @@ app.get('/test2', async (req, res) => {
             });
         }
 
-        const cacheResult = await client.json.set(req.session.lesson_id, "$", responseData, { NX: true });
+       if(responseData.pageProps.answers.length != 0){
+        const cacheResult = await client.json.set(req.session.lesson_id, "$", {
+            pageProps:{
+                answers: responseData.pageProps.answers
+            },
+            __N_SSP: responseData.__N_SSP
+        }, { NX: true });
 
         if (cacheResult === "OK") {
             await client.expire(req.session.lesson_id, 300);
         }
 
-        res.status(200).send(responseData);
+        res.status(200).send(
+            {
+                pageProps:{
+                    answers: responseData.pageProps.answers
+                },
+                __N_SSP: responseData.__N_SSP
+            },
+
+        );
+       }
 
     } catch (error) {
         console.error(error);
