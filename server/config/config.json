@@ -1,4 +1,4 @@
 {
-    "routerHost":"http://unpuzzle.org",
+    "routerHost":"https://unpuzzle.org",
     "redisURL":""
 }
