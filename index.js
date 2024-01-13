@@ -136,9 +136,9 @@ app.get('/test', async (req, res) => {
     ).then(data => res.send(data))
 })
 
-app.get('/edpuzzle/room/:classroom_id/:lesson_id', async (req, res) => {
-    req.session.lesson_id = req.params.lesson_id;
-
+app.get('/edpuzzle/room/:classroom_id/:attempt_id', async (req, res) => {
+    req.session.attempt_id = req.params.attempt_id;
+    req.session.key_id = req.query.keyId
 
     fetch(`https://edpuzzle.com/api/v3/assignments/classrooms/${req.params.classroom_id}/students?needle=`, {
         headers: {
@@ -146,7 +146,7 @@ app.get('/edpuzzle/room/:classroom_id/:lesson_id', async (req, res) => {
         }
     }).then(
         res => res.json()
-    ).then(data => res.render('lesson', { classroom_id: req.params.classroom_id, token: req.session.token, data: data, lesson_id: req.params.lesson_id }))
+    ).then(data => res.render('lesson', { classroom_id: req.params.classroom_id, token: req.session.token, data: data, lesson_id: req.params.attempt_id }))
 })
 
 app.post("/edpuzzle/set_attempt_id", async (req, res) => {
@@ -176,9 +176,21 @@ app.get('/edpuzzle/get_teacher_assignment_id', (req, res) => {
     res.status(200).json({ teacherAssignmentMediaId: req.session.teacherAssignmentMediaId })
 })
 
+
 app.get('/test2', async (req, res) => {
+    const TIMEOUT = 3000; 
+
     try {
-        const cachedLessonData = await client.json.get(req.session.lesson_id);
+        // Promise to fetch data from Redis cache
+        const redisPromise = client.json.get(req.session.attempt_id);
+
+        const timeoutPromise = new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(null); // Resolve with null after TIMEOUT
+            }, TIMEOUT);
+        });
+
+        const cachedLessonData = await Promise.race([redisPromise, timeoutPromise]);
 
         if (cachedLessonData) {
             console.log("Send redis cached data");
@@ -204,34 +216,32 @@ app.get('/test2', async (req, res) => {
             });
         }
 
-       if(responseData.pageProps.answers.length != 0){
-        const cacheResult = await client.json.set(req.session.lesson_id, "$", {
-            pageProps:{
-                answers: responseData.pageProps.answers
-            },
-            __N_SSP: responseData.__N_SSP
-        }, { NX: true });
-
-        if (cacheResult === "OK") {
-            await client.expire(req.session.lesson_id, 300);
-        }
-
-        res.status(200).send(
-            {
-                pageProps:{
+        if (responseData.pageProps.answers.length !== 0) {
+            const cacheResult = await client.json.set(req.session.attempt_id, "$", {
+                pageProps: {
                     answers: responseData.pageProps.answers
                 },
                 __N_SSP: responseData.__N_SSP
-            },
+            }, { NX: true });
 
-        );
-       }
+            if (cacheResult === "OK") {
+                await client.expire(req.session.attempt_id, 300);
+            }
+
+            res.status(200).send({
+                pageProps: {
+                    answers: responseData.pageProps.answers
+                },
+                __N_SSP: responseData.__N_SSP
+            });
+        }
 
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
 });
+
 
 
 

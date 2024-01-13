@@ -133,10 +133,10 @@
 
 </body>
 <script>
-  let lesson_id;
-  fetch('/lesson_id').then(res => res.json()).then(data => {
-    lesson_id = data.lesson_id
-  })
+  // let lesson_id;
+  // fetch('/lesson_id').then(res => res.json()).then(data => {
+  //   lesson_id = data.lesson_id
+  // })
   fetch('/test2').then(res => res.json()).then(data => {
     if (data.statusCode == 400) {
       window.location.href = '/'
