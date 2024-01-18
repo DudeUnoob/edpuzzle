@@ -176,52 +176,37 @@ app.get('/edpuzzle/get_teacher_assignment_id', (req, res) => {
     res.status(200).json({ teacherAssignmentMediaId: req.session.teacherAssignmentMediaId })
 })
 
-
+const TIMEOUT = 5000;
 app.get('/test2', async (req, res) => {
-    const TIMEOUT = 3000; 
+     
 
     try {
-        // Promise to fetch data from Redis cache
-        const redisPromise = client.json.get(req.session.attempt_id);
-
         const timeoutPromise = new Promise((resolve) => {
             setTimeout(() => {
-                resolve(null); // Resolve with null after TIMEOUT
+                resolve(null); 
             }, TIMEOUT);
         });
 
-        const cachedLessonData = await Promise.race([redisPromise, timeoutPromise]);
+        const result = await Promise.race([handleRequest(req), timeoutPromise]);
+
+        if (!result) {
+            return res.status(500).send("Request timed out");
+        }
+
+        const { cachedLessonData, response } = result;
 
         if (cachedLessonData) {
             console.log("Send redis cached data");
             return res.status(200).send(cachedLessonData);
         }
 
-        const apiUrl = `https://www.unpuzzle.net/_next/data/t41KPPLry9XjCurY9vmZT/answers/${req.session.key_id}.json?userToken=${req.session.token}&contentId=${req.session.key_id}`;
         
-        const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        });
-
-        const responseData = await response.json();
-
-        if (responseData.error) {
-            return res.status(400).send({
-                error: "Error occurred",
-                message: "Most likely happened due to session of KEY_ID was undefined",
-                statusCode: 400
-            });
-        }
-
-        if (responseData.pageProps.answers.length !== 0) {
+        if (response && response.pageProps && response.pageProps.answers) {
             const cacheResult = await client.json.set(req.session.attempt_id, "$", {
                 pageProps: {
-                    answers: responseData.pageProps.answers
+                    answers: response.pageProps.answers
                 },
-                __N_SSP: responseData.__N_SSP
+                __N_SSP: response.__N_SSP
             }, { NX: true });
 
             if (cacheResult === "OK") {
@@ -230,9 +215,15 @@ app.get('/test2', async (req, res) => {
 
             res.status(200).send({
                 pageProps: {
-                    answers: responseData.pageProps.answers
+                    answers: response.pageProps.answers
                 },
-                __N_SSP: responseData.__N_SSP
+                __N_SSP: response.__N_SSP
+            });
+        } else {
+            res.status(400).send({
+                error: "Error occurred",
+                message: "Invalid response format",
+                statusCode: 400
             });
         }
 
@@ -242,7 +233,42 @@ app.get('/test2', async (req, res) => {
     }
 });
 
+async function handleRequest(req) {
+    const redisPromise = client.json.get(req.session.attempt_id);
+    const apiUrl = `https://www.unpuzzle.net/_next/data/t41KPPLry9XjCurY9vmZT/answers/${req.session.key_id}.json?userToken=${req.session.token}&contentId=${req.session.key_id}`;
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
+
+    try {
+        const [cachedLessonData, response] = await Promise.all([
+            redisPromise,
+            fetch(apiUrl, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                signal: controller.signal,
+            }),
+        ]);
+
+        clearTimeout(timeoutId);
+
+        const responseData = await response.json();
+
+        if (responseData.error) {
+            return { cachedLessonData: null, response: null };
+        }
+
+        return { cachedLessonData, response: responseData };
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            return { cachedLessonData: null, response: null };
+        } else {
+            throw error;
+        }
+    }
+}
 
 
 app.get('/lesson_id', (req, res) => {
@@ -555,4 +581,3 @@ app.get('/access', (req, res) => {
  app.listen(process.env.PORT || 3000, () => {
     console.log('http://localhost:3000')
 })
-
