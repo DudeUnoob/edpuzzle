@@ -188,6 +188,47 @@ apiRouter.post('/v1/edpuzzle/complete-question', async (req, res) => {
 });
 
 
+
+apiRouter.post('/v1/edpuzzle/free-access/complete-question', async (req, res) => {
+    
+    
+    try {
+        
+        
+        const edpuzzleResponse = await fetch(`https://edpuzzle.com/api/v3/attempts/${req.session.attempt_id}/answers`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Cookie": `token=${req.session.token}; edpuzzleCSRF=FHBpCb2INy6dNw0QZKPGbeKx;`,
+                "x-csrf-token": "0J07nPIa-aL17wtlQe_n-rW3iylXzF-ef8ZY"
+            },
+            body: JSON.stringify(req.body)
+        });
+
+        const responseData = await edpuzzleResponse.json();
+        if (edpuzzleResponse.status === 200) {
+            return res.status(200).json({
+                message: `Successfully submitted questionId: ${req.body.answers[0]?.questionId}`,
+                data: responseData,
+                statusCode: 200
+            });
+        } else {
+            throw new Error("Answer failed to submit");
+        }
+
+    } catch (error) {
+        console.error("Error completing question:", error.message);
+        
+        console.error("Full error:", error);
+        return res.status(500).send({
+            error: 'Internal Server Error',
+            statusCode: 500,
+            errorMessage: error.message
+        });
+    }
+});
+
+
 apiRouter.get('/v1/skip_video', async(req, res) => {
     console.log(req.session.attempt_id)
     fetch(`https://edpuzzle.com/api/v4/media_attempts/${req.session?.attempt_id.toString()}/watch`, {

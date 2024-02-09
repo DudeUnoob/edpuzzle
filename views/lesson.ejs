@@ -141,33 +141,36 @@
     if (data.statusCode == 400) {
       window.location.href = '/'
     }
-    if(data.pageProps.answers.length == 0){
+    if (data.response.length == 0) {
       const header = document.createElement("h1")
       header.style.textAlign = "center"
       header.style.marginTop = "20px"
       header.innerHTML = `Sorry there are no answers available for this edpuzzle! <br /> (Edpuzzle doesn't allow to see private edpuzzles)`
       document.body.appendChild(header)
     }
-    data.pageProps.answers.map((elm) => {
+    data.response.map((elm) => {
       const div = document.createElement('div')
       div.className = 'card'
 
       const p = document.createElement("h3")
       p.id = 'type_of_question'
-      p.innerHTML = `${elm.bodyDisplay}<p id='hello2'></p>`
+      p.innerHTML = `${elm.body[0].html}<p id='hello2'></p>`
 
       div.appendChild(p)
 
       if (elm.type == 'open-ended') {
+        let br = document.createElement("br")
         p.id = 'type_of_question'
 
-        p.innerHTML = `${elm.bodyDisplay}<p id='hello'>${elm.type}</p>`
-        div.appendChild(p)
+        p.innerHTML = `${elm.body[0].html}<p id='hello'> <br /> ${elm.type}</p>`
 
+        div.appendChild(p)
         document.body.appendChild(div)
       } else {
-        elm.correctChoices.map((ans) => {
-          const string = ans.choiceText
+
+        const correctAnswersFilter = elm.choices.filter(answer => answer.isCorrect == true)
+        correctAnswersFilter.map((ans) => {
+          const string = ans.body[0].html
           const br = document.createElement("br")
           div.appendChild(br)
           const l = document.createElement("p")
@@ -175,8 +178,21 @@
           l.innerHTML = `<b id='helloworld'>${string}</b>`
 
           div.appendChild(l)
+
           document.body.appendChild(div)
         })
+        // elm.choices.map((ans) => {
+        //   const string = ans.body.html
+        //   const br = document.createElement("br")
+        //   div.appendChild(br)
+        //   const l = document.createElement("p")
+
+        //   l.innerHTML = `<b id='helloworld'>${string}</b>`
+
+        //   div.appendChild(l)
+        //   document.body.appendChild(div)
+        // })
+
       }
     })
   })
@@ -287,7 +303,7 @@
 
 </script>
 <script>
-  let csrfToken;
+let csrfToken;
   let attemptId;
   let token;
 
@@ -310,23 +326,27 @@
       token = tokenResponse.token;
 
 
-      for (const elm of testData.pageProps.answers) {
-        
+      for (const elm of testData.response) {
         if (elm.type !== "multiple-choice") {
-          continue; 
+          return; 
         }
 
-  
-        const transformed = elm.correctChoices.map((item) => ({
-          choiceText: item.choiceText,
+        
+
+        const correctAnswersFilter = elm.choices.filter((ans)=> ans.isCorrect == true)
+        console.log(correctAnswersFilter)
+        const transformed = correctAnswersFilter.map((item) => ({
+          choiceText: item.body[0].html,
           choiceNumber: item.choiceNumber.toString(),
-          choiceID: item.choiceID
+          choiceID: item._id
         }));
+
+        console.log(transformed)
 
         const filter = {
           correctChoices: transformed,
           attemptId: attemptId,
-          questionId: elm.id,
+          questionId: elm._id,
           type: elm.type,
           csrf: csrfToken,
           userToken: token
@@ -336,7 +356,7 @@
           answers: [
             {
               type: elm.type,
-              questionId: elm.id,
+              questionId: elm._id,
               choices: filter.correctChoices.map(choice => choice.choiceID)
             }
           ]
@@ -346,7 +366,7 @@
         const transformedJsonString = JSON.stringify(transformFunctionTwo, null, 2);
 
 
-        const completeQuestionResponse = await fetch('/api/v1/edpuzzle/complete-question', {
+        const completeQuestionResponse = await fetch('/api/v1/edpuzzle/free-access/complete-question', {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -361,7 +381,7 @@
         if (completeQuestionData.statusCode == 200) {
 
           Toastify({
-            text: "Successfully autoanswered question-id ✅: " + elm.id,
+            text: "Successfully autoanswered question-id ✅: " + elm._id,
             duration: 5000,
             close: true,
             gravity: "top",
@@ -374,7 +394,7 @@
         } else {
 
           Toastify({
-            text: "There was an error autoanswering question-id ⚠️: " + elm.id + "\n Make sure you are logged in with discord and have premium! Get it here at http://patreon.com/DomK",
+            text: "There was an error autoanswering question-id ⚠️: " + elm._id + "\n Make sure you are logged in with discord and have premium! Get it here at http://patreon.com/DomK",
             duration: 5000,
             close: true,
             gravity: "top",
@@ -385,10 +405,9 @@
             }
           }).showToast();
         }
-
       }
+        
 
-      
     } catch (err) {
       console.log("Error in fetchData:", err);
       

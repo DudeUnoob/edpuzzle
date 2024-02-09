@@ -166,7 +166,7 @@ app.get("/edpuzzle/get_attempt_id", (req, res) => {
 
 app.post('/edpuzzle/set_teacher_assignment_id', async (req, res) => {
     req.session.teacherAssignmentMediaId = req.body.teacherAssignmentMediaId
-
+    console.log(req.body.teacherAssignmentMediaId)
     res.status(200).json({ teacherAssignmentMediaId: req.body.teacherAssignmentMediaId })
 
 })
@@ -177,66 +177,97 @@ app.get('/edpuzzle/get_teacher_assignment_id', (req, res) => {
 })
 
 const TIMEOUT = 5000;
+
 app.get('/test2', async (req, res) => {
-     
+    const apiUrl = `https://edpuzzle.com/api/v3/media/${req.session.key_id}`;
+    console.log(req.session.key_id, req.session.token)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
 
     try {
-        const timeoutPromise = new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(null); 
-            }, TIMEOUT);
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            signal: controller.signal,
         });
 
-        const result = await Promise.race([handleRequest(req), timeoutPromise]);
+        clearTimeout(timeoutId);
 
-        if (!result) {
-            return res.status(500).send("Request timed out");
+        const responseData = await response.json();
+
+        console.log(responseData)
+
+        if (responseData.error) {
+            return res.send({ cachedLessonData: null, response: null });
         }
 
-        const { cachedLessonData, response } = result;
-
-        if (cachedLessonData) {
-            console.log("Send redis cached data");
-            return res.status(200).send(cachedLessonData);
+        return res.send({ cachedLessonData: null, response: responseData.questions });
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            return res.send({ cachedLessonData: null, response: null });
+        } else {
+            throw error;
         }
+    }
+    // try {
+    //     const timeoutPromise = new Promise((resolve) => {
+    //         setTimeout(() => {
+    //             resolve(null); 
+    //         }, TIMEOUT);
+    //     });
+
+    //     const result = await Promise.race([handleRequest(req), timeoutPromise]);
+
+    //     if (!result) {
+    //         return res.status(500).send("Request timed out");
+    //     }
+
+    //     const { cachedLessonData, response } = result;
+
+    //     if (cachedLessonData) {
+    //         console.log("Send redis cached data");
+    //         return res.status(200).send(cachedLessonData);
+    //     }
 
         
-        if (response && response.pageProps && response.pageProps.answers) {
-            const cacheResult = await client.json.set(req.session.attempt_id, "$", {
-                pageProps: {
-                    answers: response.pageProps.answers
-                },
-                __N_SSP: response.__N_SSP
-            }, { NX: true });
+    //     if (response && response.pageProps && response.pageProps.answers) {
+    //         const cacheResult = await client.json.set(req.session.attempt_id, "$", {
+    //             pageProps: {
+    //                 answers: response.pageProps.answers
+    //             },
+    //             __N_SSP: response.__N_SSP
+    //         }, { NX: true });
 
-            if (cacheResult === "OK") {
-                await client.expire(req.session.attempt_id, 300);
-            }
+    //         if (cacheResult === "OK") {
+    //             await client.expire(req.session.attempt_id, 300);
+    //         }
 
-            res.status(200).send({
-                pageProps: {
-                    answers: response.pageProps.answers
-                },
-                __N_SSP: response.__N_SSP
-            });
-        } else {
-            res.status(400).send({
-                error: "Error occurred",
-                message: "Invalid response format",
-                statusCode: 400
-            });
-        }
+    //         res.status(200).send({
+    //             pageProps: {
+    //                 answers: response.pageProps.answers
+    //             },
+    //             __N_SSP: response.__N_SSP
+    //         });
+    //     } else {
+    //         res.status(400).send({
+    //             error: "Error occurred",
+    //             message: "Invalid response format",
+    //             statusCode: 400
+    //         });
+    //     }
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-    }
+    // } catch (error) {
+    //     console.error(error);
+    //     res.status(500).send("Internal Server Error");
+    // }
 });
 
-async function handleRequest(req) {
+async function handleRequest(req, res) {
     const redisPromise = client.json.get(req.session.attempt_id);
-    const apiUrl = `https://www.unpuzzle.net/_next/data/t41KPPLry9XjCurY9vmZT/answers/${req.session.key_id}.json?userToken=${req.session.token}&contentId=${req.session.key_id}`;
-
+    const apiUrl = `https://edpuzzle.com/api/v3/media/${req.session.teacherAssignmentMediaId}`;
+    console.log(req.session.key_id, req.session.token)
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
 
@@ -260,7 +291,9 @@ async function handleRequest(req) {
             return { cachedLessonData: null, response: null };
         }
 
-        return { cachedLessonData, response: responseData };
+        // return { cachedLessonData, response: responseData }
+        
+        return res.send({cachedLessonData: cachedLessonData, response: responseData});
     } catch (error) {
         if (error.name === 'AbortError') {
             return { cachedLessonData: null, response: null };
