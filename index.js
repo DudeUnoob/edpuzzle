@@ -179,89 +179,73 @@ app.get('/edpuzzle/get_teacher_assignment_id', (req, res) => {
 const TIMEOUT = 5000;
 
 app.get('/test2', async (req, res) => {
-    const apiUrl = `https://edpuzzle.com/api/v3/media/${req.session.key_id}`;
-    console.log(req.session.key_id, req.session.token)
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
+    const TIMEOUT = 3000; 
 
     try {
+        // Promise to fetch data from Redis cache
+        const redisPromise = client.json.get(req.session.key_id);
+
+        const timeoutPromise = new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(null); // Resolve with null after TIMEOUT
+            }, TIMEOUT);
+        });
+
+        const cachedLessonData = await Promise.race([redisPromise, timeoutPromise]);
+
+        if (cachedLessonData) {
+            console.log("Send redis cached data");
+            return res.status(200).send(cachedLessonData);
+        }
+
+        const apiUrl = `https://edpuzzle.com/api/v3/media/${req.session.key_id}`;
+
         const response = await fetch(apiUrl, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
-            signal: controller.signal,
         });
-
-        clearTimeout(timeoutId);
 
         const responseData = await response.json();
 
-        console.log(responseData)
-
         if (responseData.error) {
-            return res.send({ cachedLessonData: null, response: null });
+            return res.status(400).send({
+                error: "Error occurred",
+                message: "Most likely happened due to session of KEY_ID was undefined",
+                statusCode: 400
+            });
+        }
+        if (responseData.questions !== 0) {
+            const cacheResult = await client.json.set(req.session.key_id, "$", {
+                
+                    response: responseData.questions
+                
+            }, { NX: true });
+            
+
+            if (cacheResult === "OK") {
+            await client.expire(req.session.key_id, 300)
+
+            res.status(200).send({
+                
+                    response: responseData.questions
+                
+                
+            });
         }
 
-        return res.send({ cachedLessonData: null, response: responseData.questions });
-    } catch (error) {
-        if (error.name === 'AbortError') {
-            return res.send({ cachedLessonData: null, response: null });
-        } else {
-            throw error;
-        }
+	
     }
-    // try {
-    //     const timeoutPromise = new Promise((resolve) => {
-    //         setTimeout(() => {
-    //             resolve(null); 
-    //         }, TIMEOUT);
-    //     });
+}catch(error) {
+    if (error.name === 'AbortError') {
+        return res.send({ cachedLessonData: null, response: null });
+    } else {
+        console.error(error)
+        return res.status(500).send({ message: "Internal Server Error", statusCode: 500 })
+    }
+}
 
-    //     const result = await Promise.race([handleRequest(req), timeoutPromise]);
-
-    //     if (!result) {
-    //         return res.status(500).send("Request timed out");
-    //     }
-
-    //     const { cachedLessonData, response } = result;
-
-    //     if (cachedLessonData) {
-    //         console.log("Send redis cached data");
-    //         return res.status(200).send(cachedLessonData);
-    //     }
-
-        
-    //     if (response && response.pageProps && response.pageProps.answers) {
-    //         const cacheResult = await client.json.set(req.session.attempt_id, "$", {
-    //             pageProps: {
-    //                 answers: response.pageProps.answers
-    //             },
-    //             __N_SSP: response.__N_SSP
-    //         }, { NX: true });
-
-    //         if (cacheResult === "OK") {
-    //             await client.expire(req.session.attempt_id, 300);
-    //         }
-
-    //         res.status(200).send({
-    //             pageProps: {
-    //                 answers: response.pageProps.answers
-    //             },
-    //             __N_SSP: response.__N_SSP
-    //         });
-    //     } else {
-    //         res.status(400).send({
-    //             error: "Error occurred",
-    //             message: "Invalid response format",
-    //             statusCode: 400
-    //         });
-    //     }
-
-    // } catch (error) {
-    //     console.error(error);
-    //     res.status(500).send("Internal Server Error");
-    // }
 });
 
 async function handleRequest(req, res) {
