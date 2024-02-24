@@ -24,6 +24,21 @@ router.get('/public/images/backgroundDarkVoid.png', (req, res) => {
 })
 
 
+router.get('/public/images/edpuzzle_logo.png', (req, res) => {
+    res.sendFile('edpuzzle_logo.png', serverImages);
+});
+
+router.get('/public/images/kahoot_logo.png', (req, res) => {
+    res.sendFile('kahoot_logo.png', serverImages)
+})
+
+router.get('/public/images/quizlet_logo.png', (req, res) => {
+    res.sendFile('quizlet_logo.png', serverImages)
+})
+
+router.get('/public/images/quizizz_logo.png', (req, res) => {
+    res.sendFile('quizizz_logo.png', serverImages)
+})
 
 router.get('/random',(req, res) => {
     res.send(req.session.passport)
