@@ -22,6 +22,13 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-91CBMKRN8Y"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
@@ -30,72 +37,72 @@
     gtag('config', 'G-91CBMKRN8Y');
   </script>
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
-  h3 {
-    color: blue;
-    /* text-decoration: underline; */
-    font-weight: 100;
-  }
+    h3 {
+      color: blue;
+      /* text-decoration: underline; */
+      font-weight: 100;
+    }
 
-  * {
-    font-family: 'Fredoka One', cursive;
-    margin: 0px;
-    overflow-x: hidden;
-  }
+    * {
+      font-family: 'Fredoka One', cursive;
+      margin: 0px;
+      overflow-x: hidden;
+    }
 
-  #helloworld {
-    color: rgb(145, 0, 0);
-    font-weight: 100;
-  }
+    #helloworld {
+      color: rgb(145, 0, 0);
+      font-weight: 100;
+    }
 
-  #hello {
-    text-decoration: underline;
-    font-style: italic;
-  }
+    #hello {
+      text-decoration: underline;
+      font-style: italic;
+    }
 
-  .heading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 95%;
-    padding: 10px;
-  }
+    .heading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 95%;
+      padding: 10px;
+    }
 
-  button.autoanswer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    text-align: center;
-    padding: 12px;
-    font-size: 20px;
-    cursor: pointer;
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
-    transition: all 0.3s;
-    width: 20%;
-    position: fixed;
-    top: 20px;
-  }
+    button.autoanswer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      text-align: center;
+      padding: 12px;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s;
+      width: 20%;
+      position: fixed;
+      top: 20px;
+    }
 
-  button.autoanswer:hover {
-    box-shadow: 13px 19px 130px -58px rgba(0, 0, 0, 0.75);
-    -webkit-box-shadow: 13px 19px 130px -58px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 13px 19px 130px -58px rgba(0, 0, 0, 0.75);
-    transition: all 0.5s;
-  }
+    button.autoanswer:hover {
+      box-shadow: 13px 19px 130px -58px rgba(0, 0, 0, 0.75);
+      -webkit-box-shadow: 13px 19px 130px -58px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 13px 19px 130px -58px rgba(0, 0, 0, 0.75);
+      transition: all 0.5s;
+    }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-      Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    background-image: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
-  }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      background-image: url(https://coolbackgrounds.io/images/backgrounds/index/aqua-d9b59c89.png);
+    }
 
-  .card {
-    /* border-style: none;
+    .card {
+      /* border-style: none;
           cursor: pointer;
           border-radius: 5px;
            box-shadow: 10px 10px 15px -1px rgba(34, 33, 33, 0.74);
@@ -105,47 +112,49 @@
           transition: 0.3s;
           padding: 5px;  */
 
-    margin: 20px;
-    padding: 20px;
-    justify-content: center;
-    background: radial-gradient(#1fe4f5, #3fbafe);
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    transition: all 0.2s;
-
-  }
-
-  .card:hover {
-    /* box-shadow: 0 12px 16px 0 rgba(255, 255, 255, 0.24), 0 17px 50px 0 rgba(255, 254, 254, 0.19); */
-    border-radius: 10px;
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
-    transition: all 0.2s;
-    cursor: pointer;
-  }
-
-  @media (max-width: 1600px) {
-    .cards {
+      margin: 20px;
+      padding: 20px;
       justify-content: center;
-    }
-  }
+      background: radial-gradient(#1fe4f5, #3fbafe);
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      transition: all 0.2s;
 
-  @media screen and (max-width: 600px) {
-    .card {
-      font-size: 4vw;
     }
 
-    button.autoanswer {
-      width: 50%;
+    .card:hover {
+      /* box-shadow: 0 12px 16px 0 rgba(255, 255, 255, 0.24), 0 17px 50px 0 rgba(255, 254, 254, 0.19); */
+      border-radius: 10px;
+      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s;
+      cursor: pointer;
     }
-  }
-</style>
+
+    @media (max-width: 1600px) {
+      .cards {
+        justify-content: center;
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .card {
+        font-size: 4vw;
+      }
+
+      button.autoanswer {
+        width: 50%;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 </body>
-<script>
+<script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
   // let lesson_id;
   // fetch('/lesson_id').then(res => res.json()).then(data => {
   //   lesson_id = data.lesson_id
@@ -173,40 +182,64 @@
 
       if (elm.type == 'open-ended') {
         let br = document.createElement("br")
+        let aiStream = document.createElement("p")
+
+        aiStream.innerHTML = `<b id='helloworld'>AI Generated Response: </b>`
         p.id = 'type_of_question'
 
         p.innerHTML = `${elm.body[0].html}<p id='hello'> <br /> ${elm.type}</p>`
 
         div.appendChild(p)
+        div.appendChild(document.createElement("br"))
+        div.appendChild(aiStream)
+
         document.body.appendChild(div)
-      } else {
 
-        const correctAnswersFilter = elm.choices.filter(answer => answer.isCorrect == true)
-        correctAnswersFilter.map((ans) => {
-          const string = ans.body[0].html
-          const br = document.createElement("br")
-          div.appendChild(br)
-          const l = document.createElement("p")
+        const genAI = new GoogleGenerativeAI("AIzaSyDqmRd3t3nG29TeVospOuUkog_Mt_wmtCk");
 
-          l.innerHTML = `<b id='helloworld'>${string}</b>`
+        async function run() {
+          const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+          const prompt = `With the context of this video title: ${data.edpuzzleTitle}. Please answer the following question: ${elm.body[0].html}`;
+          const result = await model.generateContentStream(prompt);
+          let text = '';
+          for await (const chunk of result.stream) {
+            const chunkText = chunk.text();
+            console.log(chunkText);
+            text += chunkText;
+            aiStream.innerHTML += chunkText;
+          }
+        }
 
-          div.appendChild(l)
-
-          document.body.appendChild(div)
-        })
-        // elm.choices.map((ans) => {
-        //   const string = ans.body.html
-        //   const br = document.createElement("br")
-        //   div.appendChild(br)
-        //   const l = document.createElement("p")
-
-        //   l.innerHTML = `<b id='helloworld'>${string}</b>`
-
-        //   div.appendChild(l)
-        //   document.body.appendChild(div)
-        // })
-
+        run();
       }
+ else {
+
+      const correctAnswersFilter = elm.choices.filter(answer => answer.isCorrect == true)
+        correctAnswersFilter.map((ans) => {
+        const string = ans.body[0].html
+        const br = document.createElement("br")
+        div.appendChild(br)
+        const l = document.createElement("p")
+
+        l.innerHTML = `<b id='helloworld'>${string}</b>`
+
+        div.appendChild(l)
+
+        document.body.appendChild(div)
+      })
+      // elm.choices.map((ans) => {
+      //   const string = ans.body.html
+      //   const br = document.createElement("br")
+      //   div.appendChild(br)
+      //   const l = document.createElement("p")
+
+      //   l.innerHTML = `<b id='helloworld'>${string}</b>`
+
+      //   div.appendChild(l)
+      //   document.body.appendChild(div)
+      // })
+
+    }
     })
   })
   // console.log(data)
@@ -316,13 +349,13 @@
 
 </script>
 <script>
-let csrfToken;
+  let csrfToken;
   let attemptId;
   let token;
 
   async function fetchData() {
     try {
- 
+
       const responses = await Promise.all([
         fetch('/edpuzzle/csrf').then(res => res.json()),
         fetch('/edpuzzle/get_attempt_id').then(res => res.json()),
@@ -330,10 +363,10 @@ let csrfToken;
         fetch('/test2').then(res => res.json())
       ]);
 
- 
+
       const [csrfResponse, attemptIdResponse, tokenResponse, testData] = responses;
 
- 
+
       csrfToken = csrfResponse.CSRFToken;
       attemptId = attemptIdResponse.attempt_id != null ? attemptIdResponse.attempt_id : window.localStorage.getItem("attemptId");
       token = tokenResponse.token;
@@ -341,12 +374,12 @@ let csrfToken;
 
       for (const elm of testData.response) {
         if (elm.type !== "multiple-choice") {
-          return; 
+          return;
         }
 
-        
 
-        const correctAnswersFilter = elm.choices.filter((ans)=> ans.isCorrect == true)
+
+        const correctAnswersFilter = elm.choices.filter((ans) => ans.isCorrect == true)
         console.log(correctAnswersFilter)
         const transformed = correctAnswersFilter.map((item) => ({
           choiceText: item.body[0].html,
@@ -419,33 +452,33 @@ let csrfToken;
           }).showToast();
         }
       }
-        
+
 
     } catch (err) {
       console.log("Error in fetchData:", err);
-      
+
     }
   }
 
-    
+
   async function autoAnswerEdpuzzle() {
-    
+
     await fetch('/api/v1/skip_video').then((res) => res.json()).then(data => {
-      if(data.statusCode == 201){
+      if (data.statusCode == 201) {
         Toastify({
           text: "Successfully skipped video ✅",
           duration: 5000,
           close: true,
-          gravity:"top",
-          position:"right",
+          gravity: "top",
+          position: "right",
           stopOnFocus: true,
-          style:{
+          style: {
             background: "linear-gradient(to right, rgb(0, 195, 200), rgb(120, 130, 80))"
           }
         }).showToast()
       }
     })
-    await fetchData(); 
+    await fetchData();
 
   }
 
@@ -455,7 +488,7 @@ let csrfToken;
   <div class="heading">
     <button class="autoanswer" onclick="autoAnswerEdpuzzle()">autoanswer
 
-    
+
     </button>
   </div>
 

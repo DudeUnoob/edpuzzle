@@ -46,12 +46,12 @@
              const card = document.createElement('div')
              card.classList = 'card'
              
-            card.setAttribute("onclick",`redirectLesson('${elm.teacherAssignments[0]}','${finalId}','${teacherAssignmentMediaId}', '${findAttemptId}')`)
+            card.setAttribute("onclick",`redirectLesson('${elm.teacherAssignments[0]}','${finalId}','${teacherAssignmentMediaId}', '${findAttemptId}', '${elm.title}')`)
 
              let textNode = document.createTextNode(elm.title)
              document.body.appendChild(card)
              /*card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm._id}')><b>${elm.title}</b></h1></p>`*/
-           card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm.teacherAssignments[0]}','${finalId}','${teacherAssignmentMediaId}','${findAttemptId}')><b>${elm.title}</b></h1></p>`
+           card.innerHTML = `<p><h1 id='classTitles'  onclick=redirectLesson('${elm.teacherAssignments[0]}','${finalId}','${teacherAssignmentMediaId}','${findAttemptId}', '${elm.title}')><b>${elm.title}</b></h1></p>`
 
 
              
@@ -103,7 +103,7 @@
         }
         
         
-        function redirectLesson(id, attempt_id, teacherAssignmentId, keyId){
+        function redirectLesson(id, attempt_id, teacherAssignmentId, keyId, title){
            console.log(id)
 
           // fetch('/edpuzzle/set_teacher_assignment_id', {
@@ -124,12 +124,14 @@
 
             body: JSON.stringify({
               attempt_id: attempt_id,
-              key_id: keyId
+              key_id: keyId,
+              title: title
             })
            })
 
            window.localStorage.setItem("attemptId", attempt_id)
            window.localStorage.setItem("keyId", keyId)
+           window.localStorage.setItem("title", title)
            window.location.href = `/edpuzzle/room/${currentId}/${attempt_id}?keyId=${keyId}` 
         }
          

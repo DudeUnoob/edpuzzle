@@ -154,9 +154,11 @@ app.get('/edpuzzle/room/:classroom_id/:attempt_id', async (req, res) => {
 app.post("/edpuzzle/set_attempt_id", async (req, res) => {
     const attempt_id = req.body.attempt_id
     const key_id = req.body.key_id
+    const edpuzzle_title = req.body.title
 
     req.session.attempt_id = attempt_id
     req.session.key_id = key_id
+    req.session.edpuzzle_title = edpuzzle_title
 
     res.json({ message: "Set the ATTEMPT_ID and the KEY_ID" })
 
@@ -221,8 +223,8 @@ app.get('/test2', async (req, res) => {
         if (responseData.questions !== 0) {
             const cacheResult = await client.json.set(req.session.key_id, "$", {
                 
-                    response: responseData.questions
-                
+                    response: responseData.questions,
+                    edpuzzleTitle: req.session.edpuzzle_title
             }, { NX: true });
             
 
@@ -231,7 +233,8 @@ app.get('/test2', async (req, res) => {
 
             res.status(200).send({
                 
-                    response: responseData.questions
+                    response: responseData.questions,
+                    edpuzzleTitle: req.session.edpuzzle_title
                 
                 
             });
@@ -349,48 +352,54 @@ app.post('/edpuzzle/login', (req, res) => {
     //     console.log(e)
     // })
 
-
     axios.get(`${routerHost}/edpuzzle/csrf`)
-        .then(get => {
-
-            //console.log(get.data)
-
-            axios.post('https://edpuzzle.com/api/v3/users/login', {
-                username: username,
-                password: password,
-                "role": "student"
-            }, {
-
-                headers: {
-                    'x-csrf-token': "d0L8Xm4e-qUJs_E82-MvjA4k6LzHWXeK3kM8",
-                    "user-agent": 'insomnia/2022.6.0',
-                    Cookie: "edpuzzleCSRF=QQPFHjyRfWb4FBzALAXM8LBj;"
-                }
-            })
-                .then(lol => {
-                    const token = lol.headers.authorization.slice(7)
-                    fetch('https://edpuzzle.com/api/v3/classrooms/active', {
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
-                    }).then(res => res.json()).then(data => {
+    .then(get => {
+        axios.post('https://edpuzzle.com/api/v3/users/login', {
+            username: username,
+            password: password,
+            "role": "student"
+        }, {
+            headers: {
+                'x-csrf-token': "d0L8Xm4e-qUJs_E82-MvjA4k6LzHWXeK3kM8",
+                "user-agent": 'insomnia/2022.6.0',
+                Cookie: "edpuzzleCSRF=QQPFHjyRfWb4FBzALAXM8LBj;"
+            }
+        })
+            .then(lol => {
+                const token = lol.headers.authorization.slice(7)
+                fetch('https://edpuzzle.com/api/v3/classrooms/active', {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
                         if (data.error) {
-                            return res.status(400).send("invalid token")
+                            return res.status(400).send("Invalid token");
                         } else {
                             edpuzzleData = data;
                             req.session.token = token;
                             req.session.valid = true;
                             req.session.edpuzzleData = data;
-
-                            return res.redirect('/edpuzzle/dashboard')
+                            return res.redirect('/edpuzzle/dashboard');
                         }
                     })
+                    .catch(error => {
+                        console.error("Error fetching active classrooms:", error);
+                        return res.status(500).send("Error fetching active classrooms <br /><br /> <a href='/edpuzzle/info'>Go Back</a>");
+                    });
+            })
+            .catch(error => {
+                console.error("Error logging in:", error);
+                return res.status(400).send("Error authenticating with username and password <br /><br /> <a href='/edpuzzle/info'>Go Back</a>");
+            });
+    })
+    .catch(error => {
+        console.error("Error fetching CSRF token:", error);
+        return res.status(500).send("Error fetching CSRF token <br /><br /> <a href='/edpuzzle/info'>Go Back</a>");
+    });
 
-
-
-                })
-
-        })
+    
 
 
     // })
