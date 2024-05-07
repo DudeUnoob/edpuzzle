@@ -83,52 +83,88 @@
     <h1 style="text-align: center;">Quizziz Answers</h1>
 
     <script>
-        fetch('/quizziz/api/data').then(res => res.json()).then(data => {
-            data.data.questions.map((question) => {
+//         fetch('/quizziz/api/data').then(res => res.json()).then(data => {
+//             data.data.questions.map((question) => {
+//                 const div = document.createElement("div")
+//                 div.className = "card"
+
+//                 if (question.structure.query.media) {
+//                     console.log(question.structure.query.media);
+//                     question.structure.query.media.forEach(media => {
+//                         if (media.type === "image") {
+//                             const image = document.createElement("img");
+//                             image.src = media.url;
+//                             div.appendChild(image);
+//                         }
+//                     });
+//                 }
+
+//                 const q = document.createElement("h3")
+//                 q.innerHTML = question.structure.query.text
+
+//                 div.appendChild(q)
+
+//                 document.body.appendChild(div)
+
+//                 const br = document.createElement("br")
+//                 div.appendChild(br)
+
+//                 question.structure.options.map((option, index) => {
+//     let answerCard = document.createElement("p");
+//     answerCard.id = "helloworld";
+
+//     if (Array.isArray(question.structure.answer)) {
+//         if (question.structure.answer.includes(index)) {
+//             // This is one of the correct answer options
+//             answerCard.innerHTML = option.text;
+//         }
+//     } else {
+//         if (index === question.structure.answer) {
+//             // This is the correct answer option
+//             answerCard.innerHTML = option.text;
+//         }
+//     }
+
+//     div.appendChild(answerCard);
+// });
+
+//             })
+//         })
+
+fetch('/quizziz/api/data').then(res => res.json()).then(data => {
+            
+            //console.log(data)
+            
+           data.data.answers.map((question) => {
                 const div = document.createElement("div")
                 div.className = "card"
-
-                if (question.structure.query.media) {
-                    console.log(question.structure.query.media);
-                    question.structure.query.media.forEach(media => {
-                        if (media.type === "image") {
-                            const image = document.createElement("img");
-                            image.src = media.url;
-                            div.appendChild(image);
-                        }
-                    });
+                const image = document.createElement("img")
+                if(question.question.image){
+                    image.src = question.question.image
+                    div.appendChild(image)
                 }
-
                 const q = document.createElement("h3")
-                q.innerHTML = question.structure.query.text
-
+                q.innerHTML = question.question.text
                 div.appendChild(q)
-
                 document.body.appendChild(div)
-
                 const br = document.createElement("br")
                 div.appendChild(br)
+                question.answers.map((answer) => {
+                    
+                    const answerCard = document.createElement("p")
+                    const imgCard = document.createElement("img")
 
-                question.structure.options.map((option, index) => {
-    let answerCard = document.createElement("p");
-    answerCard.id = "helloworld";
+                    answerCard.id = "helloworld"
+                    answerCard.innerHTML = answer.text
 
-    if (Array.isArray(question.structure.answer)) {
-        if (question.structure.answer.includes(index)) {
-            // This is one of the correct answer options
-            answerCard.innerHTML = option.text;
-        }
-    } else {
-        if (index === question.structure.answer) {
-            // This is the correct answer option
-            answerCard.innerHTML = option.text;
-        }
-    }
+                    if(answer.text === "<p></p>"){
+                        imgCard.src = answer.image
+                        div.appendChild(imgCard)
 
-    div.appendChild(answerCard);
-});
-
-            })
+                    }
+                    div.appendChild(answerCard)
+                })
+           })
         })
 
         //console.log(data)

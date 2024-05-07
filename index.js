@@ -567,36 +567,49 @@ app.get('/quizziz/info', (req, res) => {
 app.post('/quizziz/code', (req, res) => {
     const code = req.body.quizziz_code
 
-    fetch(`https://game.quizizz.com/play-api/v5/checkRoom`, {
-        method:"POST",
-        body: JSON.stringify({
-            "roomCode": code
+    // fetch(`https://game.quizizz.com/play-api/v5/checkRoom`, {
+    //     method:"POST",
+    //     body: JSON.stringify({
+    //         "roomCode": code
         
-        }),
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
+    //     }),
+    //     headers:{
+    //         "Content-Type":"application/json"
+    //     }
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+
+    //     if(data?.error?.message == "Room not found"){
+    //         return res.status(400).send("Invalid quizziz game")
+    //     }
+    //     else {
+    //         console.log("This is running", data.room.hash)
+    //         fetch(`https://quizizz.com/_api/main/game/${data.room.hash}`, {
+    //             headers:{
+    //                 "user-agent":"Insomnia/2023.5.7",
+    //                 Cookie: process.env.QUIZZIZ_COOKIE
+    //             }
+    //         }).then(response => response.json())
+    //         .then(data => {
+    //             console.log(data)
+    //             req.session.quizzizData = data
+
+    //             res.render('quizziz_data')
+    //         })
+    //     }
+    // })
+
+    fetch(`https://api.quizit.online/quizizz/answers?pin=${code}`)
     .then(response => response.json())
     .then(data => {
-
-        if(data?.error?.message == "Room not found"){
+        if (data.message == "Room not found") {
             return res.status(400).send("Invalid quizziz game")
-        }
-        else {
-            console.log("This is running", data.room.hash)
-            fetch(`https://quizizz.com/_api/main/game/${data.room.hash}`, {
-                headers:{
-                    "user-agent":"Insomnia/2023.5.7",
-                    Cookie: process.env.QUIZZIZ_COOKIE
-                }
-            }).then(response => response.json())
-            .then(data => {
-                console.log(data)
-                req.session.quizzizData = data
+        } else {
 
-                res.render('quizziz_data')
-            })
+            req.session.quizzizData = data
+
+            res.render('quizziz_data')
         }
     })
         // .then(response => response.json())
